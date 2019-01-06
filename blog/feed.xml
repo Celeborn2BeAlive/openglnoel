@@ -1,56 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
     <channel>
-        <title>OpenGL[&quot;noel&quot;] Blog</title>
+        <title>OpenGL[&quot;noël&quot;] Blog</title>
         <link>https://celeborn2bealive.github.io/openglnoel/blog</link>
-        <description>The best place to stay up-to-date with the latest OpenGL[&quot;noel&quot;] news and events.</description>
-        <lastBuildDate>Tue, 24 Oct 2017 06:00:00 GMT</lastBuildDate>
+        <description>The best place to stay up-to-date with the latest OpenGL[&quot;noël&quot;] news and events.</description>
+        <lastBuildDate>Sun, 06 Jan 2019 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
-            <title>OpenGL[&quot;noel&quot;] Blog</title>
+            <title>OpenGL[&quot;noël&quot;] Blog</title>
             <url>https://celeborn2bealive.github.io/openglnoel/img/logo.png</url>
             <link>https://celeborn2bealive.github.io/openglnoel/blog</link>
         </image>
         <copyright>Copyright © 2019 Laurent NOEL</copyright>
         <item>
-            <title><![CDATA[New Version 1.0.0]]></title>
-            <link>https://celeborn2bealive.github.io/openglnoel/blog/2017/10/24/new-version-1.0.0.html</link>
-            <guid>https://celeborn2bealive.github.io/openglnoel/blog/2017/10/24/new-version-1.0.0.html</guid>
-            <pubDate>Tue, 24 Oct 2017 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>This blog post will test file name parsing issues when periods are present.</p> ]]></description>
-        </item>
-        <item>
-            <title><![CDATA[Adding RSS Support]]></title>
-            <link>https://celeborn2bealive.github.io/openglnoel/blog/2017/09/26/adding-rss.html</link>
-            <guid>https://celeborn2bealive.github.io/openglnoel/blog/2017/09/26/adding-rss.html</guid>
-            <pubDate>Tue, 26 Sep 2017 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>This is a test post.</p> <p>A whole bunch of other information.</p> ]]></description>
-        </item>
-        <item>
-            <title><![CDATA[Adding RSS Support - RSS Truncation Test]]></title>
-            <link>https://celeborn2bealive.github.io/openglnoel/blog/2017/09/25/testing-rss.html</link>
-            <guid>https://celeborn2bealive.github.io/openglnoel/blog/2017/09/25/testing-rss.html</guid>
-            <pubDate>Mon, 25 Sep 2017 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</p>
-<p>This should be truncated.</p>
-]]></description>
-        </item>
-        <item>
-            <title><![CDATA[New Blog Post]]></title>
-            <link>https://celeborn2bealive.github.io/openglnoel/blog/2017/04/10/blog-post-two.html</link>
-            <guid>https://celeborn2bealive.github.io/openglnoel/blog/2017/04/10/blog-post-two.html</guid>
-            <pubDate>Mon, 10 Apr 2017 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus elementum massa eget nulla aliquet sagittis. Proin odio tortor, vulputate ut odio in, ultrices ultricies augue. Cras ornare ultrices lorem malesuada iaculis. Etiam sit amet libero tempor, pulvinar mauris sed, sollicitudin sapien.</p>
-]]></description>
-        </item>
-        <item>
-            <title><![CDATA[Blog Title]]></title>
-            <link>https://celeborn2bealive.github.io/openglnoel/blog/2016/03/11/blog-post.html</link>
-            <guid>https://celeborn2bealive.github.io/openglnoel/blog/2016/03/11/blog-post.html</guid>
-            <pubDate>Fri, 11 Mar 2016 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus elementum massa eget nulla aliquet sagittis. Proin odio tortor, vulputate ut odio in, ultrices ultricies augue. Cras ornare ultrices lorem malesuada iaculis. Etiam sit amet libero tempor, pulvinar mauris sed, sollicitudin sapien.</p>
-]]></description>
+            <title><![CDATA[Hello World !]]></title>
+            <link>https://celeborn2bealive.github.io/openglnoel/blog/2019/01/06/hello-world.html</link>
+            <guid>https://celeborn2bealive.github.io/openglnoel/blog/2019/01/06/hello-world.html</guid>
+            <pubDate>Sun, 06 Jan 2019 06:00:00 GMT</pubDate>
+            <description><![CDATA[<p>Bienvenu sur le blog de ce site, destiné au TDs d'OpenGL moderne que je donne à l'<a href="http://www.u-pem.fr/">Université Paris Est Marne-la-Vallée</a>. Plus spécifiquement, ces TDs sont donnés aux étudiants de l'<a href="https://www.ingenieur-imac.fr/">Ecole d'ingénieurs Imac</a> et aux étudiants du <a href="http://www.u-pem.fr/formations/loffre-de-formations/masters/domaine-sciences-technologies-sante/mention-informatique/master-sciences-de-limage/">master Sciences de l'Image...</a></p>]]></description>
         </item>
     </channel>
 </rss>
