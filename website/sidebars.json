@@ -1,10 +1,61 @@
 {
-  "docs": {
-    "Docusaurus": ["doc1"],
-    "First Category": ["doc2"],
-    "Second Category": ["doc3"]
-  },
-  "docs-other": {
-    "First Category": ["doc4", "doc5"]
-  }
+    "Introduction et SDK": {
+        "Introduction et SDK": [
+            "intro-sdk-todo"
+        ]
+    },
+    "Bronze Level": {
+        "Bronze Level": [
+            "bronze-todo"
+        ]
+    },
+    "Silver Level": {
+        "Introduction et SDK": [
+            "silver-01-intro-sdk-01-introduction",
+            "silver-01-intro-sdk-02-repo-github",
+            "silver-01-intro-sdk-03-fiche-info",
+            "silver-01-intro-sdk-04-sdk",
+            "silver-01-intro-sdk-05-projet",
+            "silver-01-intro-sdk-06-liens"
+        ],
+        "Forward Renderer": [
+            "silver-02-forward-renderer-01-pipeline",
+            "silver-02-forward-renderer-02-geometrie",
+            "silver-02-forward-renderer-03-shaders",
+            "silver-02-forward-renderer-04-transformations",
+            "silver-02-forward-renderer-05-lighting",
+            "silver-02-forward-renderer-06-textures",
+            "silver-02-forward-renderer-07-load-obj",
+            "silver-02-forward-renderer-08-plus-loin"
+        ],
+        "Deferred Renderer": [
+            "silver-03-deferred-renderer-01-pipeline",
+            "silver-03-deferred-renderer-02-geometry-pass",
+            "silver-03-deferred-renderer-03-shading-pass",
+            "silver-03-deferred-renderer-04-plus-loin"
+        ],
+        "Shadow Mapping": [
+            "silver-04-shadow-mapping-01-introduction",
+            "silver-04-shadow-mapping-02-dir-shadow-map",
+            "silver-04-shadow-mapping-03-percentage-closest-filtering",
+            "silver-04-shadow-mapping-04-aller-plus-loin"
+        ],
+        "Post Processing": [
+            "silver-05-post-processing-01-introduction",
+            "silver-05-post-processing-02-gamma-correction",
+            "silver-05-post-processing-03-extraction-contours",
+            "silver-05-post-processing-04-depth-of-field"
+        ],
+        "Annexe: API OpenGL": [
+            "silver-06-course-01-opengl-context",
+            "silver-06-course-02-gpu-pipeline",
+            "silver-06-course-03-opengl-extensions",
+            "silver-06-course-04-opengl-objects",
+            "silver-06-course-05-buffer-objects",
+            "silver-06-course-06-vertex-array-objects",
+            "silver-06-course-07-textures",
+            "silver-06-course-08-framebuffer-objects",
+            "silver-06-course-09-shaders"
+        ]
+    }
 }

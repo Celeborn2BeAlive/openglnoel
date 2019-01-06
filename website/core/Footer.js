@@ -36,21 +36,13 @@ class Footer extends React.Component {
                         )}
                     </a>
                     <div>
-                        <h5>Docs</h5>
-                        <a href={this.docUrl('doc1.html', this.props.language)}>
-                            Getting Started (or other categories)
-                        </a>
-                        <a href={this.docUrl('doc2.html', this.props.language)}>
-                            Guides (or other categories)
-                        </a>
-                        <a href={this.docUrl('doc3.html', this.props.language)}>
-                            API Reference (or other categories)
-                        </a>
+                        <h5>About Me</h5>
+                        <a href="http://laurentnoel.fr">Personal website</a>
+                        <a href="https://github.com/Celeborn2BeAlive/">Github</a>
                     </div>
                     <div>
-                        <h5>More</h5>
+                        <h5>About This Website</h5>
                         <a href={`${this.props.config.baseUrl}blog`}>Blog</a>
-                        <a href="https://github.com/Celeborn2BeAlive/openglnoel">GitHub</a>
                         <a
                             className="github-button"
                             href={this.props.config.repoUrl}
@@ -59,8 +51,14 @@ class Footer extends React.Component {
                             data-show-count="true"
                             data-count-aria-label="# stargazers on GitHub"
                             aria-label="Star this project on GitHub">
-                            Star
+                            openglnoel
                         </a>
+                        <a href="https://docusaurus.io/">Powered by Docusaurus</a>
+                    </div>
+                    <div>
+                        <h5>About OpenGL</h5>
+                        <a href="docs.gl">Documentation (docs.gl)</a>
+                        <a href="https://www.khronos.org/opengl/wiki/">Wiki</a>
                     </div>
                 </section>
 

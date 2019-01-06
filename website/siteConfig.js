@@ -21,8 +21,8 @@ const users = [
 ];
 
 const siteConfig = {
-    title: 'OpenGL["noel"]', // Title for your website.
-    tagline: "TDs/Cours/Tutoriaux OpenGL pour l'Université Paris Est",
+    title: 'OpenGL["noël"]', // Title for your website.
+    tagline: "TDs de l'Université Paris Est Marne-la-Vallée",
     url: 'https://celeborn2bealive.github.io', // Your website URL
     baseUrl: '/openglnoel/', // Base URL for your project */
     // For github.io type URLs, you would set the url and baseUrl like:
@@ -38,10 +38,13 @@ const siteConfig = {
 
     // For no header links in the top nav bar -> headerLinks: [],
     headerLinks: [
-        { doc: 'doc1', label: 'Docs' },
-        { doc: 'doc4', label: 'API' },
-        { page: 'help', label: 'Help' },
+        { doc: 'intro-sdk-todo', label: 'Introduction et SDK' },
+        { doc: 'bronze-todo', label: 'Bronze Level' },
+        { doc: 'silver-01-intro-sdk-01-introduction', label: 'Silver Level' },
         { blog: true, label: 'Blog' },
+        { href: 'http://docs.gl', label: 'OpenGL Documentation' },
+        { href: 'https://www.khronos.org/opengl/wiki/', label: 'OpenGL Wiki' },
+        { href: 'https://github.com/celeborn2bealive/openglnoel', label: 'GitHub' }
     ],
 
     // If you have users set above, you add it here:
@@ -55,7 +58,7 @@ const siteConfig = {
     /* Colors for website */
     colors: {
         primaryColor: '#0D3E5C',
-        secondaryColor: '#205C3B',
+        secondaryColor: '#061f2e',
     },
 
     /* Custom fonts for website */
@@ -77,13 +80,16 @@ const siteConfig = {
 
     highlight: {
         // Highlight.js theme to use for syntax highlighting in code blocks.
-        theme: 'default',
+        theme: 'atom-one-dark',
     },
 
     // Add custom scripts here that would be placed in <script> tags.
     scripts: [
         'https://buttons.github.io/buttons.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML'
+        'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML',
+        'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js',
+        '/openglnoel/js/code-block-buttons.js',
+        "/openglnoel/js/disqus.js",
     ],
 
     // On page navigation for the current documentation page.
