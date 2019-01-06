@@ -14,3 +14,5 @@ Il y a deux modules de TDs que je prévois de regrouper sur ce site:
 Les deux liens précédents sont amené à mourir afin de privilégier ce nouveau site.
 
 Bien évidemment les TDs disponibles sur ce site peuvent être suivi chez vous, sans être inscrit aux formations mentionné plus haut.
+
+<!--truncate-->
