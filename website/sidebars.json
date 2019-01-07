@@ -21,6 +21,44 @@
             "bronze-02-hello-triangle-05-dessiner-quad",
             "bronze-02-hello-triangle-06-dessiner-disque",
             "bronze-02-hello-triangle-07-index-buffers"
+        ],
+        "Dive into the GPU - les shaders": [
+            "bronze-03-shaders-01-kesako",
+            "bronze-03-shaders-02-exemple",
+            "bronze-03-shaders-03-compilation",
+            "bronze-03-shaders-04-jouer",
+            "bronze-03-shaders-05-mandelbrot",
+            "bronze-03-shaders-06-la-suite",
+            "bronze-03-shaders-07-triangle-tourne",
+            "bronze-03-shaders-08-matrices",
+            "bronze-03-shaders-09-plusieurs-triangles",
+            "bronze-03-shaders-10-textures"
+        ],
+        "\"Dessiner\" en 3D - la théorie": [
+            "bronze-04-3d-theorie-01-introduction",
+            "bronze-04-3d-theorie-02-normal-matrix",
+            "bronze-04-3d-theorie-03-3d-vertex-shader",
+            "bronze-04-3d-theorie-04-glm"
+        ],
+        "\"Dessiner\" en 3D - la pratique": [
+            "bronze-05-3d-pratique-01-introduction",
+            "bronze-05-3d-pratique-02-classe-sphere-cone",
+            "bronze-05-3d-pratique-03-dessiner-sphere",
+            "bronze-05-3d-pratique-04-dessiner-lune",
+            "bronze-05-3d-pratique-05-dessiner-terre",
+            "bronze-05-3d-pratique-06-multi-texturing",
+            "bronze-05-3d-pratique-07-plusieurs-shaders"
+        ],
+        "Gestion de la caméra": [
+            "bronze-06-camera-01-introduction",
+            "bronze-06-camera-02-trackball-camera",
+            "bronze-06-camera-03-freefly-camera"
+        ],
+        "Put the lights on !": [
+            "bronze-07-lighting-01-introduction",
+            "bronze-07-lighting-02-directional-light",
+            "bronze-07-lighting-03-point-light",
+            "bronze-07-lighting-04-aller-plus-loin"
         ]
     },
     "Silver Level": {
