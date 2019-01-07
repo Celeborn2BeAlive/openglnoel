@@ -39,7 +39,7 @@ const siteConfig = {
     // For no header links in the top nav bar -> headerLinks: [],
     headerLinks: [
         { doc: 'intro-sdk-todo', label: 'Introduction et SDK' },
-        { doc: 'bronze-todo', label: 'Bronze Level' },
+        { doc: 'bronze-01-philogl-01-introduction', label: 'Bronze Level' },
         { doc: 'silver-01-intro-sdk-01-introduction', label: 'Silver Level' },
         { blog: true, label: 'Blog' },
         { href: 'http://docs.gl', label: 'OpenGL Documentation' },

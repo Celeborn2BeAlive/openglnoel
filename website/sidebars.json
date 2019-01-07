@@ -5,8 +5,22 @@
         ]
     },
     "Bronze Level": {
-        "Bronze Level": [
-            "bronze-todo"
+        "La Philosophie OpenGL 3+": [
+            "bronze-01-philogl-01-introduction",
+            "bronze-01-philogl-02-rendu-direct",
+            "bronze-01-philogl-03-pipeline-programmable",
+            "bronze-01-philogl-04-deprecation-model",
+            "bronze-01-philogl-05-exemple",
+            "bronze-01-philogl-06-conclusion"
+        ],
+        "Hello Triangle": [
+            "bronze-02-hello-triangle-01-code-de-base",
+            "bronze-02-hello-triangle-02-triangle-blanc",
+            "bronze-02-hello-triangle-03-triangle-couleurs",
+            "bronze-02-hello-triangle-04-vertex-structure",
+            "bronze-02-hello-triangle-05-dessiner-quad",
+            "bronze-02-hello-triangle-06-dessiner-disque",
+            "bronze-02-hello-triangle-07-index-buffers"
         ]
     },
     "Silver Level": {
