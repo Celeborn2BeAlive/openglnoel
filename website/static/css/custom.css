@@ -16,5 +16,35 @@
 }
 
 .mainContainer a {
-    font-weight: 500
+    font-weight: 500;
+}
+
+.badge {
+    padding: .2em .6em;
+    color: #fff;
+    border-radius: 8em;
+}
+
+.badge.todo {
+    background: #c91111;
+}
+
+.badge.todo:after {
+    content: 'A faire';
+}
+
+.badge.warning {
+    background: #ff9c00;
+}
+
+.badge.warning:after {
+    content: 'Attention';
+}
+
+.badge.doc {
+    background: #0f75da;
+}
+
+.badge.doc:after {
+    content: 'Documentation';
 }

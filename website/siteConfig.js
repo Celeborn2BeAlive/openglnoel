@@ -89,7 +89,7 @@ const siteConfig = {
         'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML',
         'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js',
         '/openglnoel/js/code-block-buttons.js',
-        "/openglnoel/js/disqus.js",
+        "/openglnoel/js/disqus.js"
     ],
 
     // On page navigation for the current documentation page.
