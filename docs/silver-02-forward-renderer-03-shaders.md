@@ -1,6 +1,6 @@
 ---
 id: silver-02-forward-renderer-03-shaders
-title: Geometrie
+title: Shaders
 ---
 
 Créez un sous-dossier *shader* dans le dossier de l'application *foward-renderer* et créez le fichiers *forward.vs.glsl* et *forward.fs.glsl*.
