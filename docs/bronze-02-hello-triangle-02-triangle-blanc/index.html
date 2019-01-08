@@ -1,0 +1,236 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Dessiner un triangle blanc · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;Tout d&#x27;abord un peu de pratique. Afin de se mettre dans le bain, vous allez dessiner un triangle blanc en 2D. Cela vous permettra de voir différents concepts OpenGL3 lié à la gestion de données: les Vertex Buffer Objects (VBOs) et les Vertex Array Objects (VAOs). Je vous guiderais étape par étape tout en vous fournissant des liens vers la documentation pour chaque fonction utilisée. La lecture de cette dernière n&#x27;est pas optionnelle (même si c&#x27;est un peu chiant).&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Dessiner un triangle blanc · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/index.html"/><meta property="og:description" content="&lt;p&gt;Tout d&#x27;abord un peu de pratique. Afin de se mettre dans le bain, vous allez dessiner un triangle blanc en 2D. Cela vous permettra de voir différents concepts OpenGL3 lié à la gestion de données: les Vertex Buffer Objects (VBOs) et les Vertex Array Objects (VAOs). Je vous guiderais étape par étape tout en vous fournissant des liens vers la documentation pour chaque fonction utilisée. La lecture de cette dernière n&#x27;est pas optionnelle (même si c&#x27;est un peu chiant).&lt;/p&gt;
+"/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><link rel="stylesheet" href="/openglnoel/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/openglnoel/"><img class="logo" src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]"/><h2 class="headerTitleWithLogo">OpenGL[&quot;noël&quot;]</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/openglnoel/docs/intro-sdk-todo" target="_self">Introduction et SDK</a></li><li class="siteNavGroupActive"><a href="/openglnoel/docs/bronze-01-philogl-01-introduction" target="_self">Bronze Level</a></li><li class=""><a href="/openglnoel/docs/silver-01-intro-sdk-01-introduction" target="_self">Silver Level</a></li><li class=""><a href="/openglnoel/blog/" target="_self">Blog</a></li><li class=""><a href="http://docs.gl" target="_self">OpenGL Documentation</a></li><li class=""><a href="https://www.khronos.org/opengl/wiki/" target="_self">OpenGL Wiki</a></li><li class=""><a href="https://github.com/celeborn2bealive/openglnoel" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Hello Triangle</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">La Philosophie OpenGL 3+</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-01-philogl-01-introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-01-philogl-02-rendu-direct">Le Rendu Direct</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-01-philogl-03-pipeline-programmable">Pipeline Programmable</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-01-philogl-04-deprecation-model">Deprecation Model</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-01-philogl-05-exemple">Exemple</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-01-philogl-06-conclusion">Conclusion</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Hello Triangle</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-02-hello-triangle-01-code-de-base">Le code de base</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/openglnoel/docs/bronze-02-hello-triangle-02-triangle-blanc">Dessiner un triangle blanc</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-02-hello-triangle-03-triangle-couleurs">Dessiner un triangle en couleurs</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-02-hello-triangle-04-vertex-structure">Utiliser une structure de vertex</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-02-hello-triangle-05-dessiner-quad">Dessiner un quad</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-02-hello-triangle-06-dessiner-disque">Dessiner un disque</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-02-hello-triangle-07-index-buffers">Utiliser les buffers d&#x27;index</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Dive into the GPU - les shaders</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-03-shaders-01-kesako">Shaders, kesako ?</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-03-shaders-02-exemple">Les shaders par l&#x27;exemple</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-03-shaders-03-compilation">Charger, compiler et utiliser</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-03-shaders-04-jouer">Jouer avec les shaders</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-03-shaders-05-mandelbrot">Mandelbrot</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-03-shaders-06-la-suite">Préparer la suite</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-03-shaders-07-triangle-tourne">Un triangle qui tourne</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-03-shaders-08-matrices">Envoyer des matrices</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-03-shaders-09-plusieurs-triangles">Plusieur triangles</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-03-shaders-10-textures">Textures</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">&quot;Dessiner&quot; en 3D - la théorie</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-04-3d-theorie-01-introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-04-3d-theorie-02-normal-matrix">La Normal Matrix</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-04-3d-theorie-03-3d-vertex-shader">Un exemple de Vertex Shader pour la 3D</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-04-3d-theorie-04-glm">La bibliothèque glm</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">&quot;Dessiner&quot; en 3D - la pratique</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-05-3d-pratique-01-introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-05-3d-pratique-02-classe-sphere-cone">Les classes Sphere et Cone</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-05-3d-pratique-03-dessiner-sphere">Dessiner une sphere</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-05-3d-pratique-04-dessiner-lune">Dessiner une lune</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-05-3d-pratique-05-dessiner-terre">Dessiner la terre</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-05-3d-pratique-06-multi-texturing">Multi-texturing</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-05-3d-pratique-07-plusieurs-shaders">Utiliser plusieurs shaders</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Gestion de la caméra</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-06-camera-01-introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-06-camera-02-trackball-camera">Trackball Camera</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-06-camera-03-freefly-camera">Freefly Camera</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Put the lights on !</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-07-lighting-01-introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-07-lighting-02-directional-light">Directional Light</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/bronze-07-lighting-03-point-light">Point Light</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Dessiner un triangle blanc</h1></header><article><div><span><p>Tout d'abord un peu de pratique. Afin de se mettre dans le bain, vous allez dessiner un triangle blanc en 2D. Cela vous permettra de voir différents concepts OpenGL3 lié à la gestion de données: les Vertex Buffer Objects (VBOs) et les Vertex Array Objects (VAOs). Je vous guiderais étape par étape tout en vous fournissant des liens vers la documentation pour chaque fonction utilisée. La lecture de cette dernière n'est pas optionnelle (même si c'est un peu chiant).</p>
+<blockquote>
+<p>Pour cet exercice, évitez de copier-coller le code de cette page: recopiez le manuellement. Ca peut paraitre un peu idiot, mais cela permet de mémoriser plus facilement les fonctions à utiliser et mieux intégrer l'enchainement des opérations.</p>
+</blockquote>
+<p><span class="badge todo"></span>
+Dupliquez le répertoire <strong>TP_template</strong> du dossier source et renommez le <strong>TP1</strong>. Dans <strong>TP1</strong>, dupliquez le fichier <strong>SDLtemplate.cpp</strong> et renommez le <strong>exo1_triangle_blanc.cpp</strong>. Codez dans ce nouveau fichier. Au cours de l'exercice, pensez à compiler régulièrement pour vérifier les erreurs de syntaxe au fur à mesure.</p>
+<h2><a class="anchor" aria-hidden="true" id="le-vbo"></a><a href="#le-vbo" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Le VBO</h2>
+<p>Un <strong>Vertex Buffer Object</strong> (VBO) est un tableau (buffer) stocké sur GPU (la carte graphique) destiné a contenir des sommets de triangle (sommmet = Vertex en anglais). En OpenGL on dessine tout avec des triangles (ou éventuellement des points et lignes, mais pas plus !). Un Vertex est décrit par des <strong>attributs</strong> de sommet qui peuvent être par exemple sa position, sa normale, ses coordonnées de texture, sa couleur, etc. En pratique un attribut est juste un ensemble de nombres flottants. Une position 2D est décrite par deux flottants, une position 3D par trois flottants, une couleur par trois flottant également (rouge, vert, bleu), etc.</p>
+<blockquote>
+<p>Les instructions qui suivent sont à coder dans la partie <strong>Initialisation</strong> du template, à la place du premier gros bloc de commentaire.</p>
+</blockquote>
+<h3><a class="anchor" aria-hidden="true" id="creation-du-vbo"></a><a href="#creation-du-vbo" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Création du VBO</h3>
+<p>Tout d'abord il faut créer le VBO en utilisant la fonction <strong>glGenBuffers</strong>. Chaque VBO sera identifié par un entier strictement superieur à 0 qui nous sera renvoyé par OpenGL. La fonction a pour prototype:</p>
+<pre><code class="hljs css language-cpp">glGenBuffers(GLsizei n, GLuint* buffers);
+</code></pre>
+<p>Paramètres:</p>
+<ul>
+<li><strong>GLsizei n</strong>: le nombre de VBOs à créer.</li>
+<li><em><em>GLuint</em> buffers</em>*: un pointeur vers un tableau d'entiers. OpenGL le remplit avec les identifiants des VBOs créés. Si on créé un seul VBO (cas n = 1), on peut juste passer l'addresse d'une variable.</li>
+</ul>
+<p>Exemples d'utilisation:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-comment">// Création d'un seul VBO:</span>
+GLuint vbo;
+glGenBuffers(<span class="hljs-number">1</span>, &amp;vbo);
+<span class="hljs-comment">// A partir de ce point, la variable vbo contient l'identifiant d'un VBO</span>
+</code></pre>
+<pre><code class="hljs css language-cpp"><span class="hljs-comment">// Création de plusieurs VBO</span>
+GLuint vbos[<span class="hljs-number">16</span>];
+glGenBuffers(<span class="hljs-number">16</span>, vbos);
+<span class="hljs-comment">// A partir de ce point, le tableau vbos contient 16 identifiants de VBO</span>
+</code></pre>
+<p><span class="badge todo"></span>
+Créez une variable &quot;vbo&quot; de type GLuint et utilisez la fonction présentée ci dessus pour la remplir avec l'identifiant d'un VBO créé par OpenGL.</p>
+<p><span class="badge doc"></span><a href="http://docs.gl/gl3/glGenBuffers">glGenBuffers</a></p>
+<h3><a class="anchor" aria-hidden="true" id="binding-du-vbo"></a><a href="#binding-du-vbo" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Binding du VBO</h3>
+<p>OpenGL est basé sur le concept un peu particulier de <strong>binding</strong>. Pour modifier le VBO créé (le remplir avec des données) il faut le <strong>binder sur une cible</strong>. On applique ensuite les opérations de modification en spécifiant la cible sur laquelle est bindé le VBO.</p>
+<p>Il existe plusieurs cibles de binding pour les buffers OpenGL, identifiés par des constantes (GL_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER, GL_UNIFORM_BUFFER, etc.). Chaque cible est destinée à un usage particulier, et on utilise la cible <strong>GL_ARRAY_BUFFER</strong> pour les VBOs.</p>
+<p>Le binding peut être apparenté à un mécanisme de branchement: on branche un buffer sur une cible, ce qui nous permet de le modifier.</p>
+<p>Pour binder un buffer, on utilise la fonction:</p>
+<pre><code class="hljs css language-cpp">glBindBuffer(GLenum target, GLuint buffer)
+</code></pre>
+<p>Paramètres:</p>
+<ul>
+<li>GLenum target: le nom de la cible, sous la forme d'une constante OpenGL</li>
+<li>GLuint buffer: le buffer à binder.</li>
+</ul>
+<p>Exemple d'utilisation:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-comment">// Binding d'un VBO sur la cible GL_ARRAY_BUFFER:</span>
+glBindBuffer(GL_ARRAY_BUFFER, vbo);
+<span class="hljs-comment">// On peut à présent modifier le VBO en passant par la cible GL_ARRAY_BUFFER</span>
+</code></pre>
+<p><span class="badge todo"></span> Bindez le buffer &quot;vbo&quot; sur la cible GL_ARRAY_BUFFER.</p>
+<p><span class="badge doc"></span> <a href="http://docs.gl/gl3/glBindBuffer">glBindBuffer</a></p>
+<h3><a class="anchor" aria-hidden="true" id="remplir-le-vbo"></a><a href="#remplir-le-vbo" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Remplir le VBO</h3>
+<p>Maintenant que le VBO est bindé, on peut le modifier. Il faut envoyer les données de nos sommets à la carte graphique pour qu'elles soient placées dans le VBO.</p>
+<p>On veut dessiner un triangle au centre de l'écran. Par défaut l'écran représente l'espace 2D allant de -1 à 1 sur chacun des axes. On veut donc stocker les points \(P1=(−0.5,−0.5)\), \(P2=(0.5,−0.5)\) et \(P3=(0.0,0.5)\).</p>
+<p><img src="/openglnoel/img/triangle_blanc.svg" alt="Triangle coords"></p>
+<p>Il faut commencer par creer un tableau de GLfloat contenant toutes ces coordonnées à la suite:</p>
+<pre><code class="hljs css language-cpp">GLfloat vertices[] = { <span class="hljs-number">-0.5f</span>, <span class="hljs-number">-0.5f</span>, <span class="hljs-number">0.5f</span>, <span class="hljs-number">-0.5f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">0.5f</span> };
+</code></pre>
+<p>L'envoi des données se fait ensuite avec la fonction:</p>
+<pre><code class="hljs css language-cpp">glBufferData(GLenum target, GLsizeiptr size, <span class="hljs-keyword">const</span> GLvoid* data, GLenum usage)
+</code></pre>
+<p>Paramètres:</p>
+<ul>
+<li>GLenum target: la cible sur laquelle le buffer est bindé (GL_ARRAY_BUFFER dans notre cas)</li>
+<li>GLsizeiptr size: la taille du tableau en octets. C'est le nombre de flottants multiplié par la taille d'un float (sizeof(float)).</li>
+<li>const GLvoid* data: le pointeur vers les données, notre tableau de flottants.</li>
+<li>GLenum usage: un flag indiquant à OpenGL quel usage on va faire du buffer. On utilise GL_STATIC_DRAW pour un buffer dont les données ne changeront jamais.</li>
+</ul>
+<p>Exemple d'utilisation:</p>
+<pre><code class="hljs css language-cpp">GLfloat vertices[] = { <span class="hljs-number">-0.5f</span>, <span class="hljs-number">-0.5f</span>, <span class="hljs-number">0.5f</span>, <span class="hljs-number">-0.5f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">0.5f</span> };
+glBufferData(GL_ARRAY_BUFFER, <span class="hljs-number">6</span> * <span class="hljs-keyword">sizeof</span>(GLfloat), vertices, GL_STATIC_DRAW);
+</code></pre>
+<p><span class="badge todo"></span> A l'aide de la fonction présentée ci dessus, remplir le VBO avec les données du tableau &quot;vertices&quot;.</p>
+<p><span class="badge doc"></span> <a href="http://docs.gl/gl3/glBufferData">glBufferData</a></p>
+<h3><a class="anchor" aria-hidden="true" id="debinder-le-vbo"></a><a href="#debinder-le-vbo" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Débinder le VBO</h3>
+<p>Après avoir modifié le VBO, on le débind de la cible pour éviter de le remodifier par erreur. Pour cela on utilise à nouveau la fonction <strong>glBindBuffer</strong> en lui passant la même cible, et 0 en second paramètre (0 représente le VBO &quot;null&quot;).</p>
+<p><span class="badge todo"></span> Débindez le VBO de la cible GL_ARRAY_BUFFER.</p>
+<p><span class="badge doc"></span> <a href="http://docs.gl/gl3/glBindBuffer">glBindBuffer</a></p>
+<h2><a class="anchor" aria-hidden="true" id="le-vao"></a><a href="#le-vao" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Le VAO</h2>
+<p>Les données de vertex sont à présent stockés sur le GPU. On pourrait penser qu'on peut à présent dessiner, ou pas ! Votre GPU est très fort, mais il ne sait pas interpreter tout seul les données contenu dans le tableau. Dans notre cas on l'a remplit avec 3 sommets de deux composantes chacun (donc 6 nombres flottants). Mais si on avait voulu faire de la 3D, chaque sommet aurait 3 composantes (soit 9 flottants). Si en plus on voulait associer une couleur à chaque sommet, on aurait 3 flottant de plus par sommet. Tout ça il faut l'indiquer à OpenGL. Il faut lui expliquer comment interpreter les données. C'est ce qu'on appelle la <strong>spécification de sommet (vertex specification)</strong>.</p>
+<p>La spécification de sommet se fait à l'aide un <strong>Vertex Array Object (VAO)</strong>. Un VAO décrit pour chaque attribut de sommet (position, couleur, normale, etc.) la manière dont ils sont rangés dans un ou plusieurs VBOs.</p>
+<h3><a class="anchor" aria-hidden="true" id="creation-du-vao"></a><a href="#creation-du-vao" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Création du VAO</h3>
+<p>La création d'un VAO est similaire à celle d'un VBO. La fonction a utiliser est:</p>
+<p>glGenVertexArrays(GLsizei n, GLuint *arrays)
+Les paramètres sont similaires à glGenBuffers, je ne les décris donc pas.</p>
+<p><span class="badge todo"></span> Crééz une variable &quot;vao&quot; de tye GLuint et utilisez la fonction présentée ci dessus pour la remplir avec l'identifiant d'un VAO créé par OpenGL.</p>
+<p><span class="badge doc"></span> <a href="http://docs.gl/gl3/glGenVertexArrays">glGenVertexArrays</a></p>
+<h3><a class="anchor" aria-hidden="true" id="binding-du-vao"></a><a href="#binding-du-vao" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Binding du VAO</h3>
+<p>Impression de déjà vu ? normal, en OpenGL tout se bind ! les VBOs, les VAOs, les textures, etc. Il faut donc binder le VAO en utilisant la fonction:</p>
+<p>glBindVertexArray(GLuint array)
+Comme vous pouvez le constater, cette fonction ne prend pas de cible en paramètre (contrairement à glBindBuffer). Cela est du au fait qu'il n'y a qu'une seule cible pour les VAO. Celle ci n'a pas de nom, on ne spécifie donc rien. Il ne peut donc y avoir qu'un seul VAO bindé à la fois.</p>
+<p><span class="badge todo"></span> Bindez le VAO créé précédement.</p>
+<p><span class="badge doc"></span> <a href="http://docs.gl/gl3/glBindVertexArray">glBindVertexArray</a></p>
+<h3><a class="anchor" aria-hidden="true" id="activation-des-attributs-de-vertex"></a><a href="#activation-des-attributs-de-vertex" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Activation des attributs de vertex</h3>
+<p>Chaque attribut (position, couleur, etc. [je le répète à chaque fois pour que la signification de &quot;attribut&quot; rentre bien dans votre crane.]) est identifié par un entier. Par défaut, l'attribut position est identifié par 0. Cela peut changer lorsque l'on commence à utiliser des shaders (TP suivant).</p>
+<p>Afin d'indiquer à OpenGL qu'on utilise un attribut donné, on utilise la fonction</p>
+<p>glEnableVertexAttribArray(GLuint index)</p>
+<p>Paramètres:</p>
+<ul>
+<li>GLuint index: l'index de l'attribut à activer</li>
+</ul>
+<blockquote>
+<p><span class="badge warning"></span> L'appel à cette fonction modifie le VAO actuellement bindé, elle enregistre l'information &quot;attribut [index] activé&quot; dans le VAO. Cela signifie que si vous n'avez pas bindé de VAO, une erreur sera générée par OpenGL. Si vous avez bindé un mauvais VAO (par la suite on utilisera plusieurs VAOs), alors vous vous exposez à un bug très difficile à trouver et à corriger.</p>
+</blockquote>
+<p><span class="badge todo"></span> En utilisant la fonction, activer l'attribut position, c'est à dire l'index 0.</p>
+<p><span class="badge doc"></span> <a href="http://docs.gl/gl3/glEnableVertexAttribArray">glEnableVertexAttribArray</a></p>
+<p>Afin d'avoir un code plus clair, on introduit souvent des constantes pour identifier les attributs de vertex. Au lieu de simplement faire:</p>
+<pre><code class="hljs css language-cpp">glEnableVertexAttribArray(<span class="hljs-number">0</span>)
+</code></pre>
+<p>On fera plutot:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-keyword">const</span> GLuint VERTEX_ATTR_POSITION = <span class="hljs-number">0</span>;
+glEnableVertexAttribArray(VERTEX_ATTR_POSITION)
+</code></pre>
+<p>De cette manière on comprend immédiatement que le 0 correspond à l'attribut de sommet identifiant la position.</p>
+<blockquote>
+<p>La notion d'attribut de sommet peut vous paraitre abstraite pour le moment car on utilise qu'un seul attribut (la position). Pas de panique, ça deviendra plus clair quand on introduira les autres attributs, tel que la couleur dans l'exercice suivant. Il est important de bien comprendre que l'index associé à un attribut de vertex n'est qu'un identifiant. Ce n'est en aucun cas un index de tableau ou quoi que ce soit de cette sorte. Par la suite on choisira nous même l'index associé à chaque attribut.</p>
+</blockquote>
+<h3><a class="anchor" aria-hidden="true" id="specification-des-attributs-de-vertex"></a><a href="#specification-des-attributs-de-vertex" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Spécification des attributs de vertex</h3>
+<p>On doit ensuite indiquer à OpenGL où il va trouver les sommets à dessiner, et comment lire les informations associé à chaque sommet. Pour cela on va utiliser la fonction glVertexAttribPointer. Celle ci fait beaucoup de choses à la fois et est assez compliqué à maitriser correctement.</p>
+<p>Le prototype de la fonction est:</p>
+<pre><code class="hljs css language-cpp">glVertexAttribPointer(GLuint index, 
+    GLint size, GLenum type, GLboolean normalized, 
+    GLsizei stride, <span class="hljs-keyword">const</span> GLvoid* pointer);
+</code></pre>
+<p>Paramètres:</p>
+<ul>
+<li>GLuint index: l'index de l'attribut à spécifier</li>
+<li>GLint size: le nombre de composantes de l'attribut. Dans notre cas c'est 2 car chaque position est décrite par deux nombres flottants.</li>
+<li>GLenum type: une constante OpenGL indiquant le type de chaque composante. Dans notre cas on passe GL_FLOAT pour indiquer que chaque composante est un nombre flottant.</li>
+<li>GLboolean normalized: pas besoin de s'occuper de ce paramètre pour le moment, on passe GL_FALSE</li>
+<li>GLsizei stride: indique à OpenGL le nombre d'octets séparant l'attribut pour deux sommets consécutifs. Ca ne veut rien dire ? oui je sais. Imaginez vous être OpenGL. Vous venez de lire une position dans le tableau. Vous avez besoin de savoir ou est situé la position suivante. Dans notre cas elle est juste après, il faut donc avancer de deux flottants, soit 2 * sizeof(GLfloat) octets. Nous verrons dans l'exercice suivant que la position suivante peut être situé plus loin dans le tableau lorsqu'on rajoute des attributs de sommet.</li>
+<li>const GLvoid* pointer: un pointeur, ou pas. Ce paramètre est un piège. Il faut en fait passer l'offset (décalage) en octets de la premiere instance de l'attribut dans le tableau. OK, ça ne veut encore rien dire. Dans notre cas, la première position est située au début du tableau, l'offset est donc 0.
+Voici un schéma pour vous aider à comprendre les paramètres de la fonction:</li>
+</ul>
+<p><img src="/openglnoel/img/vao_triangle_blanc.svg" alt="VAO triangle blanc"></p>
+<p>Tout ça c'est bien joli, mais il faut également indiquer à OpenGL quel VBO il doit utiliser. Dans notre cas on a qu'un seul VBO donc ça parait bizarre, mais on pourrait très bien en avoir 42 contenant des millions de triangles. Il faut qu'OpenGL puisse stocker dans le VAO une référence vers le VBO contenant les données. Le VBO contient les données et le VAO décrit les données.</p>
+<p>Pour cela, il suffit de binder le VBO sur la cible GL_ARRAY_BUFFER juste avant d'appeler la fonction glVertexAttribPointer. La fonction s'occupe d'aller lire l'identifiant du VBO bindé sur la cible et de le stocker dans le VAO.</p>
+<p><span class="badge todo"></span> Bindez à nouveau le VBO sur la cible GL_ARRAY_BUFFER.</p>
+<p><span class="badge todo"></span> Utilisez la fonction glVertexAttribPointer pour spécifier le format de l'attribut de sommet position.</p>
+<p><span class="badge todo"></span> Débindez le VBO de la cible GL_ARRAY_BUFFER.</p>
+<p><span class="badge doc"></span> <a href="http://docs.gl/gl3/glVertexAttribPointer">glVertexAttribPointer</a></p>
+<h3><a class="anchor" aria-hidden="true" id="debinder-le-vao"></a><a href="#debinder-le-vao" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Débinder le VAO</h3>
+<p>Il reste à débinder le VAO afin de ne pas le modifier par erreur.</p>
+<p><span class="badge todo"></span> Débindez le VAO en utilisant la fonction glBindVertexArray. Pour cela, passez lui 0 en paramètre.</p>
+<h3><a class="anchor" aria-hidden="true" id="le-dessin-du-triangle"></a><a href="#le-dessin-du-triangle" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Le dessin du triangle</h3>
+<p>L'initialisation est terminée, il est temps de passer au dessin.</p>
+<blockquote>
+<p>Les instructions qui suivent sont à coder dans la partie <strong>Rendu</strong> du template, à la place du deuxième gros bloc de commentaire.</p>
+</blockquote>
+<h3><a class="anchor" aria-hidden="true" id="nettoyer-la-fenetre"></a><a href="#nettoyer-la-fenetre" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Nettoyer la fenêtre</h3>
+<p>Le code de dessin est répété à chaque tour de la boucle d'application. Il faut donc d'abord nettoyer la fenêtre afin de ne pas avoir de résidu du tour précédent. Pour cela on utilise la fonction</p>
+<pre><code class="hljs css language-cpp">glClear(GLbitfield mask)
+</code></pre>
+<p>Paramètres:</p>
+<ul>
+<li>GLbitfield mask: une combinaison de flags indiquant à OpenGL ce qu'il doit nettoyer dans la fenêtre. Pour l'instant on utilise GL_COLOR_BUFFER_BIT uniquement.</li>
+</ul>
+<p><span class="badge todo"></span> Dans la boucle principale, nettoyez la fenêtre en utilisant glClear.</p>
+<p><span class="badge doc"></span> <a href="http://docs.gl/gl3/glClear">glClear</a></p>
+<h3><a class="anchor" aria-hidden="true" id="dessiner-en-utilisant-le-vao"></a><a href="#dessiner-en-utilisant-le-vao" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dessiner en utilisant le VAO</h3>
+<p>Le dessin se fait en utilisant un draw call, c'est à dire une fonction OpenGL qui lance le pipeline sur un ensemble de sommets spécifiés par un VAO. Il faut donc commencer par re-binder le VAO.</p>
+<p><span class="badge todo"></span> Bindez à nouveau le VAO en utilisant glBindVertexArray.</p>
+<p>On utilise ensuite la fonction</p>
+<pre><code class="hljs css language-cpp">glDrawArrays(GLenum mode, GLint first, GLsizei count);
+</code></pre>
+<p>Paramètres:</p>
+<ul>
+<li>GLenum mode: le type de primitive à dessiner, dans notre cas GL_TRIANGLES</li>
+<li>GLint first: l'indice du premier sommet dans le VBO. On passe 0.</li>
+<li>GLsizei count: le nombre de sommets à dessiner, on passe 3 car on veut dessiner un triangle qui est composé de 3 sommets. Si on voulait dessiner plus de triangles il faudrait changer ce paramètre.</li>
+</ul>
+<p><span class="badge todo"></span> Utilisez cette fonction pour dessiner le triangle.</p>
+<p><span class="badge doc"></span> <a href="http://docs.gl/gl3/glDrawArrays">glDrawArrays</a></p>
+<p><span class="badge todo"></span> A nouveau, débindez le VAO pour ne pas risquer de le modifier par erreur dans le reste du code.</p>
+<h3><a class="anchor" aria-hidden="true" id="la-liberation-des-ressources"></a><a href="#la-liberation-des-ressources" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>La libération des ressources</h3>
+<p>On y est presque ! il reste à libérer les ressources allouées sur GPU: le VBO et le VAO. Pour cela on utilise les fonctions glDeleteBuffers et glDeleteVertexArrays dont les paramètres sont similaires à ceux des fonctions de création (voir la doc).</p>
+<p><span class="badge todo"></span> Après la boucle de l'application (juste avant le return du main donc), utilisez les fonctions de libérations de ressources pour désallouer le VBO et le VAO.</p>
+<p><span class="badge doc"></span> <a href="http://docs.gl/gl3/glDeleteBuffers">glDeleteBuffers</a>,<a href="http://docs.gl/gl3/glDeleteVertexArrays">glDeleteVertexArrays</a></p>
+<h3><a class="anchor" aria-hidden="true" id="conclusion"></a><a href="#conclusion" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Conclusion</h3>
+<p>Exercice terminé ! c'était long, mais necessaire car si vous avez bien compris chacune des étapes alors vous avez fait le plus dur en OpenGL3 coté CPU (c'est à dire du coté du code C++). Vous pouvez essayer votre programme et un triangle blanc devrait s'afficher.</p>
+<p><img src="/openglnoel/img/white_triangle.png" alt="White triangle screenshot"></p>
+<p>Un petit récapitulatif des étapes effectuées pour dessiner le triangle:</p>
+<ul>
+<li>Initialisation:
+<ul>
+<li>Création du VBO</li>
+<li>Binding du VBO</li>
+<li>Envoie des données de vertex</li>
+<li>Débinding du VBO</li>
+<li>Création du VAO</li>
+<li>Binding du VAO</li>
+<li>Activation de l'attribut de sommet 0 (la position)</li>
+<li>Spécification de l'attribut de sommet 0</li>
+<li>Débinding du VAO</li>
+</ul></li>
+<li>Dessin:
+<ul>
+<li>Binding du VAO</li>
+<li>Appel à la fonction de dessin</li>
+<li>Débinding du VAO</li>
+</ul></li>
+<li>Libération des resources</li>
+</ul>
+<p>Ca peut paraitre long pour dessiner juste un triangle, mais il est important de constater que la taille de ce code ne dépend pas du nombre de triangles à dessiner. Si on avait 1000000 de triangles, on aurait juste un tableau plus grand (certainement chargé depuis un fichier) et on aurait quelques constantes à modifier dans le code.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/bronze-02-hello-triangle-01-code-de-base"><span class="arrow-prev">← </span><span>Le code de base</span></a><a class="docs-next button" href="/openglnoel/docs/bronze-02-hello-triangle-03-triangle-couleurs"><span>Dessiner un triangle en couleurs</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#le-vbo">Le VBO</a><ul class="toc-headings"><li><a href="#creation-du-vbo">Création du VBO</a></li><li><a href="#binding-du-vbo">Binding du VBO</a></li><li><a href="#remplir-le-vbo">Remplir le VBO</a></li><li><a href="#debinder-le-vbo">Débinder le VBO</a></li></ul></li><li><a href="#le-vao">Le VAO</a><ul class="toc-headings"><li><a href="#creation-du-vao">Création du VAO</a></li><li><a href="#binding-du-vao">Binding du VAO</a></li><li><a href="#activation-des-attributs-de-vertex">Activation des attributs de vertex</a></li><li><a href="#specification-des-attributs-de-vertex">Spécification des attributs de vertex</a></li><li><a href="#debinder-le-vao">Débinder le VAO</a></li><li><a href="#le-dessin-du-triangle">Le dessin du triangle</a></li><li><a href="#nettoyer-la-fenetre">Nettoyer la fenêtre</a></li><li><a href="#dessiner-en-utilisant-le-vao">Dessiner en utilisant le VAO</a></li><li><a href="#la-liberation-des-ressources">La libération des ressources</a></li><li><a href="#conclusion">Conclusion</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2019 Laurent NOEL</section></footer></div></body></html>
