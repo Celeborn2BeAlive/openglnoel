@@ -1,9 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Jouer avec les shaders · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;blockquote&gt;
-&lt;p&gt;En construction&lt;/p&gt;
-&lt;/blockquote&gt;
-"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Jouer avec les shaders · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/index.html"/><meta property="og:description" content="&lt;blockquote&gt;
-&lt;p&gt;En construction&lt;/p&gt;
-&lt;/blockquote&gt;
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Jouer avec les shaders · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;Après toutes ces explications un peu barbante (mais necessaires :p) sur les shaders, on va pouvoir commencer à jouer un peu. Vous allez pour l&#x27;instant travailler sur les deux shaders d&#x27;exemple qui ont l&#x27;avantage d&#x27;être simple.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Jouer avec les shaders · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/index.html"/><meta property="og:description" content="&lt;p&gt;Après toutes ces explications un peu barbante (mais necessaires :p) sur les shaders, on va pouvoir commencer à jouer un peu. Vous allez pour l&#x27;instant travailler sur les deux shaders d&#x27;exemple qui ont l&#x27;avantage d&#x27;être simple.&lt;/p&gt;
 "/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
           addBackToTop(
@@ -37,7 +33,113 @@
                 };
               }
             });
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Jouer avec les shaders</h1></header><article><div><span><blockquote>
-<p>En construction</p>
-</blockquote>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/bronze-03-shaders-03-compilation"><span class="arrow-prev">← </span><span>Charger, compiler et utiliser</span></a><a class="docs-next button" href="/openglnoel/docs/bronze-03-shaders-05-mandelbrot"><span>Mandelbrot</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2019 Laurent NOEL</section></footer></div></body></html>
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Jouer avec les shaders</h1></header><article><div><span><p>Après toutes ces explications un peu barbante (mais necessaires :p) sur les shaders, on va pouvoir commencer à jouer un peu. Vous allez pour l'instant travailler sur les deux shaders d'exemple qui ont l'avantage d'être simple.</p>
+<h2><a class="anchor" aria-hidden="true" id="le-triangle-generique"></a><a href="#le-triangle-generique" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Le triangle générique</h2>
+<p>Une fois n'est pas coutume, faites une copie du code du triangle en couleur. Nous allons faire en sorte qu'il puisse afficher un triangle en utilisant n'importe quel shaders passés en paramètre du programme. De cette manière vous n'aurez pas à dupliquer à nouveau du code pour les quelques exercices suivants.</p>
+<p>Le paramètre <strong>argv</strong> de la fonction main (du code C++) est sensé contenir les arguments passés à l'executable. <strong>argv[0]</strong> contient le chemin vers l'executable. <strong>argv[i]</strong> pour i supérieur ou égal à 1 contient le i-ème argument passé au programme. Nous allons passer en premier argument le nom du vertex shader et en deuxieme argument le nom du fragment shader.</p>
+<p><span class="badge todo"></span> Modifiez le code C++ afin d'utiliser <strong>argv[1]</strong> et <strong>argv[2]</strong> pour charger les shaders. Compilez et essayez en passant à votre executable les deux shaders de l'exercice précédent:</p>
+<pre><code class="hljs css language-bash">TP2/TP2_exo2_triangleGenerique color2D.vs.glsl color2D.fs.glsl
+</code></pre>
+<p>Si vous avez bien codé, le triangle en couleur devrait à nouveau s'afficher.</p>
+<h2><a class="anchor" aria-hidden="true" id="les-types-de-glsl"></a><a href="#les-types-de-glsl" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Les types de GLSL</h2>
+<p>Pour réaliser les exercices suivants vous aurez besoin de manipuler des variables GLSL, en particulier des vecteurs et des matrices. Gardez la page suivante dans un onglet afin d'y piocher les informations dont vous aurez besoin: <a href="https://www.khronos.org/opengl/wiki/Data_Type_(GLSL)">Data Type (GLSL)</a></p>
+<h2><a class="anchor" aria-hidden="true" id="quelques-conventions-de-code-pour-les-shaders"></a><a href="#quelques-conventions-de-code-pour-les-shaders" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Quelques conventions de code pour les shaders</h2>
+<p>Afin d'avoir un code GLSL plus clair, appliquez les conventions suivantes:</p>
+<ul>
+<li>Variables d'entrée du Vertex Shader: On les préfixe par un &quot;a&quot; (exemples: aVertexPosition, aVertexColor). Ce &quot;a&quot; signifie &quot;attribute&quot;, pour signifier que la variable représente un attribut de sommet.</li>
+<li>Variables de sortie du Vertex Shader (et d'entrée du Fragment Shader): On les préfixe par un &quot;v&quot; (exemple: vFragColor). Ce &quot;v&quot; signifie &quot;vertex&quot;, pour signifier que la variable sort du Vertex Shader.</li>
+<li>Variables de sortie du Fragment Shader: On les préfixe par un &quot;f&quot; (exemple fFragColor). Ce &quot;f&quot; signifie &quot;fragment&quot;, pour signifier que la variable sort du Fragment Shader.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="le-triangle-des-annees-30"></a><a href="#le-triangle-des-annees-30" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Le triangle des années 30</h2>
+<p>L'objectif de cet exercice est d'afficher le triangle en noir et blanc simplement en modifiant le fragment shader. Supposons que la couleur d'entrée est \((R,G,B)\), nous allons simplement fournir comme couleur de sortie le triplet \((M,M,M)\) avec \(M=\frac{R+G+B}{3}\).</p>
+<p><span class="badge todo"></span> Commencez par faire une recopie du fragment shader; renommez le grey2d.fs.glsl.</p>
+<p><span class="badge todo"></span> Modifiez le pour que le triangle soit affiché en noir et blanc comme indiqué dans l'énoncé (il suffit juste de changer une ligne). Testez le shader en utilisant votre executable du triangle générique (utilisez le même vertex shader qu'avant, ce dernier restant le même).</p>
+<h2><a class="anchor" aria-hidden="true" id="transformation"></a><a href="#transformation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Transformation !</h2>
+<p>Il est possible de transformer votre triangle simplement en modifiant le vertex shader. Il suffit pour cela de modifier la ligne:</p>
+<pre><code class="hljs css language-cpp">gl_Position = vec4(aVertexPosition, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+</code></pre>
+<p>En appliquant une opération sur <strong>aVertexPosition</strong></p>
+<p><span class="badge todo"></span> Translatez le triangle selon le vecteur (0.5,0.5) (utilisez pour cela simplement une addition de vecteurs)</p>
+<p><span class="badge todo"></span> Doublez la taille du triangle (utilisez pour cela une multiplication par un scalaire)</p>
+<p><span class="badge todo"></span> Doublez la taille du triangle sur l'axe x et réduisez la de moitié sur l'axe y (utilisez une multiplication de vecteurs)</p>
+<p>Une solution plus souvent utilisée pour transformer les vertex est d'utiliser des matrices. Afin de pouvoir appliquer les transformations 2D les plus utilisées (translation, rotation, scale) il est necessaire d'utiliser des matrices 3x3 ( la translation n'étant pas réprésentable par une matrice 2x2).</p>
+<p>Soit \(P=(x,y)\) un point et \(M\) une matrice de transformation 3x3. Pour appliquer la transformation \(M\) a \(P\) on fait simplement une multiplication matricielle: \(P′=M×(x,y,1)\). On rajoute 1 à la fin du vecteur si on transforme un point. Dans le cas ou on transforme un vecteur on ajoute 0 (ce qui a pour effet de ne pas appliquer la partie translation, un vecteur n'ayant pas de position). En GLSL le vecteur que l'on récupère est de dimension 3; il faut le repasser en dimension 2 en gardant uniquement x et y. On pourra par exemple écrire:</p>
+<pre><code class="hljs css language-cpp">vec2 transformed = (M * vec3(aVertexPosition, <span class="hljs-number">1</span>)).xy;
+gl_Position = vec4(transformed, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+</code></pre>
+<p>On peut même se passer de la variable temporaire et directement ecrire:</p>
+<pre><code class="hljs css language-cpp">gl_Position = vec4((M * vec3(aVertexPosition, <span class="hljs-number">1</span>)).xy, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+</code></pre>
+<p>Les matrices en GLSL sont dites column-major: on les stocke colonne par colonne. Par exemple si on ecrit :</p>
+<pre><code class="hljs css language-cpp">mat3 M = mat3(vec3(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>), vec3(<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>), vec(<span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>));
+</code></pre>
+<p>Cela représente la matrice \(M = \begin{pmatrix}
+1&amp;4&amp;7 \\
+2&amp;5&amp;8 \\
+3&amp;6&amp;9
+\end{pmatrix}\)</p>
+<p>De même l'accès aux valeurs d'une matrices par indice de tableau se fait en spécifiant la colonne en premier: la valeur 6 dans la matrice est accessible en écrivant en GLSL: M[1][2] (colonne d'indice 1, ligne d'indice 2). Il faut faire attention car c'est la convention inverse en mathématiques.</p>
+<p>Voici la forme générale d'une matrice de translation: \(
+T_{tx,ty} = \begin{pmatrix}
+1&amp;0&amp;tx \\
+0&amp;1&amp;ty \\
+0&amp;0&amp;1
+\end{pmatrix}
+\)</p>
+<p>Voici la forme générale d'une matrice de scale (non uniforme): \(
+S_{sx,sy} = \begin{pmatrix}
+sx&amp;0&amp;0 \\
+0&amp;sy&amp;0 \\
+0&amp;0&amp;1
+\end{pmatrix}
+\)</p>
+<p><span class="badge todo"></span> Ecrivez deux fonctions dans le vertex shader: <strong>mat3 translate(float tx, float ty)</strong> et <strong>mat3 scale(float sx, float sy)</strong> qui renvoient les matrices correspondantes.</p>
+<p><span class="badge todo"></span> Refaites les transformations précédentes sur votre triangle (la translation et les scales) en utilisant cette fois des matrices.</p>
+<p>Voici la forme générale d'une matrice de rotation d'angle α autour de l'origine: \(
+R_{\alpha} = \begin{pmatrix}
+cos(\alpha)&amp;-sin(\alpha)&amp;0 \\
+sin(\alpha)&amp;cos(\alpha)&amp;0 \\
+0&amp;0&amp;1
+\end{pmatrix}
+\)</p>
+<p><span class="badge todo"></span> Ecrivez la fonction mat3 rotate(float a) qui renvoit une matrice de rotation d'angle a (exprimé en degrés, faites la conversion avec la fonction radians de GLSL). GLSL vous permet d'utiliser les fonctions cos et sin (voir la doc pour une liste complète des fonctions GLSL).</p>
+<p><span class="badge todo"></span> Utilisez votre fonction pour appliquer une rotation de 45° à votre triangle. Le triangle doit apparaitre rotaté mais également déformé. Pouvez vous expliquer cette déformation ?</p>
+<h2><a class="anchor" aria-hidden="true" id="combiner-les-transformations"></a><a href="#combiner-les-transformations" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Combiner les transformations</h2>
+<p>L'avantage de représenter les transformations par des matrices est de pouvoir les combiner simplement en les multipliant.</p>
+<p>L'ordre des transformations a une grande importance: la multiplication matricielle n'est pas <strong>commutative</strong>.</p>
+<p>En pratique on combine toujours en multipliant à droite, c'est à dire en ajoutant les matrices à droite dans la liste de multiplication.</p>
+<p>Il est important d'avoir une idée à peu près claire de ce qu'on va obtenir après avoir appliqué une suite de transformation. Lorsqu'on ajoute les transformations à droite, la façon la plus adaptée de penser est le modèle &quot;local&quot;</p>
+<p>A chaque ajout de transformation la modification est faite sur <strong>le repère local</strong> de l'objet</p>
+<p>Pour mieux comprendre observez l'image suivante:</p>
+<p><img src="/openglnoel/img/transformations.svg" alt="Transformations"></p>
+<p>Lorsqu'on ajoute la rotation de 45°, le carré tourne sur lui même, et non pas autour de l'origine. La transformation est donc appliquée sur son repère local et non sur le repère global.</p>
+<p>De même quand on applique le scale, le carré se réduit sur lui même: c'est seulement le carré qui est scalé et non pas toute la scène.</p>
+<p><span class="badge todo"></span> En utilisant la multiplication matricielle, appliquez la suite de transformation du schéma sur votre triangle.</p>
+<p><span class="badge todo"></span> Modifiez l'ordre des transformations afin que la rotation s'applique autour de l'origine de la scène, tout en le gardant droit (à distance 0.5 de l'origine par exemple).</p>
+<p><span class="badge todo"></span> Pour les binômes, prenez une feuille. L'un des deux doit dessiner une position finale pour le triangle et l'autre doit coder la suite de transformations menant au résultat. Inversez ensuite les rôles. Si vous êtes seul, faites le pour vous même en essayant de ne pas imaginer les transformations en faisant le dessin.</p>
+<h2><a class="anchor" aria-hidden="true" id="transformer-le-triangle-en-particule"></a><a href="#transformer-le-triangle-en-particule" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Transformer le triangle en particule</h2>
+<p>Il est possible de dessiner une particule (ronde avec un halo) à partir du triangle simplement en travaillant sur les couleurs.</p>
+<p>L'idée est assez simple: chaque fragment se trouve à une certaine distance du centre du triangle. Si on atténue sa couleur en fonction de cette distance, on peut générer une forme circulaire et le halo.</p>
+<p>La formule d'atténuation a appliquer est la suivante: \(a=\alpha \times \exp(−\beta \times distance^2)\). Il suffira ensuite de multiplier la couleur finale par cette valeur. Vous devez faire varier les paramètre \(\alpha\) et \(\beta\) pour obtenir un résultat qui vous plait. Essayez de comprendre le rôle de chacun :)</p>
+<p>Malheuresement pour vous, il y a un problème: pour calculer la distance du fragment au centre du triangle il vous faut la position du fragment (dans l'espace local du triangle, c'est à dire une position non transformée).</p>
+<p>Cette position peut être obtenue en exploitant les variables d'entrée - sortie des shaders, un peu comme pour la couleur.</p>
+<p><span class="badge todo"></span> A vous de trouver comment obtenir la position du fragment :) Ensuite pour obtenir la distance vous pouvez utiliser la fonction... distance ! Modifiez le vertex et le fragment shader pour obtenir l'affichage d'une particule.</p>
+<p>Voici le type de résultat à obtenir (j'ai repris un vieux screenshot, on peut faire mieux en faisant varier les paramètres:</p>
+<p><img src="/openglnoel/img/particule.png" alt="Particule"></p>
+<p><span class="badge todo"></span> Combinez ensuite avec une transformation afin de voir si vous avez compris l'histoire d'espace local de coordonnées.</p>
+<h2><a class="anchor" aria-hidden="true" id="textures-procedurales"></a><a href="#textures-procedurales" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Textures procédurales</h2>
+<p>Le chargement et l'affichage de textures viendra plus tard. En attendant nous allons faire des textures procédurales pour notre triangle. Une <strong>texture procédurale</strong> est une texture calculée à la volée, avec des maths ! Vous pouvez voir le rendu sous forme de particule de l'exercice précédent comme une texture procédurale.</p>
+<p>Il est possible de générer des patterns en combinant des fonctions simples comme <strong>fract</strong>, <strong>abs</strong>, <strong>smoothstep</strong>, <strong>mod</strong>, <strong>floor</strong>, ... Renseignez vous sur chacune de ces fonctions.</p>
+<p>Voici quelques formules permettant de créer quelques patterns (\(P\) est la position du fragment dans l'espace local au triangle):</p>
+<ul>
+<li>length(fract(5.0 * P))</li>
+<li>length(abs(fract(5.0 * P) * 2.0 - 1.0))</li>
+<li>mod(floor(10.0 * P.x) + floor(10.0 * P.y), 2.0)</li>
+<li>smoothstep(0.3, 0.32, length(fract(5.0 * P) - 0.5))</li>
+<li>smoothstep(0.4, 0.5, max(abs(fract(8.0 * P.x - 0.5 * mod(floor(8.0 * P.y), 2.0)) - 0.5), abs(fract(8.0 * P.y) - 0.5)))</li>
+</ul>
+<p>Chaque formule produit un coefficient que vous pouvez appliquer à la couleur du fragment (multiplication)</p>
+<p><span class="badge todo"></span> Essayez chacune des formules</p>
+<p><span class="badge todo"></span> Essayez ensuite de créer vos propre formules en combinant des appels aux fonctions de base de GLSL.</p>
+<p>Et pour finir, <a href="https://www.youtube.com/watch?v=Z_Vk3Yn-wCk">une petite vidéo</a> pour ceux qui sont interessés par le rendu procédural (3 min d'interview de Ignigo Quilez qui nous parle du rendu dans le film Brave de Pixar).</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/bronze-03-shaders-03-compilation"><span class="arrow-prev">← </span><span>Charger, compiler et utiliser</span></a><a class="docs-next button" href="/openglnoel/docs/bronze-03-shaders-05-mandelbrot"><span>Mandelbrot</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#le-triangle-generique">Le triangle générique</a></li><li><a href="#les-types-de-glsl">Les types de GLSL</a></li><li><a href="#quelques-conventions-de-code-pour-les-shaders">Quelques conventions de code pour les shaders</a></li><li><a href="#le-triangle-des-annees-30">Le triangle des années 30</a></li><li><a href="#transformation">Transformation !</a></li><li><a href="#combiner-les-transformations">Combiner les transformations</a></li><li><a href="#transformer-le-triangle-en-particule">Transformer le triangle en particule</a></li><li><a href="#textures-procedurales">Textures procédurales</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2019 Laurent NOEL</section></footer></div></body></html>

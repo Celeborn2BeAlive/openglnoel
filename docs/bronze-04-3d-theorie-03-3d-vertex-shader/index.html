@@ -1,9 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Un exemple de Vertex Shader pour la 3D · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;blockquote&gt;
-&lt;p&gt;En construction&lt;/p&gt;
-&lt;/blockquote&gt;
-"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Un exemple de Vertex Shader pour la 3D · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/index.html"/><meta property="og:description" content="&lt;blockquote&gt;
-&lt;p&gt;En construction&lt;/p&gt;
-&lt;/blockquote&gt;
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Un exemple de Vertex Shader pour la 3D · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;La plupart des calculs de transformation ont lieu dans le Vertex Shader puisque c&#x27;est lui qui calcule la variable gl_Position utilisée par OpenGL. Voici un exemple commenté de Vertex Shader simple et standard pour faire de la 3D:&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Un exemple de Vertex Shader pour la 3D · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/index.html"/><meta property="og:description" content="&lt;p&gt;La plupart des calculs de transformation ont lieu dans le Vertex Shader puisque c&#x27;est lui qui calcule la variable gl_Position utilisée par OpenGL. Voici un exemple commenté de Vertex Shader simple et standard pour faire de la 3D:&lt;/p&gt;
 "/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
           addBackToTop(
@@ -37,7 +33,36 @@
                 };
               }
             });
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Un exemple de Vertex Shader pour la 3D</h1></header><article><div><span><blockquote>
-<p>En construction</p>
-</blockquote>
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Un exemple de Vertex Shader pour la 3D</h1></header><article><div><span><p>La plupart des calculs de transformation ont lieu dans le Vertex Shader puisque c'est lui qui calcule la variable gl_Position utilisée par OpenGL. Voici un exemple commenté de Vertex Shader simple et standard pour faire de la 3D:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-meta">#version 330 core</span>
+
+<span class="hljs-comment">// Attributs de sommet</span>
+layout(location = <span class="hljs-number">0</span>) in vec3 aVertexPosition; <span class="hljs-comment">// Position du sommet</span>
+layout(location = <span class="hljs-number">1</span>) in vec3 aVertexNormal; <span class="hljs-comment">// Normale du sommet</span>
+layout(location = <span class="hljs-number">2</span>) in vec2 aVertexTexCoords; <span class="hljs-comment">// Coordonnées de texture du sommet</span>
+
+<span class="hljs-comment">// Matrices de transformations reçues en uniform</span>
+uniform mat4 uMVPMatrix;
+uniform mat4 uMVMatrix;
+uniform mat4 uNormalMatrix;
+
+<span class="hljs-comment">// Sorties du shader</span>
+out vec3 vPosition_vs; <span class="hljs-comment">// Position du sommet transformé dans l'espace View</span>
+out vec3 vNormal_vs; <span class="hljs-comment">// Normale du sommet transformé dans l'espace View</span>
+out vec2 vTexCoords; <span class="hljs-comment">// Coordonnées de texture du sommet</span>
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// Passage en coordonnées homogènes</span>
+    vec4 vertexPosition = vec4(aVertexPosition, <span class="hljs-number">1</span>);
+    vec4 vertexNormal = vec4(aVertexNormal, <span class="hljs-number">0</span>);
+
+    <span class="hljs-comment">// Calcul des valeurs de sortie</span>
+    vPosition_vs = vec3(uMVMatrix * vertexPosition);
+    vNormal_vs = vec3(uNormalMatrix * vertexNormal);
+    vTexCoords = aVertexTexCoords;
+
+    <span class="hljs-comment">// Calcul de la position projetée</span>
+    gl_Position = uMVPMatrix * vertexPosition;
+}
+</code></pre>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/bronze-04-3d-theorie-02-normal-matrix"><span class="arrow-prev">← </span><span>La Normal Matrix</span></a><a class="docs-next button" href="/openglnoel/docs/bronze-04-3d-theorie-04-glm"><span>La bibliothèque glm</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2019 Laurent NOEL</section></footer></div></body></html>

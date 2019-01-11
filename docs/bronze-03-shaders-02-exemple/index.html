@@ -1,9 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Les shaders par l&#x27;exemple · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;blockquote&gt;
-&lt;p&gt;En construction&lt;/p&gt;
-&lt;/blockquote&gt;
-"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Les shaders par l&#x27;exemple · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/index.html"/><meta property="og:description" content="&lt;blockquote&gt;
-&lt;p&gt;En construction&lt;/p&gt;
-&lt;/blockquote&gt;
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Les shaders par l&#x27;exemple · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;Rien de vaut un exemple. Nous allons étudier ligne par ligne l&#x27;exemple des shaders que vous avez utilisé au TP précédent pour afficher un triangle en couleur (avec quelques variantes).&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Les shaders par l&#x27;exemple · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/index.html"/><meta property="og:description" content="&lt;p&gt;Rien de vaut un exemple. Nous allons étudier ligne par ligne l&#x27;exemple des shaders que vous avez utilisé au TP précédent pour afficher un triangle en couleur (avec quelques variantes).&lt;/p&gt;
 "/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
           addBackToTop(
@@ -37,7 +33,85 @@
                 };
               }
             });
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Les shaders par l&#x27;exemple</h1></header><article><div><span><blockquote>
-<p>En construction</p>
-</blockquote>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/bronze-03-shaders-01-kesako"><span class="arrow-prev">← </span><span>Shaders, kesako ?</span></a><a class="docs-next button" href="/openglnoel/docs/bronze-03-shaders-03-compilation"><span>Charger, compiler et utiliser</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2019 Laurent NOEL</section></footer></div></body></html>
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Les shaders par l&#x27;exemple</h1></header><article><div><span><p>Rien de vaut un exemple. Nous allons étudier ligne par ligne l'exemple des shaders que vous avez utilisé au TP précédent pour afficher un triangle en couleur (avec quelques variantes).</p>
+<h2><a class="anchor" aria-hidden="true" id="le-vertex-shader"></a><a href="#le-vertex-shader" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Le Vertex Shader</h2>
+<p>Le Vertex Shader est destiné à traiter des sommets. Il fera donc son traitement à partir des attributs de chaque vertex. Il fournit en sortie des valeurs à interpoler pour chaque fragment produit par le rasterizer sur le triangle. Il renseigne également une variable particulière, gl_Position, qui est la position projetée à l'écran. Celle ci est utilisée par le rasterizer: il combine les 3 gl_Position correspondant à un triangle afin de produire une multitude de fragments. OpenGL se charge d'executer le Vertex Shader branché au moment du draw call sur chaque sommet à dessiner.</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-meta">#version 330 core</span>
+
+layout(location = <span class="hljs-number">0</span>) in vec2 aVertexPosition;
+layout(location = <span class="hljs-number">1</span>) in vec3 aVertexColor;
+
+out vec3 vFragColor;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+  vFragColor = aVertexColor;
+  gl_Position = vec4(aVertexPosition, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+};
+</code></pre>
+<p><img src="/openglnoel/img/vertex_shader_example.svg" alt="Vertex shader par l'example"></p>
+<p>Comme vous pouvez le constater, cela ressemble à du C++. Il y a même une fonction <strong>main</strong>, qui sera executée par le GPU pour traiter chaque sommet à dessiner.</p>
+<p>La première ligne indique à OpenGL la version de GLSL à utiliser. Ici on demande explicitement la version 3.3 avec un profile Core (qui bannit les fonctionnalités dépreciées).</p>
+<p>Les deux lignes suivantes:</p>
+<pre><code class="hljs css language-cpp">layout(location = <span class="hljs-number">0</span>) in vec2 aVertexPosition;
+layout(location = <span class="hljs-number">1</span>) in vec3 aVertexColor;
+</code></pre>
+<p>indiquent les attributs d'entrée constituant un sommet ainsi que leur type et leur <strong>location</strong> La location permet de faire le lien avec l'application C++: lorsque vous configurez le VAO décrivant vos sommet, il faut utiliser pour chaque attribut activé la location correspondant à l'attribut dans le shader (Il existe une alternative pour spécifier la location, en utilisant la fonction <strong>glBindAttribLocation</strong> depuis l'application C++, mais nous ne l'utiliserons pas). Le mot clef <strong>in</strong> indique que c'est une <strong>variable d'entrée</strong> qui est déclarée.</p>
+<p>La location correspond au paramètre index des fonctions <strong>glEnableVertexAttribArray</strong> et <strong>glVertexAttribPointer</strong>. Voici un rappel du code C++ pour faire le lien entre les deux concepts:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-keyword">const</span> GLuint VERTEX_ATTR_POSITION = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">const</span> GLuint VERTEX_ATTR_COLOR = <span class="hljs-number">1</span>;
+glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
+glEnableVertexAttribArray(VERTEX_ATTR_COLOR);
+glBindBuffer(GL_ARRAY_BUFFER, vbo);
+glVertexAttribPointer(VERTEX_ATTR_POSITION, <span class="hljs-number">2</span>, GL_FLOAT, GL_FALSE, <span class="hljs-keyword">sizeof</span>(Vertex2DColor), 
+    (<span class="hljs-keyword">const</span> GLvoid*) offsetof(Vertex2DColor, position));
+glVertexAttribPointer(VERTEX_ATTR_COLOR, <span class="hljs-number">3</span>, GL_FLOAT, GL_FALSE, <span class="hljs-keyword">sizeof</span>(Vertex2DColor), 
+    (<span class="hljs-keyword">const</span> GLvoid*) offsetof(Vertex2DColor, color));
+glBindBuffer(GL_ARRAY_BUFFER, <span class="hljs-number">0</span>);
+</code></pre>
+<p>OpenGL &quot;comprend&quot; comment appliquer le vertex shader à chaque sommet en utilisant les locations que vous lui fournissez. C'est à vous de choisir les location/index associé à chaque attribut. Ici j'ai choisi 0 et 1 mais dans le TP précédent j'avais choisi 3 et 8 (pour vous embrouiller mwahaha).</p>
+<p>La ligne:</p>
+<pre><code class="hljs css language-cpp">out vec3 vFragColor;
+</code></pre>
+<p>déclare une variable de sortie du shader. Je l'ai appelé <strong>vFragColor</strong> car elle correspond à la couleur qui sera affectée à chaque fragment (j'aurais pu l'appeler &quot;toto&quot; mais ça aurait été moins clair). Nous verrons plus loin que cette variable arrivera en entrée du fragment shader.</p>
+<p>On pourrait également déclarer d'autres variables de sortie, ce que nous ferons plus tard en fonction de l'algorithme de rendu que l'on souhaite implanter.</p>
+<p>Viens ensuite la fonction <strong>main</strong>. Contrairement au C++, celle ci ne renvoit pas de valeur en GLSL.</p>
+<p>La ligne:</p>
+<pre><code class="hljs css language-cpp">vFragColor = aVertexColor;
+</code></pre>
+<p>affecte la couleur d'entrée à la variable de sortie. On pourrait effectuer un traitement plus complexe, comme faire varier la couleur en fonction de la position. Ici on fait simplement un transfert de la valeur d'entrée vers la valeur de sortie (cela arrivera souvent dans les Vertex Shaders).</p>
+<p>Enfin la ligne:</p>
+<pre><code class="hljs css language-cpp">gl_Position = vec4(aVertexPosition, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+</code></pre>
+<p>est sans doute la plus importante du shader. On renseigne la variable built-in (built-in = définie par OpenGL) <strong>gl_Position</strong> qui est utilisée par OpenGL dans le rasterizer pour transformer les triangles en fragments. Cette variable représente les coordonnées projetées à l'écran du sommet. Dans le cas de la 2D il n'y a pas de projection, aucune transformation n'est donc appliquée ici. On ajoute néammoins deux coordonnées. Une profondeur z = 0 car on considère qu'on regarde le plan 2D z = 0 (on pourrait mettre n'importe quelle valeur entre -1 et 1, cela ne changerait rien). On ajoute également une coordonnée homogène (OpenGL travaille avec des coordonnées homogènes) w = 1. Quand nous ferons de la 3D, cette coordonnée sera calculée par la transformation projective. Pour l'instant, en <strong>2D</strong>, gardez à l'esprit qu'on ajoutera toujours 0 et 1 à la fin de nos positions.</p>
+<h2><a class="anchor" aria-hidden="true" id="le-fragment-shader"></a><a href="#le-fragment-shader" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Le Fragment Shader</h2>
+<p>Le Fragment Shader est destiné à traiter des fragments (ie. des pixels). Il fera son traitement à partir des valeurs aux sommets interpolées par la rasterizer lors de la production des fragments. Il fournit en sortie une couleur pour le pixel associé au fragment (OpenGL gère l'association fragment-pixel, il n'y a donc pas à spécifier les coordonnées du pixel).</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-meta">#version 330 core</span>
+
+in vec3 vFragColor;
+
+out vec3 fFragColor;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+  fFragColor = vFragColor;
+};
+</code></pre>
+<p><img src="/openglnoel/img/fragment_shader_example.svg" alt="Fragment shader par l'example"></p>
+<p>La ligne:</p>
+<pre><code class="hljs css language-cpp">in vec3 vFragColor;
+</code></pre>
+<p>indique à OpenGL une valeur d'entrée du fragment shader. Deux choses à noter:</p>
+<ul>
+<li>elle à le même nom que la valeur de sortie du VS. C'est normal, et même obligatoire. OpenGL utilise les noms des variables pour savoir comment faire correspondre les valeurs de sortie du VS avec les valeurs d'entrée du FS. C'est un peu comme brancher une prise, l'entrée et la sortie doivent correspondre. A noter que le type est le même également.</li>
+<li>Contrairement aux variables d'entrées du VS, il n'y a pas de déclaration de la forme layout(location = ...). C'est inutile en effet car la location est spécifiée pour faire le lien entre l'application C++ et le VS. Or les données d'entrée du FS ne viennent pas de l'application ! elles viennent du rasterizer.</li>
+</ul>
+<p><span class="badge warning"></span> Les valeurs que récuperera notre fragment shaders ne seront pas exactement les mêmes que celles sortant du VS: il ne faut pas oublier que ces dernières sont interpolées sur toute la surface du triangle afin d'être affecté à chaque fragment.</p>
+<p>La ligne:</p>
+<pre><code class="hljs css language-cpp">out vec3 fFragColor;
+</code></pre>
+<p>déclare la variable de sortie du FS destinée à contenir la couleur finale du pixel correspondant au fragment. Vous pouvez nommer cette variable comme vous voulez: OpenGL sait que s'il n'y a qu'une seule variable de sortie alors il doit l'interpreter comme une couleur et l'afficher à l'écran si le fragment est visible.</p>
+<p>A noter qu'il est possible d'avoir plusieurs variables de sortie (pour écrire dans plusieurs images à la fois) mais nous n'utiliserons pas cette fonctionnalité durant ces TPs.</p>
+<p>Et enfin le main ne fait qu'une chose: transférer la couleur d'entrée vers la couleur de sortie. A nouveau on pourrait appliquer des traitements sur cette couleur pour faire quelque chose de plus interessant.</p>
+<h2><a class="anchor" aria-hidden="true" id="des-vrais-shaders"></a><a href="#des-vrais-shaders" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Des vrais shaders</h2>
+<p>Ces shaders sont vraiment simples et ne font pas grand chose (c'est toujours mieux que du blanc mais bon...). Le site <a href="https://www.shadertoy.com/">Shadertoy</a> permet de coder en ligne (WebGL powa !) des shaders afin de les mettre à disposition d'autres utilisateurs. Vous avez donc accès à des centaines d'exemples de shaders auquels vous ne comprendrez pas grand chose (pour l'instant !). Il vous suffit de passer la souris sur une des vignette pour que l'animation se déclenche en temps réel. Les PC de l'université ont un peu du mal (c'est vraiment pas des shaders de tapette :p) mais vous devriez pouvoir constater la puissance à laquelle vous avez accès avec les shaders.</p>
+<p>Il est interessant de constater que la plupart des shaders de ce site sont entièrement procéduraux, c'est à dire qu'il n'y a aucune modélisation 3D derrière: tout est calculé mathématiquement à la volée (vous voyez que les maths c'est de l'art :p).</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/bronze-03-shaders-01-kesako"><span class="arrow-prev">← </span><span>Shaders, kesako ?</span></a><a class="docs-next button" href="/openglnoel/docs/bronze-03-shaders-03-compilation"><span>Charger, compiler et utiliser</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#le-vertex-shader">Le Vertex Shader</a></li><li><a href="#le-fragment-shader">Le Fragment Shader</a></li><li><a href="#des-vrais-shaders">Des vrais shaders</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2019 Laurent NOEL</section></footer></div></body></html>

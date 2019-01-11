@@ -1,9 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Charger, compiler et utiliser · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;blockquote&gt;
-&lt;p&gt;En construction&lt;/p&gt;
-&lt;/blockquote&gt;
-"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Charger, compiler et utiliser · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/index.html"/><meta property="og:description" content="&lt;blockquote&gt;
-&lt;p&gt;En construction&lt;/p&gt;
-&lt;/blockquote&gt;
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Charger, compiler et utiliser · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;Pour utiliser un couple de shaders il faut fournir leur code source à OpenGL puis lui demander de compiler les shaders pour produire un programme GPU. Ce programme peut ensuite être utilisé avant de dessiner. Il est possible de changer de programme à la volée pour dessiner des objets différent avec des shaders différent. Cette section vous présente rapidement les fonctions permettant de créer et compiler des shaders en OpenGL sans rentrer dans les détails. Les fonctions de la bibliothèque glimac fournies dans le template de code vous permettent de faire tout ça très rapidement.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Charger, compiler et utiliser · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/index.html"/><meta property="og:description" content="&lt;p&gt;Pour utiliser un couple de shaders il faut fournir leur code source à OpenGL puis lui demander de compiler les shaders pour produire un programme GPU. Ce programme peut ensuite être utilisé avant de dessiner. Il est possible de changer de programme à la volée pour dessiner des objets différent avec des shaders différent. Cette section vous présente rapidement les fonctions permettant de créer et compiler des shaders en OpenGL sans rentrer dans les détails. Les fonctions de la bibliothèque glimac fournies dans le template de code vous permettent de faire tout ça très rapidement.&lt;/p&gt;
 "/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
         document.addEventListener('DOMContentLoaded', function() {
           addBackToTop(
@@ -37,7 +33,67 @@
                 };
               }
             });
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Charger, compiler et utiliser</h1></header><article><div><span><blockquote>
-<p>En construction</p>
-</blockquote>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/bronze-03-shaders-02-exemple"><span class="arrow-prev">← </span><span>Les shaders par l&#x27;exemple</span></a><a class="docs-next button" href="/openglnoel/docs/bronze-03-shaders-04-jouer"><span>Jouer avec les shaders</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2019 Laurent NOEL</section></footer></div></body></html>
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Charger, compiler et utiliser</h1></header><article><div><span><p>Pour utiliser un couple de shaders il faut fournir leur code source à OpenGL puis lui demander de compiler les shaders pour produire un programme GPU. Ce programme peut ensuite être utilisé avant de dessiner. Il est possible de changer de programme à la volée pour dessiner des objets différent avec des shaders différent. Cette section vous présente rapidement les fonctions permettant de créer et compiler des shaders en OpenGL sans rentrer dans les détails. Les fonctions de la bibliothèque glimac fournies dans le template de code vous permettent de faire tout ça très rapidement.</p>
+<h2><a class="anchor" aria-hidden="true" id="creation-et-compilation-d-un-shader"></a><a href="#creation-et-compilation-d-un-shader" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Création et compilation d'un shader</h2>
+<p>OpenGL fournit les fonctions suivantes:</p>
+<ul>
+<li><a href="http://docs.gl/gl4/glCreateShader">glCreateShader</a> qui permet de créer un nouveau shader et renvoit son identifiant OpenGL.</li>
+<li><a href="http://docs.gl/gl4/glShaderSource">glShaderSource</a> qui permet de spécifier le code source du shader sous la forme de chaines de caractères. Lorsque le shader est stocké dans un fichier il est necessaire de le charger préalablement (ce que vous pourrez faire avec le code fournit).</li>
+<li><a href="http://docs.gl/gl4/glCompileShader">glCompileShader</a> qui permet de compiler un shader. Les shaders sont donc compilés au moment de l'execution de votre programme, lors de l'initialisation le plus souvent.</li>
+<li><a href="http://docs.gl/gl4/glGetShaderInfoLog">glGetShaderInfoLog</a> qui nous permet d'obtenir des messages d'erreur / warning relatifs à la compilation d'un shader.
+La pipeline de compilation d'un shader peut donc être représentée par ce schéma:</li>
+</ul>
+<p><img src="/openglnoel/img/shader_compilation.svg" alt="Shader compilation"></p>
+<h2><a class="anchor" aria-hidden="true" id="creation-et-link-d-un-programme"></a><a href="#creation-et-link-d-un-programme" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Création et link d'un programme</h2>
+<p>Une fois qu'un VS et un FS ont été compilés, il faut les lier en un programme. Pour cela OpenGL fournit les fonctions suivantes:</p>
+<ul>
+<li><a href="http://docs.gl/gl4/glCreateProgram">glCreateProgram</a> qui permet de créer un nouveau programme GLSL et renvoit son identifiant OpenGL.</li>
+<li><a href="http://docs.gl/gl4/glAttachShader">glAttachShader</a> qui permet d'attacher un shader à un programme. Il faut attacher le VS et le FS au programme.</li>
+<li><a href="http://docs.gl/gl4/glLinkProgram">glLinkProgram</a> qui permet de linker les deux shaders et ainsi avoir un programme utilisable.</li>
+<li><a href="http://docs.gl/gl4/glGetProgramInfoLog">glGetProgramInfoLog</a> qui nous permet d'obtenir des messages d'erreur / warning relatifs au link du programme.</li>
+</ul>
+<p><img src="/openglnoel/img/shader_link.svg" alt="Program link"></p>
+<h2><a class="anchor" aria-hidden="true" id="utiliser-le-code-fourni"></a><a href="#utiliser-le-code-fourni" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Utiliser le code fourni</h2>
+<p>Le code que je vous ai fournit vous permet de charger, compiler et utiliser des shaders GLSL. Vous l'avez déjà utilisé au TP1 pour afficher le triangle en couleur.</p>
+<p>Pour que le tout fonctionne bien, les shaders doivent être placés dans le repertoire <strong>shader</strong> correspondant au TP courant (donc <strong>TP2</strong> actuellement). Le fichier CMake se charge de copier ce repertoire dans le build afin d'avoir un chemin de fichier relatif à l'executable. Ainsi, à chaque fois que vous modifiez vos shaders, il faut relancer cmake (et pas juste make), sinon les modifications ne seront pas prise en compte. C'est un peu fastidieux mais plus simple à gérer ensuite dans le code.</p>
+<p>La classe <strong>glimac::Program</strong> représente un programme GPU. La fonction <strong>glimac::loadProgram</strong> charge et compile un vertex shader et un fragment shader pour produire un programme. Si une erreur de compilation est detectée, une exception est lancée par la fonction et arrête votre executable. L'erreur est affichée et vous pouvez la corriger.</p>
+<p>Le code type pour charger des shaders est donc:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-function">FilePath <span class="hljs-title">applicationPath</span><span class="hljs-params">(argv[<span class="hljs-number">0</span>])</span></span>;
+Program program = loadProgram(applicationPath.dirPath() + <span class="hljs-string">"shaders/[VERTEX_SHADER]"</span>,
+    applicationPath.dirPath() + <span class="hljs-string">"shaders/[FRAGMENT_SHADER]"</span>);
+</code></pre>
+<p>Il faut bien évidemment remplacer [VERTEX_SHADER] par le nom du fichier contenant le code source du VS et [FRAGMENT_SHADER] par le nom du fichier contenant le code source du FS.</p>
+<p>Concernant la variable applicationPath, elle contient le chemin de votre executable. <strong>applicationPath.dirPath()</strong> permet de récuperer le chemin du repertoire contenant l'executable. Par conséquent, <strong>applicationPath.dirPath() + &quot;shaders/[VERTEX_SHADER]&quot;</strong> sera le chemin vers le vertex shader copié par CMake. De même pour le fragment shader.</p>
+<p><span class="badge todo"></span> Dans le TP2, copiez le code C++ permettant de dessiner un triangle en couleur (celui du TP1).</p>
+<p><span class="badge todo"></span> Dans le dossier shader du TP2, créez deux fichiers color2D.vs.glsl et color2D.fs.glsl. Dans ces deux fichiers, copiez-coller le code des shaders expliqués précédement:</p>
+<p>Vertex Shader:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-meta">#version 330 core</span>
+
+layout(location = <span class="hljs-number">0</span>) in vec2 aVertexPosition;
+layout(location = <span class="hljs-number">1</span>) in vec3 aVertexColor;
+
+out vec3 vFragColor;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+  vFragColor = aVertexColor;
+  gl_Position = vec4(aVertexPosition, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+};
+</code></pre>
+<p>Fragment Shader:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-meta">#version 330 core</span>
+
+in vec3 vFragColor;
+
+out vec3 fFragColor;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+  fFragColor = vFragColor;
+};
+</code></pre>
+<p><span class="badge todo"></span> Modifiez le code C++ copié afin qu'il fonctionne avec ces shaders. Il y a deux choses à changer:</p>
+<ul>
+<li>Le chargement des shaders: il faut changer le nom des fichiers</li>
+<li>L'index des attributs: ce n'est plus 3 et 8 mais 0 et 1.</li>
+</ul>
+<p><span class="badge todo"></span> Dans le build, lancez cmake et make puis executez le programme. Le triangle en couleur devrait s'afficher correctement. Afin de voir comment se comporte le programme lorsqu'un shader contient une erreur, introduisez en une dans le Vertex Shader, relancez CMake, puis votre programme. Constatez l'erreur puis corrigez la. (Une erreur simple à introduire: rajoutez &quot;bhbfhzebfhbzefjze&quot; juste avant la fonction main du shader).</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/bronze-03-shaders-02-exemple"><span class="arrow-prev">← </span><span>Les shaders par l&#x27;exemple</span></a><a class="docs-next button" href="/openglnoel/docs/bronze-03-shaders-04-jouer"><span>Jouer avec les shaders</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#creation-et-compilation-d-un-shader">Création et compilation d'un shader</a></li><li><a href="#creation-et-link-d-un-programme">Création et link d'un programme</a></li><li><a href="#utiliser-le-code-fourni">Utiliser le code fourni</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2019 Laurent NOEL</section></footer></div></body></html>
