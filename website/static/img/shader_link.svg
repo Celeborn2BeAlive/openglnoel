@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg5347"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="shader_link.svg"
+   inkscape:export-filename="/home/otium/MLV/Enseignement/Imac 2/Synthèse d'Images 2/td03 - Shaders/images/shader_link.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs5349">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-7"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3913-4"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-7-4"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3913-4-1"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-7-4-7"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3913-4-1-3"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-7-41"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3913-4-6"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="342.58918"
+     inkscape:cy="687.04443"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1623"
+     inkscape:window-height="1026"
+     inkscape:window-x="57"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5352">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:20.27257919px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="88.777763"
+       y="306.02353"
+       id="text5355"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5357"
+         x="92.004745"
+         y="306.02353">vertexShader </tspan><tspan
+         sodipodi:role="line"
+         x="88.777763"
+         y="331.36426"
+         id="tspan5468">(GLuint)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:19.41246033px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="85.935966"
+       y="448.23831"
+       id="text5355-4"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5357-7"
+         x="89.026039"
+         y="448.23831">fragmentShader </tspan><tspan
+         sodipodi:role="line"
+         x="85.935966"
+         y="472.50391"
+         id="tspan5470">(GLuint)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:24.46238136px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="237.09508"
+       y="52.012272"
+       id="text4399"
+       sodipodi:linespacing="125%"
+       transform="scale(0.92539331,1.0806216)"><tspan
+         sodipodi:role="line"
+         id="tspan4401"
+         x="237.09508"
+         y="52.012272">glCreateProgram()</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.02711892px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-7)"
+       d="m 307.53844,78.936198 0,98.635562"
+       id="path4424"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="242.38362"
+       y="228.16379"
+       id="text4610"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4612"
+         x="242.38362"
+         y="228.16379">GLuint</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:28.02146721px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="563.35486"
+       y="204.84834"
+       id="text5272"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5274"
+         x="567.81531"
+         y="204.84834">identifiant OpenGL </tspan><tspan
+         sodipodi:role="line"
+         x="563.35486"
+         y="239.87518"
+         id="tspan5276">du programme</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:3.52463245;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend-7)"
+       d="m 305.06607,252.50106 0,346.78279"
+       id="path4424-8"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.41716528;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend-7-4)"
+       d="m 174.75639,305.85945 126.76858,0"
+       id="path6016"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.48512745;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend-7-4)"
+       d="m 174.25131,443.2402 131.70444,0"
+       id="path6016-2"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.66688156px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="179.11427"
+       y="316.23373"
+       id="text4399-8"
+       sodipodi:linespacing="125%"
+       transform="scale(0.92539331,1.0806216)"><tspan
+         sodipodi:role="line"
+         id="tspan4401-7"
+         x="179.11427"
+         y="316.23373">glAttachShader</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18.66688156px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="178.62732"
+       y="442.43018"
+       id="text4399-8-6"
+       sodipodi:linespacing="125%"
+       transform="scale(0.92539331,1.0806216)"><tspan
+         sodipodi:role="line"
+         id="tspan4401-7-2"
+         x="178.62732"
+         y="442.43018">glAttachShader</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:28.33714104px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="225.5192"
+       y="597.47388"
+       id="text4399-9"
+       sodipodi:linespacing="125%"
+       transform="scale(0.92539331,1.0806216)"><tspan
+         sodipodi:role="line"
+         id="tspan4401-9"
+         x="225.5192"
+         y="597.47388">glLinkProgram</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.69841123px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-7)"
+       d="m 303.03613,663.96879 0,131.2993"
+       id="path4424-82"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:28.33714104px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="184.64494"
+       y="784.42621"
+       id="text4399-9-4"
+       sodipodi:linespacing="125%"
+       transform="scale(0.92539331,1.0806216)"><tspan
+         sodipodi:role="line"
+         id="tspan4401-9-7"
+         x="184.64494"
+         y="784.42621">glGetProgramInfoLog</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:27.66470337px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="605.35156"
+       y="831.12567"
+       id="text5282-3"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5284-6"
+         x="609.75525"
+         y="831.12567">vérification des </tspan><tspan
+         sodipodi:role="line"
+         x="605.35156"
+         y="865.70654"
+         id="tspan6346">erreurs de link</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:27.66470337px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="521.83691"
+       y="340.85257"
+       id="text5282-3-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="526.24054"
+         y="340.85257"
+         id="tspan6346-7">spécification des shaders </tspan><tspan
+         sodipodi:role="line"
+         x="526.2406"
+         y="375.43344"
+         id="tspan6402">à linker </tspan><tspan
+         sodipodi:role="line"
+         x="526.2406"
+         y="410.01431"
+         id="tspan6404">(ils doivent avoir été </tspan><tspan
+         sodipodi:role="line"
+         x="521.83691"
+         y="444.59521"
+         id="tspan6406">compilés)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:27.66470337px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="563.25317"
+       y="644.90845"
+       id="text5282-3-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="563.25317"
+         y="644.90845"
+         id="tspan6346-8">&quot;linkage&quot;</tspan></text>
+  </g>
+</svg>

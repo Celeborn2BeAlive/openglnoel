@@ -25,7 +25,7 @@ function maybeLoadDisqus() {
     const hr = document.createElement("hr");
     const disqusContainer = document.createElement("disqus");
     disqusContainer.id = "disqus_thread";
-    const postContainer = document.querySelectorAll(".post article")[0];
+    const postContainer = document.querySelectorAll(".post")[0].parentElement;
     const isDocsPage = PAGE_IDENTIFIER.indexOf("/docs") !== -1 || PAGE_IDENTIFIER.indexOf("/blog") !== -1;
     if (postContainer && isDocsPage) {
         postContainer.appendChild(hr);
