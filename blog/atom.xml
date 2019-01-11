@@ -2,12 +2,48 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://celeborn2bealive.github.io/openglnoel/blog</id>
     <title>OpenGL[&quot;noël&quot;] Blog</title>
-    <updated>2019-01-06T06:00:00Z</updated>
+    <updated>2019-01-11T06:00:00Z</updated>
     <generator>Feed for Node.js</generator>
     <link rel="alternate" href="https://celeborn2bealive.github.io/openglnoel/blog"/>
     <subtitle>The best place to stay up-to-date with the latest OpenGL[&quot;noël&quot;] news and events.</subtitle>
     <logo>https://celeborn2bealive.github.io/openglnoel/img/logo.png</logo>
     <rights>Copyright © 2019 Laurent NOEL</rights>
+    <entry>
+        <title type="html"><![CDATA[Fin du portage des TDs]]></title>
+        <id>https://celeborn2bealive.github.io/openglnoel/blog/2019/01/11/fin-portage-anciens-td.html</id>
+        <link href="https://celeborn2bealive.github.io/openglnoel/blog/2019/01/11/fin-portage-anciens-td.html">
+        </link>
+        <updated>2019-01-11T06:00:00Z</updated>
+        <summary type="html"><![CDATA[<p>J'ai terminé de porter les TDs Imac 2 et Imac 3 / Master 2:</p>
+<ul>
+<li>Imac 2 dans Bronze Level</li>
+<li>Imac 3 / Master 2 dans Silver Level</li>
+</ul>
+<p>Mon prochain objectif est d'homogénéiser ces deux parties qui sont actuellement basées sur deux templates de code assez différent. Je pense également à modifier le découpage:</p>
+<ul>
+<li>Bronze Level serait limité à OpenGL 3+ appliqué à la 2D</li>
+<li>Silver Level serait l'application à la 3D, avec forward rendering, blinn-phong et lumières simples</li>
+<li>Gold Level serait des techniques avancées en 3D: deferred rendering, shadow mapping, PBR materials et lighting, post processing</li>
+</ul>
+<p>De cette manière, le programme Imac 2 / Master 1 sera de suivre Bronze Level et Silver Level, et le programme Imac 3 / Master 2 sera de suivre Silver Level et Gold Level.</p>
+<p>La partie <strong>Introduction et SDK</strong> est destinée à présenter le site, OpenGL 3+, le template de code ainsi que les outils annexes (CMake, Github).</p>
+<p>Au niveau du template de code, il sera stocké sur la branche master du repository de ce site et sera basé sur les libs suivantes:</p>
+<ul>
+<li>GLFW pour le fenetrage et les interactions</li>
+<li>glad pour le chargement d'OpenGL 3+</li>
+<li>imgui pour la GUI</li>
+<li>glm pour les maths</li>
+<li>assimp pour le chargement de fichiers 3D</li>
+<li>Une lib pour charger des modèles glTF (probablement tiny gltf loader)</li>
+<li>nlohmann json pour charger des fichiers json</li>
+</ul>
+<p>Coté compilation, le template proposera un CMake permettant de rapidement ajouter de nouvelles applications et bibliothèques. Je mettrais également des scripts .bat et .sh pour la générations de solutions pré-configurées. L'objectif a terme est vraiment de pouvoir forker le repo, le cloner, lancer un script, puis coder.</p>
+]]></summary>
+        <author>
+            <name>Laurent NOËL</name>
+            <uri>http://laurentnoel.fr</uri>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello World !]]></title>
         <id>https://celeborn2bealive.github.io/openglnoel/blog/2019/01/06/hello-world.html</id>
