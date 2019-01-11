@@ -1,6 +1,6 @@
 ---
 id: intro-sdk-todo
-title: Silver
+title: Introduction
 ---
 
 > Cette section est en cours de rédaction.

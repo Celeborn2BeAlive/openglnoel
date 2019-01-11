@@ -1,5 +1,5 @@
 const PAGE_IDENTIFIER = window.location.pathname;
-const BASE_URL = "https://github.com/Celeborn2BeAlive";
+const BASE_URL = "https://celeborn2bealive.github.io";
 const PAGE_URL = BASE_URL + PAGE_IDENTIFIER;
 
 /**
