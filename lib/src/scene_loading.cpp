@@ -60,14 +60,15 @@ void loadScene(const fs::path & objPath, const fs::path & mtlBaseDir, SceneData 
 			data.vertexBuffer.reserve(data.vertexBuffer.size() + mesh->mNumVertices);
 			for (auto vertexIdx = 0u; vertexIdx < mesh->mNumVertices; ++vertexIdx)
 			{
-				const float vx = mesh->mVertices[vertexIdx].x;
-				const float vy = mesh->mVertices[vertexIdx].y;
-				const float vz = mesh->mVertices[vertexIdx].z;
-				const float nx = mesh->mNormals ? mesh->mNormals[vertexIdx].x : 0.f;
-				const float ny = mesh->mNormals ? mesh->mNormals[vertexIdx].y : 0.f;
-				const float nz = mesh->mNormals ? mesh->mNormals[vertexIdx].z : 0.f;
-				const float tx = mesh->mTextureCoords && mesh->mTextureCoords[0] ? mesh->mTextureCoords[0][vertexIdx].x : 0.f;
-				const float ty = mesh->mTextureCoords && mesh->mTextureCoords[0] ? mesh->mTextureCoords[0][vertexIdx].y : 0.f;
+				const float vx = mesh->HasPositions() ? mesh->mVertices[vertexIdx].x : 0.f;
+				const float vy = mesh->HasPositions() ? mesh->mVertices[vertexIdx].y : 0.f;
+				const float vz = mesh->HasPositions() ? mesh->mVertices[vertexIdx].z : 0.f;
+				const float nx = mesh->HasNormals() ? mesh->mNormals[vertexIdx].x : 0.f;
+				const float ny = mesh->HasNormals() ? mesh->mNormals[vertexIdx].y : 0.f;
+				const float nz = mesh->HasNormals() ? mesh->mNormals[vertexIdx].z : 0.f;
+
+				const float tx = mesh->HasTextureCoords(0) ? mesh->mTextureCoords[0][vertexIdx].x : 0.f;
+				const float ty = mesh->HasTextureCoords(0) ? mesh->mTextureCoords[0][vertexIdx].y : 0.f;
 
 				data.vertexBuffer.emplace_back(glm::vec3(vx, vy, vz), glm::vec3(nx, ny, nz), glm::vec2(tx, ty));
 			}

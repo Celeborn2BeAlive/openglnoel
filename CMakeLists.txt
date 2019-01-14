@@ -25,6 +25,7 @@ set(GLAD_DIR glad)
 set(JSON_DIR json-3.5.0)
 set(STB_DIR stb)
 set(ASSIMP_DIR assimp-4.1.0)
+set(TINYGLTF_DIR tiny_gltf)
 
 add_subdirectory(third-party/${GLFW_DIR})
 add_subdirectory(third-party/${ASSIMP_DIR})
@@ -77,6 +78,7 @@ target_include_directories(
     third-party/${ASSIMP_DIR}/include
     ${CMAKE_BINARY_DIR}/third-party/${ASSIMP_DIR}/include
     third-party/${STB_DIR}
+    third-party/${TINYGLTF_DIR}
     lib/include
 )
 
