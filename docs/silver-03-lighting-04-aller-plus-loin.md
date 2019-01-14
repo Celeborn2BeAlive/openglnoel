@@ -1,5 +1,5 @@
 ---
-id: bronze-07-lighting-04-aller-plus-loin
+id: silver-04-lighting-04-aller-plus-loin
 title: Aller plus loin
 ---
 

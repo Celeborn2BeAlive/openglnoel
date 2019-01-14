@@ -1,5 +1,5 @@
 ---
-id: bronze-05-3d-pratique-04-dessiner-lune
+id: silver-02-3d-pratique-04-dessiner-lune
 title: Dessiner une lune
 ---
 

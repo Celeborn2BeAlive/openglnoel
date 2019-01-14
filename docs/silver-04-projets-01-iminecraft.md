@@ -1,5 +1,5 @@
 ---
-id: bronze-08-projets-01-iminecraft
+id: silver-05-projets-01-iminecraft
 title: Projet: IM(A)ineCraft
 ---
 

@@ -1,5 +1,5 @@
 ---
-id: bronze-06-camera-01-introduction
+id: silver-03-camera-01-introduction
 title: Introduction
 ---
 

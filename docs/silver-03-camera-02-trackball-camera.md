@@ -1,5 +1,5 @@
 ---
-id: bronze-06-camera-02-trackball-camera
+id: silver-03-camera-02-trackball-camera
 title: Trackball Camera
 ---
 

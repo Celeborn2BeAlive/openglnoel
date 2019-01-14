@@ -1,5 +1,5 @@
 ---
-id: bronze-04-3d-theorie-02-normal-matrix
+id: silver-01-3d-theorie-02-normal-matrix
 title: La Normal Matrix
 ---
 

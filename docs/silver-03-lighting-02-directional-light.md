@@ -1,5 +1,5 @@
 ---
-id: bronze-07-lighting-02-directional-light
+id: silver-04-lighting-02-directional-light
 title: Directional Light
 ---
 

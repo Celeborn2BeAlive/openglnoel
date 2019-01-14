@@ -1,5 +1,5 @@
 ---
-id: bronze-07-lighting-03-point-light
+id: silver-04-lighting-03-point-light
 title: Point Light
 ---
 

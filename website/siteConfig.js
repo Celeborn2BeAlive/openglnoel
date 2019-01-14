@@ -39,8 +39,9 @@ const siteConfig = {
     // For no header links in the top nav bar -> headerLinks: [],
     headerLinks: [
         { doc: 'intro-sdk-todo', label: 'Introduction et SDK' },
-        { doc: 'bronze-01-philogl-01-introduction', label: 'Bronze Level' },
-        { doc: 'silver-01-intro-sdk-01-introduction', label: 'Silver Level' },
+        { doc: 'bronze-01-philogl-01-introduction', label: 'Bronze' },
+        { doc: 'silver-01-3d-theorie-01-introduction', label: 'Silver' },
+        { doc: 'gold-01-intro-sdk-01-introduction', label: 'Gold' },
         { blog: true, label: 'Blog' },
         { href: 'http://docs.gl', label: 'OpenGL Documentation' },
         { href: 'https://www.khronos.org/opengl/wiki/', label: 'OpenGL Wiki' },

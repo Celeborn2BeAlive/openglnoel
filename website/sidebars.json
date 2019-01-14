@@ -22,7 +22,7 @@
             "bronze-02-hello-triangle-06-dessiner-disque",
             "bronze-02-hello-triangle-07-index-buffers"
         ],
-        "Dive into the GPU - les shaders": [
+        "Les shaders": [
             "bronze-03-shaders-01-kesako",
             "bronze-03-shaders-02-exemple",
             "bronze-03-shaders-03-compilation",
@@ -33,84 +33,86 @@
             "bronze-03-shaders-08-matrices",
             "bronze-03-shaders-09-plusieurs-triangles",
             "bronze-03-shaders-10-textures"
-        ],
-        "\"Dessiner\" en 3D - la théorie": [
-            "bronze-04-3d-theorie-01-introduction",
-            "bronze-04-3d-theorie-02-normal-matrix",
-            "bronze-04-3d-theorie-03-3d-vertex-shader",
-            "bronze-04-3d-theorie-04-glm"
-        ],
-        "\"Dessiner\" en 3D - la pratique": [
-            "bronze-05-3d-pratique-01-introduction",
-            "bronze-05-3d-pratique-02-classe-sphere-cone",
-            "bronze-05-3d-pratique-03-dessiner-sphere",
-            "bronze-05-3d-pratique-04-dessiner-lune",
-            "bronze-05-3d-pratique-05-dessiner-terre",
-            "bronze-05-3d-pratique-06-multi-texturing",
-            "bronze-05-3d-pratique-07-plusieurs-shaders"
-        ],
-        "Gestion de la caméra": [
-            "bronze-06-camera-01-introduction",
-            "bronze-06-camera-02-trackball-camera",
-            "bronze-06-camera-03-freefly-camera"
-        ],
-        "Put the lights on !": [
-            "bronze-07-lighting-01-introduction",
-            "bronze-07-lighting-02-directional-light",
-            "bronze-07-lighting-03-point-light",
-            "bronze-07-lighting-04-aller-plus-loin"
-        ],
-        "Projet(s)": [
-            "bronze-08-projets-01-iminecraft"
         ]
     },
     "Silver Level": {
+        "3D - La théorie": [
+            "silver-01-3d-theorie-01-introduction",
+            "silver-01-3d-theorie-02-normal-matrix",
+            "silver-01-3d-theorie-03-3d-vertex-shader",
+            "silver-01-3d-theorie-04-glm"
+        ],
+        "3D - La pratique": [
+            "silver-02-3d-pratique-01-introduction",
+            "silver-02-3d-pratique-02-classe-sphere-cone",
+            "silver-02-3d-pratique-03-dessiner-sphere",
+            "silver-02-3d-pratique-04-dessiner-lune",
+            "silver-02-3d-pratique-05-dessiner-terre",
+            "silver-02-3d-pratique-06-multi-texturing",
+            "silver-02-3d-pratique-07-plusieurs-shaders"
+        ],
+        "Gestion de la caméra": [
+            "silver-03-camera-01-introduction",
+            "silver-03-camera-02-trackball-camera",
+            "silver-03-camera-03-freefly-camera"
+        ],
+        "Put the lights on !": [
+            "silver-04-lighting-01-introduction",
+            "silver-04-lighting-02-directional-light",
+            "silver-04-lighting-03-point-light",
+            "silver-04-lighting-04-aller-plus-loin"
+        ],
+        "Projet(s)": [
+            "silver-05-projets-01-iminecraft"
+        ]
+    },
+    "Gold Level": {
         "Introduction et SDK": [
-            "silver-01-intro-sdk-01-introduction",
-            "silver-01-intro-sdk-02-repo-github",
-            "silver-01-intro-sdk-03-fiche-info",
-            "silver-01-intro-sdk-04-sdk",
-            "silver-01-intro-sdk-05-projet",
-            "silver-01-intro-sdk-06-liens"
+            "gold-01-intro-sdk-01-introduction",
+            "gold-01-intro-sdk-02-repo-github",
+            "gold-01-intro-sdk-03-fiche-info",
+            "gold-01-intro-sdk-04-sdk",
+            "gold-01-intro-sdk-05-projet",
+            "gold-01-intro-sdk-06-liens"
         ],
         "Forward Renderer": [
-            "silver-02-forward-renderer-01-pipeline",
-            "silver-02-forward-renderer-02-geometrie",
-            "silver-02-forward-renderer-03-shaders",
-            "silver-02-forward-renderer-04-transformations",
-            "silver-02-forward-renderer-05-lighting",
-            "silver-02-forward-renderer-06-textures",
-            "silver-02-forward-renderer-07-load-obj",
-            "silver-02-forward-renderer-08-plus-loin"
+            "gold-02-forward-renderer-01-pipeline",
+            "gold-02-forward-renderer-02-geometrie",
+            "gold-02-forward-renderer-03-shaders",
+            "gold-02-forward-renderer-04-transformations",
+            "gold-02-forward-renderer-05-lighting",
+            "gold-02-forward-renderer-06-textures",
+            "gold-02-forward-renderer-07-load-obj",
+            "gold-02-forward-renderer-08-plus-loin"
         ],
         "Deferred Renderer": [
-            "silver-03-deferred-renderer-01-pipeline",
-            "silver-03-deferred-renderer-02-geometry-pass",
-            "silver-03-deferred-renderer-03-shading-pass",
-            "silver-03-deferred-renderer-04-plus-loin"
+            "gold-03-deferred-renderer-01-pipeline",
+            "gold-03-deferred-renderer-02-geometry-pass",
+            "gold-03-deferred-renderer-03-shading-pass",
+            "gold-03-deferred-renderer-04-plus-loin"
         ],
         "Shadow Mapping": [
-            "silver-04-shadow-mapping-01-introduction",
-            "silver-04-shadow-mapping-02-dir-shadow-map",
-            "silver-04-shadow-mapping-03-percentage-closest-filtering",
-            "silver-04-shadow-mapping-04-aller-plus-loin"
+            "gold-04-shadow-mapping-01-introduction",
+            "gold-04-shadow-mapping-02-dir-shadow-map",
+            "gold-04-shadow-mapping-03-percentage-closest-filtering",
+            "gold-04-shadow-mapping-04-aller-plus-loin"
         ],
         "Post Processing": [
-            "silver-05-post-processing-01-introduction",
-            "silver-05-post-processing-02-gamma-correction",
-            "silver-05-post-processing-03-extraction-contours",
-            "silver-05-post-processing-04-depth-of-field"
+            "gold-05-post-processing-01-introduction",
+            "gold-05-post-processing-02-gamma-correction",
+            "gold-05-post-processing-03-extraction-contours",
+            "gold-05-post-processing-04-depth-of-field"
         ],
         "Annexe: API OpenGL": [
-            "silver-06-course-01-opengl-context",
-            "silver-06-course-02-gpu-pipeline",
-            "silver-06-course-03-opengl-extensions",
-            "silver-06-course-04-opengl-objects",
-            "silver-06-course-05-buffer-objects",
-            "silver-06-course-06-vertex-array-objects",
-            "silver-06-course-07-textures",
-            "silver-06-course-08-framebuffer-objects",
-            "silver-06-course-09-shaders"
+            "gold-06-course-01-opengl-context",
+            "gold-06-course-02-gpu-pipeline",
+            "gold-06-course-03-opengl-extensions",
+            "gold-06-course-04-opengl-objects",
+            "gold-06-course-05-buffer-objects",
+            "gold-06-course-06-vertex-array-objects",
+            "gold-06-course-07-textures",
+            "gold-06-course-08-framebuffer-objects",
+            "gold-06-course-09-shaders"
         ]
     }
 }

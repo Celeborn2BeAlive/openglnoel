@@ -1,5 +1,5 @@
 ---
-id: bronze-05-3d-pratique-03-dessiner-sphere
+id: silver-02-3d-pratique-03-dessiner-sphere
 title: Dessiner une sphere
 ---
 

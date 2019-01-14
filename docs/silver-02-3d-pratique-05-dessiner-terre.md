@@ -1,5 +1,5 @@
 ---
-id: bronze-05-3d-pratique-05-dessiner-terre
+id: silver-02-3d-pratique-05-dessiner-terre
 title: Dessiner la terre
 ---
 
