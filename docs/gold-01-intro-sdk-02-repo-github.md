@@ -51,7 +51,7 @@ git clone https://github.com/<username>/opengl-avance
 
 Si vous travaillez en binome, choisissez l'un des deux repo pour travailler en TD.
 
-Un nouveau dossier **opengl-avance** devrait alors être créé. Cela ci contient le repository local. Déplacez vous dedans en console.
+Un nouveau dossier **openglnoel** devrait alors être créé. Cela ci contient le repository local. Déplacez vous dedans en console.
 
 ## Branches du repo
 
