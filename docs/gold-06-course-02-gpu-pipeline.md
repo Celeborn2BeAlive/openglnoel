@@ -1,5 +1,5 @@
 ---
-id: silver-06-course-02-gpu-pipeline
+id: gold-06-course-02-gpu-pipeline
 title: Pipeline de Rendu
 ---
 

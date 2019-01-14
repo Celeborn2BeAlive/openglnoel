@@ -1,5 +1,5 @@
 ---
-id: silver-06-course-06-vertex-array-objects
+id: gold-06-course-06-vertex-array-objects
 title: Vertex Array Objects
 ---
 

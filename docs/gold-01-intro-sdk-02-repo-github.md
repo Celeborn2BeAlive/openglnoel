@@ -1,5 +1,5 @@
 ---
-id: silver-01-intro-sdk-02-repo-github
+id: gold-01-intro-sdk-02-repo-github
 title: Repository Github
 ---
 

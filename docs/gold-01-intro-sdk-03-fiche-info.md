@@ -1,5 +1,5 @@
 ---
-id: silver-01-intro-sdk-03-fiche-info
+id: gold-01-intro-sdk-03-fiche-info
 title: Fiche d'information
 ---
 

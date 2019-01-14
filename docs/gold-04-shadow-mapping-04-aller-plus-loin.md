@@ -1,5 +1,5 @@
 ---
-id: silver-04-shadow-mapping-04-aller-plus-loin
+id: gold-04-shadow-mapping-04-aller-plus-loin
 title: Aller Plus Loin
 ---
 

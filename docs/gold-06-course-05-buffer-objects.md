@@ -1,5 +1,5 @@
 ---
-id: silver-06-course-05-buffer-objects
+id: gold-06-course-05-buffer-objects
 title: Buffer Objects
 ---
 

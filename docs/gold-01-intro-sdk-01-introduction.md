@@ -1,5 +1,5 @@
 ---
-id: silver-01-intro-sdk-01-introduction
+id: gold-01-intro-sdk-01-introduction
 title: Introduction
 ---
 

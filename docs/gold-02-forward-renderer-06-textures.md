@@ -1,5 +1,5 @@
 ---
-id: silver-02-forward-renderer-06-textures
+id: gold-02-forward-renderer-06-textures
 title: Textures
 ---
 

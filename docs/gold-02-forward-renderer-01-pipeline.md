@@ -1,5 +1,5 @@
 ---
-id: silver-02-forward-renderer-01-pipeline
+id: gold-02-forward-renderer-01-pipeline
 title: Pipeline de Rendu
 ---
 

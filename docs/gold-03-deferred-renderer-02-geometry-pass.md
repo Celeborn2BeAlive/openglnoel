@@ -1,5 +1,5 @@
 ---
-id: silver-03-deferred-renderer-02-geometry-pass
+id: gold-03-deferred-renderer-02-geometry-pass
 title: Geometrie Pass
 ---
 

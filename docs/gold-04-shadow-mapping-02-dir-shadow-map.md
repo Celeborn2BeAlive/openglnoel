@@ -1,5 +1,5 @@
 ---
-id: silver-04-shadow-mapping-02-dir-shadow-map
+id: gold-04-shadow-mapping-02-dir-shadow-map
 title: Directional Shadow Map
 ---
 

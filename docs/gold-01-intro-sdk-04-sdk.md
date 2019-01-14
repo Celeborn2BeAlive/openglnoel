@@ -1,5 +1,5 @@
 ---
-id: silver-01-intro-sdk-04-sdk
+id: gold-01-intro-sdk-04-sdk
 title: Software Development Kit
 ---
 

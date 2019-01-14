@@ -1,5 +1,5 @@
 ---
-id: silver-05-post-processing-01-introduction
+id: gold-05-post-processing-01-introduction
 title: Introduction
 ---
 

@@ -1,5 +1,5 @@
 ---
-id: silver-06-course-04-opengl-objects
+id: gold-06-course-04-opengl-objects
 title: Objets OpenGL
 ---
 

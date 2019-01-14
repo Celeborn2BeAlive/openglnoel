@@ -1,5 +1,5 @@
 ---
-id: silver-03-deferred-renderer-04-plus-loin
+id: gold-03-deferred-renderer-04-plus-loin
 title: Aller plus loin
 ---
 

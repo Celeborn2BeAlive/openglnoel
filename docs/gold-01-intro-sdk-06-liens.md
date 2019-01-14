@@ -1,5 +1,5 @@
 ---
-id: silver-01-intro-sdk-06-liens
+id: gold-01-intro-sdk-06-liens
 title: Liens externes
 ---
 

@@ -1,5 +1,5 @@
 ---
-id: silver-06-course-08-framebuffer-objects
+id: gold-06-course-08-framebuffer-objects
 title: Framebuffer Objects
 ---
 

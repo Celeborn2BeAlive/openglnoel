@@ -1,5 +1,5 @@
 ---
-id: silver-04-shadow-mapping-03-percentage-closest-filtering
+id: gold-04-shadow-mapping-03-percentage-closest-filtering
 title: Percentage Closest Filtering
 ---
 

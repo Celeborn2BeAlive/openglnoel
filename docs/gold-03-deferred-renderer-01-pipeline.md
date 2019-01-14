@@ -1,5 +1,5 @@
 ---
-id: silver-03-deferred-renderer-01-pipeline
+id: gold-03-deferred-renderer-01-pipeline
 title: Pipeline de Rendu
 ---
 

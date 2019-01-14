@@ -1,5 +1,5 @@
 ---
-id: silver-01-intro-sdk-05-projet
+id: gold-01-intro-sdk-05-projet
 title: Projet
 ---
 

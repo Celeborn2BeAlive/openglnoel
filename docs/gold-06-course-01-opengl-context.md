@@ -1,5 +1,5 @@
 ---
-id: silver-06-course-01-opengl-context
+id: gold-06-course-01-opengl-context
 title: Contexte OpenGL
 ---
 

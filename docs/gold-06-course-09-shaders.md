@@ -1,5 +1,5 @@
 ---
-id: silver-06-course-09-shaders
+id: gold-06-course-09-shaders
 title: Shaders
 ---
 

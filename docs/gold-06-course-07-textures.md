@@ -1,5 +1,5 @@
 ---
-id: silver-06-course-07-textures
+id: gold-06-course-07-textures
 title: Texture Objects
 ---
 

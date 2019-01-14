@@ -1,5 +1,5 @@
 ---
-id: silver-06-course-03-opengl-extensions
+id: gold-06-course-03-opengl-extensions
 title: Extensions OpenGL
 ---
 

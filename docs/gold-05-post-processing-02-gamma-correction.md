@@ -1,5 +1,5 @@
 ---
-id: silver-05-post-processing-02-gamma-correction
+id: gold-05-post-processing-02-gamma-correction
 title: Gamma Correction
 ---
 

@@ -1,5 +1,5 @@
 ---
-id: silver-02-forward-renderer-05-lighting
+id: gold-02-forward-renderer-05-lighting
 title: Lighting
 ---
 

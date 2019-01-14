@@ -1,5 +1,5 @@
 ---
-id: silver-03-deferred-renderer-03-shading-pass
+id: gold-03-deferred-renderer-03-shading-pass
 title: Shading Pass
 ---
 

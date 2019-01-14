@@ -1,5 +1,5 @@
 ---
-id: silver-04-shadow-mapping-01-introduction
+id: gold-04-shadow-mapping-01-introduction
 title: Introduction
 ---
 

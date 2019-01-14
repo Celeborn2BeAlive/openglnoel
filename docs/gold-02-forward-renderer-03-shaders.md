@@ -1,5 +1,5 @@
 ---
-id: silver-02-forward-renderer-03-shaders
+id: gold-02-forward-renderer-03-shaders
 title: Shaders
 ---
 
