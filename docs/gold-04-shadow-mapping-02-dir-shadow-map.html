@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Directional Shadow Map · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;Nous allons commencer par l&#x27;utilisation du shadow mapping pour une lumière directionnelle, qui est plus simple.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Directional Shadow Map · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/index.html"/><meta property="og:description" content="&lt;p&gt;Nous allons commencer par l&#x27;utilisation du shadow mapping pour une lumière directionnelle, qui est plus simple.&lt;/p&gt;
+"/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><link rel="stylesheet" href="/openglnoel/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/openglnoel/"><img class="logo" src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]"/><h2 class="headerTitleWithLogo">OpenGL[&quot;noël&quot;]</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/openglnoel/docs/intro-sdk-01-philogl-01-introduction" target="_self">Introduction et SDK</a></li><li class=""><a href="/openglnoel/docs/bronze-02-hello-triangle-01-code-de-base" target="_self">Bronze</a></li><li class=""><a href="/openglnoel/docs/silver-01-3d-theorie-01-introduction" target="_self">Silver</a></li><li class="siteNavGroupActive"><a href="/openglnoel/docs/gold-01-intro-sdk-01-introduction" target="_self">Gold</a></li><li class=""><a href="/openglnoel/blog/" target="_self">Blog</a></li><li class=""><a href="http://docs.gl" target="_self">OpenGL Documentation</a></li><li class=""><a href="https://www.khronos.org/opengl/wiki/" target="_self">OpenGL Wiki</a></li><li class=""><a href="https://github.com/celeborn2bealive/openglnoel" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Shadow Mapping</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction et SDK</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-01-intro-sdk-01-introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-01-intro-sdk-03-fiche-info">Fiche d&#x27;information</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-01-intro-sdk-05-projet">Projet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Forward Renderer</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-01-pipeline">Pipeline de Rendu</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-02-geometrie">Geometrie</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-03-shaders">Shaders</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-04-transformations">Transformations</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-05-lighting">Lighting</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-06-textures">Textures</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-07-load-obj">Chargement de modèles OBJ</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-08-plus-loin">Aller plus loin</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Deferred Renderer</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-03-deferred-renderer-01-pipeline">Pipeline de Rendu</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-03-deferred-renderer-02-geometry-pass">Geometrie Pass</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-03-deferred-renderer-03-shading-pass">Shading Pass</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-03-deferred-renderer-04-plus-loin">Aller plus loin</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Shadow Mapping</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-04-shadow-mapping-01-introduction">Introduction</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/openglnoel/docs/gold-04-shadow-mapping-02-dir-shadow-map">Directional Shadow Map</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-04-shadow-mapping-03-percentage-closest-filtering">Percentage Closest Filtering</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-04-shadow-mapping-04-aller-plus-loin">Aller Plus Loin</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Post Processing</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-05-post-processing-01-introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-05-post-processing-02-gamma-correction">Gamma Correction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-05-post-processing-03-extraction-contours">Extraction et Rendu de Contours</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-05-post-processing-04-depth-of-field">Depth of Field</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Annexe: API OpenGL</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-01-opengl-context">Contexte OpenGL</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-02-gpu-pipeline">Pipeline de Rendu</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-03-opengl-extensions">Extensions OpenGL</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-04-opengl-objects">Objets OpenGL</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-05-buffer-objects">Buffer Objects</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-06-vertex-array-objects">Vertex Array Objects</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-07-textures">Texture Objects</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-08-framebuffer-objects">Framebuffer Objects</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-09-shaders">Shaders</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Directional Shadow Map</h1></header><article><div><span><p>Nous allons commencer par l'utilisation du shadow mapping pour une lumière directionnelle, qui est plus simple.</p>
+<p>Il y a globalement quatre partie à coder:</p>
+<ul>
+<li>Initialisation: Allocation des données OpenGL nécessaire à l'algorithme</li>
+<li>Shaders: Coder les shaders nécessaire à la création de la shadow map.</li>
+<li>Création de la shadow map: A faire au rendu des que la direction de la lumière est modifiée. Il s'agit de calculer la depth map selon le point de vue de la light.</li>
+<li>Utilisation de la shadow map: A faire dans la shading pass. Il s'agit avant d'éclairer un fragment vu par la caméra de vérifier s'il est visible depuis la light en utilisant la depth map précalculée.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="initialisation"></a><a href="#initialisation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Initialisation</h2>
+<p>Dans la classe Application, ajoutez 4 variables:</p>
+<pre><code class="hljs css language-cpp">GLuint m_directionalSMTexture;
+GLuint m_directionalSMFBO;
+GLuint m_directionalSMSampler;
+<span class="hljs-keyword">int32_t</span> m_nDirectionalSMResolution = <span class="hljs-number">512</span>;
+</code></pre>
+<p>La première est destinée à stocker un identifiant de texture OpenGL qui contiendra la depth map selon le point de vue de la light.</p>
+<p>La deuxième est destinée à stocker un identifiant de framebuffer OpenGL qui nous permettra de dessiner la depth map.</p>
+<p>La troisème est destinée à stocker un identifiant de sampler OpenGL qui nous permettra de lire la depth map depuis un shader.</p>
+<p>Enfin la dernière stocke simplement la résolution de la depth map (ici 512x512).</p>
+<p>Dans le constructeur de l'application, créez à la texture m_directionalSMTexture, de target GL_TEXTURE_2D et de format interne GL_DEPTH_COMPONENT32F.</p>
+<p>Créez le framebuffer m_directionalSMFBO et attachez lui la texture m_directionalSMTexture sur l'attachment GL_DEPTH_ATTACHMENT (voir le code de l'initialisation du GBuffer du deferred shading pour exemple).</p>
+<p>Vérifiez la validité du framebuffer, puis débindez le framebuffer.</p>
+<p>Créez enfin le sampler m_directionalSMSampler avec le code suivant:</p>
+<pre><code class="hljs css language-cpp">glGenSamplers(<span class="hljs-number">1</span>, &amp;m_directionalSMSampler);
+glSamplerParameteri(m_directionalSMSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+glSamplerParameteri(m_directionalSMSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+glSamplerParameteri(m_directionalSMSampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+glSamplerParameteri(m_directionalSMSampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+</code></pre>
+<p>Fonctions GL à utiliser:</p>
+<table>
+<thead>
+<tr><th>Sans DSA</th><th>DSA</th></tr>
+</thead>
+<tbody>
+<tr><td>glGenTextures</td><td>glCreateTextures</td></tr>
+<tr><td>glBindTexture</td><td></td></tr>
+<tr><td>glTexStorage2D</td><td>glTextureStorage2D</td></tr>
+<tr><td>glGenFramebuffers</td><td>glCreateFramebuffers</td></tr>
+<tr><td>glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo)</td><td></td></tr>
+<tr><td>glFramebufferTexture2D</td><td>glNamedFramebufferTexture</td></tr>
+<tr><td>glDrawBuffers</td><td>glNamedFramebufferDrawBuffers</td></tr>
+<tr><td>glCheckFramebufferStatus</td><td>glCheckNamedFramebufferStatus</td></tr>
+<tr><td>glGenSamplers</td><td>glCreateSamplers</td></tr>
+<tr><td>glSamplerParameteri</td><td>glSamplerParameteri</td></tr>
+</tbody>
+</table>
+<h2><a class="anchor" aria-hidden="true" id="shaders"></a><a href="#shaders" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Shaders</h2>
+<p>Ajoutez deux nouveaux shaders <em>directionalSM.vs.glsl</em> et <em>directionalSM.fs.glsl</em>.</p>
+<p>L'objectif du vertex shader est de transformer le sommet d'entrée dans l'espace de la light. Pour cela, on suppose que l'application fournie une matrice ViewProjection adaptée et le code est simplement le suivant:</p>
+<pre><code class="hljs css language-glsl"><span class="hljs-comment">// directionalSM.vs.glsl</span>
+<span class="hljs-meta">#version 330</span>
+
+<span class="hljs-keyword">layout</span>(<span class="hljs-keyword">location</span> = <span class="hljs-number">0</span>) <span class="hljs-keyword">in</span> <span class="hljs-type">vec3</span> aPosition;
+<span class="hljs-keyword">uniform</span> <span class="hljs-type">mat4</span> uDirLightViewProjMatrix;
+
+<span class="hljs-type">void</span> main()
+{
+    <span class="hljs-built_in">gl_Position</span> =  uDirLightViewProjMatrix * <span class="hljs-type">vec4</span>(aPosition, <span class="hljs-number">1</span>);
+}
+</code></pre>
+<p>Le fragment shader n'a rien a faire car tout ce qui nous interesse c'est la depth des fragments. Or la depth est directement écrite par la carte graphique dans le depth buffer après l'execution du fragment shader. On se contente donc d'écrire un fragment shader minimal qui ne sort que du noir:</p>
+<pre><code class="hljs css language-glsl"><span class="hljs-comment">// directionalSM.fs.glsl</span>
+<span class="hljs-meta">#version 330</span>
+<span class="hljs-keyword">out</span> <span class="hljs-type">vec3</span> fColor;
+<span class="hljs-type">void</span> main()
+{
+    fColor = <span class="hljs-type">vec3</span>(<span class="hljs-number">0</span>);
+}
+</code></pre>
+<p>Dans l'application, ajoutez un nouveau programme et une variable pour stocker la location de l'uniform <em>uDirLightViewProjMatrix</em>:</p>
+<pre><code class="hljs css language-cpp">glmlv::GLProgram m_directionalSMProgram;
+GLint m_uDirLightViewProjMatrix;
+</code></pre>
+<p>Dans le constructor, compilez le programme à partir des deux nouveaux shaders et récupérez à la location avec <em>glGetUniformLocation</em>.</p>
+<h2><a class="anchor" aria-hidden="true" id="creation-de-la-shadow-map"></a><a href="#creation-de-la-shadow-map" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Création de la shadow map</h2>
+<p>Il faut à présent calculer la shadow map dans la boucle de rendu. Attention: ce calcul necessite un rendu de la scène, qui peut être coûteux. Il faut donc faire attention à ne recalculer la shadow map que si la light change de direction, par exemple en utilisant un booléen. La structure générale de la méthode run() devient donc:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-keyword">int</span> Application::run()
+{
+    [...]
+    <span class="hljs-keyword">bool</span> directionalSMDirty = <span class="hljs-literal">true</span>;
+
+    <span class="hljs-comment">// Loop until the user closes the window</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> iterationCount = <span class="hljs-number">0u</span>; !m_GLFWHandle.shouldClose(); ++iterationCount)
+    {
+        [...]
+        <span class="hljs-keyword">if</span> (directionalSMDirty)
+        {
+            <span class="hljs-comment">// Calcul de la shadow map (**)</span>
+            [...]
+
+            directionalSMDirty = <span class="hljs-literal">false</span>; <span class="hljs-comment">// Pas de calcul au prochain tour</span>
+        }
+
+        <span class="hljs-comment">// Rendu</span>
+        [...]
+
+        <span class="hljs-comment">// Pseudo code dans le dessin de la GUI:</span>
+        <span class="hljs-keyword">if</span> (directional_light_change)
+        {
+            directionalSMDirty = <span class="hljs-literal">true</span>; <span class="hljs-comment">// Il faut recalculer la shadow map</span>
+        }
+        [...]
+    }
+}
+</code></pre>
+<p>Mettez en place cette structure de code par dessus le code actuel de rendu du deferred.</p>
+<p>A la suite du commentaire <em>// Calcul de la shadow map (</em><em>)</em>, ajoutez le code suivant:</p>
+<pre><code class="hljs css language-cpp">m_directionalSMProgram.use();
+
+glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_directionalSMFBO);
+glViewport(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, m_nDirectionalSMResolution, m_nDirectionalSMResolution);
+glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+glUniformMatrix4fv(m_uDirLightViewProjMatrix, <span class="hljs-number">1</span>, GL_FALSE, glm::value_ptr(dirLightProjMatrix * dirLightViewMatrix));
+
+glBindVertexArray(m_SceneVAO);
+
+<span class="hljs-comment">// We draw each shape by specifying how much indices it carries, and with an offset in the global index buffer</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> shape : m_shapes) {
+    glDrawElements(GL_TRIANGLES, shape.indexCount, GL_UNSIGNED_INT, (<span class="hljs-keyword">const</span> GLvoid*)(shape.indexOffset * <span class="hljs-keyword">sizeof</span>(GLuint)));
+}
+
+glBindVertexArray(<span class="hljs-number">0</span>);
+
+glBindFramebuffer(GL_DRAW_FRAMEBUFFER, <span class="hljs-number">0</span>);
+</code></pre>
+<p>Ce code met en place le programme pour dessiner la shadow map, bind le FBO sur lequel la shadow map est attachée, puis dessine la scène. Logiquement, après ce dessin, la texture m_directionalSMTexture (attachée à m_directionalSMFBO) doit contenir la shadow map.</p>
+<p>Dans ce code, il vous manque le calcul des deux matrices dirLightProjMatrix et dirLightViewMatrix, qui est le suivant (à faire au début de la boucle de rendu car ces variables serviront aussi à la shading pass):</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> computeDirectionVectorUp = [](<span class="hljs-keyword">float</span> phiRadians, <span class="hljs-keyword">float</span> thetaRadians)
+{
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> cosPhi = glm::<span class="hljs-built_in">cos</span>(phiRadians);
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> sinPhi = glm::<span class="hljs-built_in">sin</span>(phiRadians);
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> cosTheta = glm::<span class="hljs-built_in">cos</span>(thetaRadians);
+    <span class="hljs-keyword">return</span> -glm::normalize(glm::vec3(sinPhi * cosTheta, -glm::<span class="hljs-built_in">sin</span>(thetaRadians), cosPhi * cosTheta));
+};
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> sceneCenter = <span class="hljs-number">0.5f</span> * (m_BBoxMin + m_BBoxMax);
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> sceneRadius = m_SceneSizeLength * <span class="hljs-number">0.5f</span>;
+
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> dirLightUpVector = computeDirectionVectorUp(glm::radians(m_DirLightPhiAngleDegrees), glm::radians(m_DirLightThetaAngleDegrees));
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> dirLightViewMatrix = glm::lookAt(sceneCenter + m_DirLightDirection * sceneRadius, sceneCenter, dirLightUpVector); <span class="hljs-comment">// Will not work if m_DirLightDirection is colinear to lightUpVector</span>
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> dirLightProjMatrix = glm::ortho(-sceneRadius, sceneRadius, -sceneRadius, sceneRadius, <span class="hljs-number">0.01f</span> * sceneRadius, <span class="hljs-number">2.f</span> * sceneRadius);
+</code></pre>
+<p>La matrice de projection du lumière directionelle est orthographique car une telle lumière voit &quot;en parallèle&quot; (tous les points sont illuminés selon la même direction). On fait en sorte que la light voit l'ensemble de la scène en la plaçant au bord de la bounding sphere de la scène (d'ou le calcul du centre et du rayon de la scène). Il vous sera peut être necessaire de stocker m_BBoxMin et m_BBoxMax si ce n'est pas déjà fait, qui peuvent être obtenu au moment du chargement de la scène.</p>
+<h2><a class="anchor" aria-hidden="true" id="utilisation-de-la-shadow-map"></a><a href="#utilisation-de-la-shadow-map" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Utilisation de la shadow map</h2>
+<p>Une fois la shadow map calculée, la shading pass peut l'utiliser pour calculer la visibilité d'un fragment pour la light concernée.</p>
+<p>Il faut tout d'abord modifier le fragment shader de la shading pass (shadingPass.fs.glsl) afin d'utiliser la shadow map.
+Ajoutez les uniform suivantes:</p>
+<pre><code class="hljs css language-glsl"><span class="hljs-keyword">uniform</span> <span class="hljs-type">mat4</span> uDirLightViewProjMatrix;
+<span class="hljs-keyword">uniform</span> <span class="hljs-type">sampler2D</span> uDirLightShadowMap;
+<span class="hljs-keyword">uniform</span> <span class="hljs-type">float</span> uDirLightShadowMapBias;
+</code></pre>
+<p>La matrice permet de passer les fragment vus par la caméra dans l'espace projeté de la light. Une fois cette projection faite, on peut lire dans la shadow map pour obtenir la depth enregistrée dans le pixel concerné. Cette depth doit alors être comparée à la depth du fragment courant, toujours selon le point de vue de la light, pour savoir s'il est visible depuis la light.</p>
+<p>Le code est le suivant:</p>
+<pre><code class="hljs css language-glsl"><span class="hljs-type">vec4</span> positionInDirLightScreen = uDirLightViewProjMatrix * <span class="hljs-type">vec4</span>(position, <span class="hljs-number">1</span>);
+<span class="hljs-type">vec3</span> positionInDirLightNDC = <span class="hljs-type">vec3</span>(positionInDirLightScreen / positionInDirLightScreen.w) * <span class="hljs-number">0.5</span> + <span class="hljs-number">0.5</span>;
+<span class="hljs-type">float</span> depthBlockerInDirSpace = <span class="hljs-built_in">texture</span>(uDirLightShadowMap, positionInDirLightNDC.xy).r;
+<span class="hljs-type">float</span> dirLightVisibility = positionInDirLightNDC.z &lt; depthBlockerInDirSpace + uDirLightShadowMapBias ? <span class="hljs-number">1.0</span> : <span class="hljs-number">0.0</span>;
+</code></pre>
+<p>La première ligne applique la matrice pour projeter la position du fragment courant.</p>
+<p>La deuxième light homogénise cette position projetée en divisant par la coordonnée &quot;w&quot;. A l'issue de cette opération, toutes les coordonnées sont entre -1 et 1. Afin de pouvoir lire dans la shadow map, on les ramène entre 0 et 1 grace au *0.5 + 0.5. Les coordonnées .xy identifie le pixel à lire dans la shadow map, et la coordonnée .z stocke la depth du fragment selon le point de vue de la light.</p>
+<p>La troisème ligne lit la depth stockée dans la shadow map à la position du fragment.</p>
+<p>Enfin la dernière ligne compare la depth stockée à la depth du fragment afin de savoir si la light est visible.</p>
+<p>On rajoute un biais uDirLightShadowMapBias afin d'éviter les erreurs d'imprecision numériques qui apparaissent sous la forme de &quot;shadow acnée&quot; (mettez ce bias a 0 initialement pour voir le problème).</p>
+<p>La variable dirLightVisibility vaut 0 si le fragment est occulté depuis la ligne, 1 sinon. Multipliez cette variable à la contribution de la lumière directionnelle afin de l'ajouter dans fColor.</p>
+<p>Une fois les modifications effectuées sur le shader, modifier le code de l'application pour récupérer la location des nouvelles uniformes. Dans la boucle de rendu, settez ces uniforms correctement et bindez la texture de shadow map m_directionalSMTexture ainsi que le sampler m_directionalSMSampler sur une nouvelle texture unit (non utilisée par le GBuffer). Pour le uDirLightShadowMapBias, faites en sorte qu'il soit controlable depuis la GUI.</p>
+<p>Enfin il y a un piège pour la matrice uDirLightViewProjMatrix. Le code est un peu différent de la passe précédente puisqu'il ne suffit de pas multiplier dirLightProjMatrix à dirLightViewMatrix pour obtenir cette matrice.</p>
+<p>Cela est du au fait que les fragments de la shading pass ne sont pas en espace World mais en espace View de la caméra. Il faut donc qu'ils soient repassés en World avant d'être transformés dans l'espace de la light. Pour cela, il suffit de multiplier à gauche par l'inverse de la View matrix de la caméra:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> rcpViewMatrix = m_viewController.getRcpViewMatrix(); <span class="hljs-comment">// Inverse de la view matrix de la caméra</span>
+glUniformMatrix4fv(m_uDirLightViewProjMatrix_shadingPass, <span class="hljs-number">1</span>, GL_FALSE, glm::value_ptr(dirLightProjMatrix * dirLightViewMatrix * rcpViewMatrix));
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="si-ca-ne-fonctionne-pas"></a><a href="#si-ca-ne-fonctionne-pas" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Si ça ne fonctionne pas</h2>
+<p>A ce stade, votre shadow mapping devrait fonctionner et vous devriez donc voir les ombres portées par les objets de la scène par rapport à la lumière directionnelle.</p>
+<p>Néammoins, il peut exister une multitude de raisons pour lesquelles un shadow mapping ne fonctionnerait pas immédiatement (c'est d'ailleur rare qu'il fonctionne du premier coup).</p>
+<p>Afin de débogguer, une première approche peut être d'afficher la depth map vue par la caméra. Malheureusement, la depth map ne peut pas être blittée à l'ecran comme les autres textures du GBuffer.</p>
+<p>Il faut donc coder un fragment shader dediée à l'affichage de la depth map:</p>
+<pre><code class="hljs css language-glsl"><span class="hljs-comment">// displayDepth.fs.glsl</span>
+<span class="hljs-meta">#version 330</span>
+
+<span class="hljs-keyword">uniform</span> <span class="hljs-type">sampler2D</span> uGDepth;
+
+<span class="hljs-keyword">out</span> <span class="hljs-type">vec3</span> fColor;
+
+<span class="hljs-type">void</span> main()
+{
+    <span class="hljs-type">float</span> depth = <span class="hljs-built_in">texelFetch</span>(uGDepth, <span class="hljs-type">ivec2</span>(<span class="hljs-built_in">gl_FragCoord</span>.xy), <span class="hljs-number">0</span>).r;
+    fColor = <span class="hljs-type">vec3</span>(depth); <span class="hljs-comment">// Since the depth is between 0 and 1, pow it to darkness its value</span>
+}
+</code></pre>
+<p>Ce fragment shader peut être combiné à <em>shadingPass.vs.glsl</em> pour former un programme GLSL. En bindant correctment la depth map à afficher, et en dessinant un triangle sur tout l'ecran, on peut ainsi afficher n'importance quel depth map (en particulier celle représentant la shadow map de la light).</p>
+<p>Voir sur la branche cheat pour un exemple.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/gold-04-shadow-mapping-01-introduction"><span class="arrow-prev">← </span><span>Introduction</span></a><a class="docs-next button" href="/openglnoel/docs/gold-04-shadow-mapping-03-percentage-closest-filtering"><span>Percentage Closest Filtering</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#initialisation">Initialisation</a></li><li><a href="#shaders">Shaders</a></li><li><a href="#creation-de-la-shadow-map">Création de la shadow map</a></li><li><a href="#utilisation-de-la-shadow-map">Utilisation de la shadow map</a></li><li><a href="#si-ca-ne-fonctionne-pas">Si ça ne fonctionne pas</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2019 Laurent NOEL</section></footer></div></body></html>

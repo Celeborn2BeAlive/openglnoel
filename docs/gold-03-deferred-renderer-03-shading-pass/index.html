@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Shading Pass · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;Il faut maintenant coder la shading pass, qui a pour role d&#x27;illuminer chaque pixel en utilisant les textures du GBuffer qui viennents se substituer aux variables d&#x27;entrées du fragment shader d&#x27;un forward renderer.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Shading Pass · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/index.html"/><meta property="og:description" content="&lt;p&gt;Il faut maintenant coder la shading pass, qui a pour role d&#x27;illuminer chaque pixel en utilisant les textures du GBuffer qui viennents se substituer aux variables d&#x27;entrées du fragment shader d&#x27;un forward renderer.&lt;/p&gt;
+"/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><link rel="stylesheet" href="/openglnoel/css/main.css"/></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/openglnoel/"><img class="logo" src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]"/><h2 class="headerTitleWithLogo">OpenGL[&quot;noël&quot;]</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/openglnoel/docs/intro-sdk-01-philogl-01-introduction" target="_self">Introduction et SDK</a></li><li class=""><a href="/openglnoel/docs/bronze-02-hello-triangle-01-code-de-base" target="_self">Bronze</a></li><li class=""><a href="/openglnoel/docs/silver-01-3d-theorie-01-introduction" target="_self">Silver</a></li><li class="siteNavGroupActive"><a href="/openglnoel/docs/gold-01-intro-sdk-01-introduction" target="_self">Gold</a></li><li class=""><a href="/openglnoel/blog/" target="_self">Blog</a></li><li class=""><a href="http://docs.gl" target="_self">OpenGL Documentation</a></li><li class=""><a href="https://www.khronos.org/opengl/wiki/" target="_self">OpenGL Wiki</a></li><li class=""><a href="https://github.com/celeborn2bealive/openglnoel" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Deferred Renderer</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction et SDK</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-01-intro-sdk-01-introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-01-intro-sdk-03-fiche-info">Fiche d&#x27;information</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-01-intro-sdk-05-projet">Projet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Forward Renderer</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-01-pipeline">Pipeline de Rendu</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-02-geometrie">Geometrie</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-03-shaders">Shaders</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-04-transformations">Transformations</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-05-lighting">Lighting</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-06-textures">Textures</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-07-load-obj">Chargement de modèles OBJ</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-02-forward-renderer-08-plus-loin">Aller plus loin</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Deferred Renderer</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-03-deferred-renderer-01-pipeline">Pipeline de Rendu</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-03-deferred-renderer-02-geometry-pass">Geometrie Pass</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/openglnoel/docs/gold-03-deferred-renderer-03-shading-pass">Shading Pass</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-03-deferred-renderer-04-plus-loin">Aller plus loin</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Shadow Mapping</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-04-shadow-mapping-01-introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-04-shadow-mapping-02-dir-shadow-map">Directional Shadow Map</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-04-shadow-mapping-03-percentage-closest-filtering">Percentage Closest Filtering</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-04-shadow-mapping-04-aller-plus-loin">Aller Plus Loin</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Post Processing</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-05-post-processing-01-introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-05-post-processing-02-gamma-correction">Gamma Correction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-05-post-processing-03-extraction-contours">Extraction et Rendu de Contours</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-05-post-processing-04-depth-of-field">Depth of Field</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Annexe: API OpenGL</h3><ul><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-01-opengl-context">Contexte OpenGL</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-02-gpu-pipeline">Pipeline de Rendu</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-03-opengl-extensions">Extensions OpenGL</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-04-opengl-objects">Objets OpenGL</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-05-buffer-objects">Buffer Objects</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-06-vertex-array-objects">Vertex Array Objects</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-07-textures">Texture Objects</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-08-framebuffer-objects">Framebuffer Objects</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gold-06-course-09-shaders">Shaders</a></li></ul></div></div></section></div><script>
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Shading Pass</h1></header><article><div><span><p>Il faut maintenant coder la shading pass, qui a pour role d'illuminer chaque pixel en utilisant les textures du GBuffer qui viennents se substituer aux variables d'entrées du fragment shader d'un forward renderer.</p>
+<h2><a class="anchor" aria-hidden="true" id="shaders"></a><a href="#shaders" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Shaders</h2>
+<p>Créez deux nouveaux shaders <em>shadingPass.vs.glsl</em> et <em>shadingPass.fs.glsl</em>.</p>
+<p>Le VS est destiner à traiter un simple quad en 2D couvrant tout l'écran, tout ce passera dans le FS.
+Voici donc le code du VS:</p>
+<pre><code class="hljs css language-glsl"><span class="hljs-meta">#version 330</span>
+
+<span class="hljs-keyword">layout</span>(<span class="hljs-keyword">location</span> = <span class="hljs-number">0</span>) <span class="hljs-keyword">in</span> <span class="hljs-type">vec2</span> aPosition;
+
+<span class="hljs-type">void</span> main()
+{
+    <span class="hljs-built_in">gl_Position</span> =  <span class="hljs-type">vec4</span>(aPosition, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
+}
+</code></pre>
+<p>Pour le FS c'est un peu plus compliqué, mais vous pouvez repartir de celui du forward renderer.
+Il faut simplement remplacer les variables <em>in</em> et les lectures dans les textures de matériaux par des lectures dans les textures du GBuffer.</p>
+<p>On ajoute donc les uniforms suivantes:</p>
+<pre><code class="hljs css language-glsl"><span class="hljs-keyword">uniform</span> <span class="hljs-type">sampler2D</span> uGPosition;
+<span class="hljs-keyword">uniform</span> <span class="hljs-type">sampler2D</span> uGNormal;
+<span class="hljs-keyword">uniform</span> <span class="hljs-type">sampler2D</span> uGAmbient;
+<span class="hljs-keyword">uniform</span> <span class="hljs-type">sampler2D</span> uGDiffuse;
+<span class="hljs-keyword">uniform</span> <span class="hljs-type">sampler2D</span> uGlossyShininess;
+</code></pre>
+<p>qu'il faut utiliser dans le main du shader pour récupérer les infos géométrique du fragment et les infos de matériaux.
+Pour lire dans les textures du GBuffer, il faut utiliser la fonction GLSL <em>texelFetch</em> ainsi que la variable built-in <em>gl_FragCoord</em> contenant les coordonnées du pixel courant. Exemple:</p>
+<pre><code class="hljs css language-glsl"><span class="hljs-type">vec3</span> position = <span class="hljs-type">vec3</span>(<span class="hljs-built_in">texelFetch</span>(uGPosition, <span class="hljs-type">ivec2</span>(<span class="hljs-built_in">gl_FragCoord</span>.xy), <span class="hljs-number">0</span>)); <span class="hljs-comment">// Correspond a vViewSpacePosition dans le forward renderer</span>
+</code></pre>
+<p>Ensuite l'algorithme pour calculer la couleur du fragment à partir des lights reste le meme.</p>
+<p>Dans le code de l'application, chargez et compilez vos deux shaders dans un second programme GLSL afin de vérifier que vous n'avez pas fait d'erreur de syntaxe. On utilisera ce nouveau programme par la suite dans la boucle de rendu.</p>
+<p>A l'initialisation, récupérez les locations des nouvelles uniformes (ainsi que des anciennes, mettez à jour le programme concerné puisqu'on en a deux maintenant).</p>
+<h2><a class="anchor" aria-hidden="true" id="un-quad-ou-un-triangle-voir-la-note"></a><a href="#un-quad-ou-un-triangle-voir-la-note" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Un Quad (ou un triangle, voir la note)</h2>
+<p>Afin de &quot;lancer&quot; la Shading Pass et pouvoir passer dans le fragment shader pour calculer la couleur de nos pixels, il faut un truc à dessiner à l'écran. Puisque toute la géometrie visible depuis la caméra est déjà encodée dans le GBuffer, il suffira juste de dessiner un quad couvrant tout l'écran pour pouvoir parcourir tous les pixels du GBuffer et faire notre traitement.</p>
+<p>Dans la classe Application, ajoutez un nouveau VBO, IBO et VAO. Faite en sorte que ces trois objets stockent ce qu'il faut pour dessiner un quad en 2D sur tout l'ecran (de -1 à 1 sur chacun des axes). Il n'y a que l'attribut de position à envoyer.</p>
+<blockquote>
+<p>Plutot que de dessiner un quad, qui comporte deux triangle, il est également possible de dessiner un triangle couvrant plus que tout les écrans. L'ensemble des pixels du triangle en dehors de l'écran seront discardés avant même d'arriver dans le fragment shader.
+Les coordonnées d'un tel triangle peuvent etres les suivantes: (-1, -1), (3, -1), (-1, 3).
+Dessinez le sur papier pour vous en convaincre.
+Dans le cas d'un triangle, pas besoin d'IBO, on peut directement appeler <em>glDrawArrays</em>.</p>
+</blockquote>
+<table>
+<thead>
+<tr><th>Sans DSA</th><th>DSA</th></tr>
+</thead>
+<tbody>
+<tr><td>glGenBuffers</td><td>glCreateBuffers</td></tr>
+<tr><td>glGenVertexArrays</td><td>glCreateVertexArrays</td></tr>
+<tr><td>glBindBuffer(GL_ARRAY_BUFFER, vboID)</td></tr>
+<tr><td>glBufferStorage</td><td>glNamedBufferStorage</td></tr>
+<tr><td></td><td>glVertexArrayVertexBuffer</td></tr>
+<tr><td></td><td>glVertexArrayAttribBinding</td></tr>
+<tr><td>glEnableVertexAttribArray</td><td>glEnableVertexArrayAttrib</td></tr>
+<tr><td>glVertexAttribPointer</td><td>glVertexArrayAttribFormat</td></tr>
+<tr><td>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID)</td><td>glVertexArrayElementBuffer</td></tr>
+</tbody>
+</table>
+<h2><a class="anchor" aria-hidden="true" id="au-rendu"></a><a href="#au-rendu" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Au Rendu</h2>
+<p>Dans la boucle de rendu, remplacez le blit des textures du GBuffer de l'exercice précédent par les étapes suivantes:</p>
+<ul>
+<li><em>.use()</em> sur le programme de la shading pass</li>
+<li>set des uniforms de light (point light et directional light, qui sont normalement dans le fragment shader de la shading pass)</li>
+<li>binding des textures du GBuffer sur différentes texture units (de 0 à 4 inclut)</li>
+<li>set des uniforms correspondant aux textures du GBuffer (chacune avec l'indice de la texture unit sur laquelle la texture correspondante est bindée)</li>
+<li>dessin du quad/triangle</li>
+</ul>
+<p>Fonctions OpenGL à utiliser au rendu:</p>
+<ul>
+<li>glUniform3fv, glUniform1i</li>
+<li>glActiveTexture</li>
+<li>glBindTexture</li>
+<li>glBindVertexArray</li>
+<li>glDrawElements (ou glDrawArrays si triangle)</li>
+<li>glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)</li>
+</ul>
+<p>Après ça vous devriez retrouver le rendu que vous aviez avec le forward renderer.</p>
+<p>Vous pouvez essayer de charger de grosse scènes (ou génération aléatoire de plein de géométrie) pour comparer les performances des deux méthodes de rendu.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/gold-03-deferred-renderer-02-geometry-pass"><span class="arrow-prev">← </span><span>Geometrie Pass</span></a><a class="docs-next button" href="/openglnoel/docs/gold-03-deferred-renderer-04-plus-loin"><span>Aller plus loin</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#shaders">Shaders</a></li><li><a href="#un-quad-ou-un-triangle-voir-la-note">Un Quad (ou un triangle, voir la note)</a></li><li><a href="#au-rendu">Au Rendu</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2019 Laurent NOEL</section></footer></div></body></html>
