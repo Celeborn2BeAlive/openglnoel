@@ -5,7 +5,7 @@ authorURL: http://laurentnoel.fr
 authorFBID: 100003593998838
 ---
 
-Bienvenu sur le blog de ce site, destiné au TDs d'OpenGL moderne que je donne à l'[Université Paris Est Marne-la-Vallée](http://www.u-pem.fr/). Plus spécifiquement, ces TDs sont donnés aux étudiants de l'[Ecole d'ingénieurs Imac](https://www.ingenieur-imac.fr/) et aux étudiants du [master Sciences de l'Image](http://www.u-pem.fr/formations/loffre-de-formations/masters/domaine-sciences-technologies-sante/mention-informatique/master-sciences-de-limage/).
+Bienvenu sur le blog de ce site, destiné au TDs d'OpenGL moderne que je donne à l'[Université Paris Est Marne-la-Vallée](http://www.u-pem.fr/). Plus spécifiquement, ces TDs sont donnés aux étudiants de l'[Ecole d'ingénieurs Imac](https://www.ingenieur-imac.fr/) et aux étudiants du [Master Sciences de l'Image](http://www.u-pem.fr/formations/loffre-de-formations/masters/domaine-sciences-technologies-sante/mention-informatique/master-sciences-de-limage/).
 
 Il y a deux modules de TDs que je prévois de regrouper sur ce site:
 - OpenGL 3+ donné aux Imac 2 (initialement disponible [ici](http://igm.univ-mlv.fr/~lnoel/index.php?section=teaching&teaching=opengl))

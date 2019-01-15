@@ -37,7 +37,7 @@ Au rendu:
 
 - glUniformMatrix4fv
 
-Aide: [TD de l'année précédente](http://igm.univ-mlv.fr/~lnoel/index.php?section=teaching&teaching=opengl&teaching_section=tds&td=td6#intro)
+Aide: [TD de l'année précédente](silver-02-3d-pratique-01-introduction)
 
 ## Avec Caméra
 

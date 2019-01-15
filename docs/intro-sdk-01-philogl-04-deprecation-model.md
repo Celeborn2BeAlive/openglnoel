@@ -1,5 +1,5 @@
 ---
-id: bronze-01-philogl-04-deprecation-model
+id: intro-sdk-01-philogl-04-deprecation-model
 title: Deprecation Model
 ---
 

@@ -3,6 +3,8 @@ id: bronze-02-hello-triangle-01-code-de-base
 title: Le code de base
 ---
 
+> <span class="badge warning"></span> La partie Bronze n'a pas encore été adaptée au nouveau template disponible sur Github.
+
 Commençons par jeter un oeil au code de base du fichier TP_template/SDLtemplate.cpp. Ce code est en C++, que vous ne connaissez peut-être pas encore. Il faudra vous y faire car vous allez en bouffer !
 
 ```cpp

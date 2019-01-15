@@ -30,7 +30,7 @@ Au cours de cette passe, on dessiner simplement un quad couvrant l'écran, le ve
 Au contraire, le fragment shader lit dans les textures du GBuffer les informations du pixel courant (qui ont été enregistré pendant la geometry pass) et calcule la couleur finale à partir de ces infos et des lumières de la scène.
 
 L'image ci-dessous montre en haut un rendu final, résultat de la Shading Pass appliquée au GBuffer donc les textures sont montrés en bas:
-![GBuffer](/images/gbuffer_1.png)
+![GBuffer](/openglnoel/img/gbuffer_1.png)
 
 A noter qu'il y énormément de manière de remplir un GBuffer en fonction des performances voulues.
 Pour ces TPs, on se contentera d'écrire tous les informations dont on a besoin pour le lighting, sans chercher à optimiser.

@@ -12,7 +12,7 @@ Le modèle que nous allons mettre en place est le modèle de Blinn-Phong. C'est 
 Le modèle de Blinn-Phong est définit par l'équation suivante:
 
 $$
-Couleur=Li(Kd(wi \cdot{} N)+Ks(halfVector \cdot{} N)shininess)
+Couleur=Li(Kd(wi \cdot{} N)+Ks(halfVector \cdot{} N)^{shininess})
 $$
 
 où:

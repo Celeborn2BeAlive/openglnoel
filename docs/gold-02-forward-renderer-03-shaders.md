@@ -7,7 +7,7 @@ Créez un sous-dossier *shader* dans le dossier de l'application *foward-rendere
 
 Voir les différents shaders des applications déjà présente pour vous aider.
 
-[Ce TD de l'année précedente](http://igm.univ-mlv.fr/~lnoel/index.php?section=teaching&teaching=opengl&teaching_section=tds&td=td5) explique également la théorie.
+[Ce TD de l'année précedente](silver-01-3d-theorie-01-introduction) explique également la théorie.
 
 ## Le Vertex Shader
 

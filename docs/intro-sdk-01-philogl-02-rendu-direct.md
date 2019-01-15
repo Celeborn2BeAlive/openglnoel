@@ -1,11 +1,13 @@
 ---
-id: bronze-01-philogl-02-rendu-direct
+id: intro-sdk-01-philogl-02-rendu-direct
 title: Le Rendu Direct
 ---
 
+![Immediate Mode](/openglnoel/img/claims-to-know-opengl-uses-immediate-mode.jpg)
+
 ## Qu'est ce que le rendu direct
 
-Le rendu direct c'est ce que vous avez pratiqué en Synthèse d'Image 1: utiliser les fonctions glBegin, glEnd, glVertex, glColor, etc. dans la boucle principale pour faire votre rendu. Voici un exemple qui dessine un triangle coloré:
+Le rendu direct (ou "immediate mode rendering"), c'est ce que vous avez pratiqué en Synthèse d'Image 1: utiliser les fonctions glBegin, glEnd, glVertex, glColor, etc. dans la boucle principale pour faire votre rendu. Voici un exemple qui dessine un triangle coloré:
 
 ```cpp
 // OpenGL 2 et rendu direct:

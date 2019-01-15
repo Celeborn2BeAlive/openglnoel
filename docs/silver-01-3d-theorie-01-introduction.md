@@ -3,6 +3,8 @@ id: silver-01-3d-theorie-01-introduction
 title: Introduction
 ---
 
+> <span class="badge warning"></span> La partie Silver n'a pas encore été adaptée au nouveau template disponible sur Github.
+
 Pour "dessiner" des objets en 3D sur une surface 2D (votre écran), il est nécéssaire d'appliquer une projection. En réalité OpenGL a très peu de connaissances sur votre 3D: l'algorithme de rasterization est appliqué sur les coordonnées projetées avec l'ajout de la profondeur simplement pour décider si un fragment vient masquer un fragment déjà présent dans le framebuffer. Nous allons donc commencer par une partie un peu théorique pour détailler chaque espace de coordonnée.
 
 ## Coordonnées homogènes

@@ -1,6 +1,6 @@
 ---
-id: gold-01-intro-sdk-02-repo-github
-title: Repository Github
+id: intro-sdk-02-SDK-01-repository
+title: Le repository Github
 ---
 
 ## Git ?
@@ -19,9 +19,9 @@ N'oubliez pas de vérifier votre e-mail en cliquant sur le lien reçu.
 
 ## Fork du repo des TDs
 
-Une fois connecté sur Github, allez sur la page du repository des TDs https://github.com/Celeborn2BeAlive/opengl-avance et cliquez sur le bouton "Fork" en haut à droite.
+Une fois connecté sur Github, allez sur la page du repository des TDs https://github.com/Celeborn2BeAlive/openglnoel et cliquez sur le bouton "Fork" en haut à droite.
 
-Cela va créer une copie de mon repository "opengl-avance" sur votre compte Github. Vous pourrez utiliser cette copie comme bon vous semble, faire des modifications (c'est le but !), et même me soumettre vos modifications pour intégration dans le repository original (à éviter à moins que je vous le demande).
+Cela va créer une copie de mon repository "openglnoel" sur votre compte Github. Vous pourrez utiliser cette copie comme bon vous semble, faire des modifications (c'est le but !), et même me soumettre vos modifications pour intégration dans le repository original (à éviter à moins que je vous le demande).
 
 ## Installer Git
 
@@ -35,7 +35,7 @@ Commande à adapter à votre distribution Linux.
 
 Sous windows [téléchargez et installez Git](https://git-scm.com/download/win). Vous devriez ensuite pouvoir lancer une console Git (recherchez "Git" à partir du menu windows) et executer les commandes à venir, comme sous linux.
 
-## Clonage de votre repo
+## Cloner votre repo en local
 
 Il faut à présent cloner en local votre copie du repository. On doit pour cela utiliser la commande **git clone**. Dans une console, commencez par vous placer dans le repertoire de votre choix (utilisez la console Git sous windows):
 
@@ -46,12 +46,12 @@ cd /le/repertoire/de/mon/choix
 On clone ensuite le repo (c'est évident mais j'ai appris à me méfier: remplacez *\<username\>* par votre nom d'utilisateur Github):
 
 ```bash
-git clone https://github.com/<username>/opengl-avance
+git clone https://github.com/<username>/openglnoel
 ```
 
 Si vous travaillez en binome, choisissez l'un des deux repo pour travailler en TD.
 
-Un nouveau dossier **opengl-avance** devrait alors être créé. Cela ci contient le repository local. Déplacez vous dedans en console.
+Un nouveau dossier **openglnoel** devrait alors être créé. Cela ci contient le repository local. Déplacez vous dedans en console.
 
 ## Branches du repo
 
@@ -59,21 +59,16 @@ Un repository peut être composé de plusieurs branches, c'est à dire différen
 
 Principales:
 
-- master *Code de base + apps d'exemple en OpenGL 4.4*
-- master-direct-state-access *Code de base + apps d'exemple en OpenGL 4.5 (avec DSA)*
+- master *Code de base + apps d'exemple en OpenGL 3+*
 
 Corrections:
 
-- cheat *Correction des TDs en en OpenGL 4.4. A utiliser lorsque vous aurez perdu toute dignité*
+- cheat-* *Branches de correction des TDs pour chaque niveau Bronze, Silver, Gold. A utiliser lorsque vous aurez perdu toute dignité*
 
-Site web des TDs (ne devrait pas vous concerner):
+Site web des TDs (peut vous concerner si vous voulez [corriger les fautes d'orthographe](intro-sdk-02-SDK-04-le-site-web) ou contribuer):
 
-- hugo-website *Site web statique développé avec Hugo*
-- gh-pages *Version release du site web, que vous etes en train de lire en ce moment*
-
-Inutiles pour vous:
-
-- voxskel *Un truc que j'avais codé pour débugguer un code*
+- www *Site web statique développé avec [docusaurus](https://docusaurus.io/)*
+- gh-pages *Version buildée et déployée du site web, que vous etes en train de lire en ce moment*
 
 Pour changer de branche il faut utiliser la commande 
 
@@ -81,7 +76,7 @@ Pour changer de branche il faut utiliser la commande
 git checkout <branch_name>
 ```
 
-Vous n'aurez normalement pas à changer de branche, mais si vous voulez travailler en direct state access, passez sur la branche *master-direct-state-access*.
+Mais vous n'aurez normalement pas à changer de branche.
 
 ## Première modification
 

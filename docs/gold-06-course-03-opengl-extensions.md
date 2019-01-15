@@ -27,9 +27,8 @@ L'extension Direct State Access (DSA) ([GL_EXT_direct_state_access](https://www.
 
 Cela permet d'éviter de se préoccuper de l'état global du contexte OpenGL lorsque l'on veut manipuler les objets OpenGL et ainsi d'éviter un grand nombre d'erreurs de programmation.
 
-{{< notice "warning" >}}
+<span class="badge warning"></span>
 Cette extension n'est pas disponible sur toutes les cartes graphiques. En particulier les machines de la FAC n'en sont pas equipées entièrement (il y a l'extension <strong>GL_EXT_direct_state_access</strong> qui n'est que partielle). Si vous n'y avez pas accès, ne l'utilisez pas: cette extension ne fournit que des facilités de programmation, pas de fonctionnalité en plus.
-{{< /notice >}}
 
 Cette extension est très pratique car elle permet d'éviter de binder les objets OpenGL pour les manipuler (on passe aux fonctions directement l'identifiant de l'objet), et donc d'éviter les erreurs liées au mécanisme de binding. Je vous conseille donc de l'utiliser autant que possible.
 

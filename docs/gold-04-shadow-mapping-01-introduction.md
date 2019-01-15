@@ -11,7 +11,7 @@ Nous allons nous intéresser au shadow mapping pour ces TPs. L'idée est de fair
 
 Le schéma suivant résume ce principe:
 
-![Shadow Mapping](/images/shadow_mapping.jpg)
+![Shadow Mapping](/openglnoel/img/shadow_mapping.jpg)
 
 Cet algorithme peut être implémenté sur un forward renderer ou sur un deferred renderer. Pour ces TPs nous allons repartir du deferred renderer. Si vous ne l'avez pas terminé, vous pouvez le récupérer sur la branche cheat du repository.
 

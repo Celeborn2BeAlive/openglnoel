@@ -1,18 +1,24 @@
 {
     "Introduction et SDK": {
-        "Introduction et SDK": [
-            "intro-sdk-todo"
+        "La Philosophie OpenGL 3+": [
+            "intro-sdk-01-philogl-01-introduction",
+            "intro-sdk-01-philogl-02-rendu-direct",
+            "intro-sdk-01-philogl-03-pipeline-programmable",
+            "intro-sdk-01-philogl-04-deprecation-model",
+            "intro-sdk-01-philogl-05-exemple",
+            "intro-sdk-01-philogl-06-conclusion"
+        ],
+        "Software Development Kit (SDK)": [
+            "intro-sdk-02-SDK-01-repository",
+            "intro-sdk-02-SDK-02-compilation",
+            "intro-sdk-02-SDK-03-structure-du-sdk",
+            "intro-sdk-02-SDK-04-le-site-web"
+        ],
+        "Aller plus loin": [
+            "intro-sdk-03-aller-plus-loin-01-liens"
         ]
     },
     "Bronze Level": {
-        "La Philosophie OpenGL 3+": [
-            "bronze-01-philogl-01-introduction",
-            "bronze-01-philogl-02-rendu-direct",
-            "bronze-01-philogl-03-pipeline-programmable",
-            "bronze-01-philogl-04-deprecation-model",
-            "bronze-01-philogl-05-exemple",
-            "bronze-01-philogl-06-conclusion"
-        ],
         "Hello Triangle": [
             "bronze-02-hello-triangle-01-code-de-base",
             "bronze-02-hello-triangle-02-triangle-blanc",
@@ -69,11 +75,8 @@
     "Gold Level": {
         "Introduction et SDK": [
             "gold-01-intro-sdk-01-introduction",
-            "gold-01-intro-sdk-02-repo-github",
             "gold-01-intro-sdk-03-fiche-info",
-            "gold-01-intro-sdk-04-sdk",
-            "gold-01-intro-sdk-05-projet",
-            "gold-01-intro-sdk-06-liens"
+            "gold-01-intro-sdk-05-projet"
         ],
         "Forward Renderer": [
             "gold-02-forward-renderer-01-pipeline",

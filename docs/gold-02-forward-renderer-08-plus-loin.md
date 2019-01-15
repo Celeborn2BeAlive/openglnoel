@@ -1,6 +1,6 @@
 ---
 id: gold-02-forward-renderer-08-plus-loin
-title: Geometrie
+title: Aller plus loin
 ---
 
 Voici plusieurs choses améliorable pour rendre notre forward renderer plus interessant:

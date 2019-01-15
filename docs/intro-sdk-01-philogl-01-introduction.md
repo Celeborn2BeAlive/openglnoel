@@ -1,9 +1,11 @@
 ---
-id: bronze-01-philogl-01-introduction
+id: intro-sdk-01-philogl-01-introduction
 title: Introduction
 ---
 
-Si vous avez fait déjà fait de l'OpenGL 2, il est nécessaire que vous compreniez pourquoi vous devez tout oublier (ou presque) et qu'est ce qui va changer. OpenGL 3 est souvent jugé plus compliqué qu'OpenGL 2. En réalité ce qui est plus compliqué c'est surtout de s'y mettre :p En effet, la quantité de code necessaire pour obtenir un simple triangle coloré est impressionante, ce qui a de quoi décourager. Néanmmoins, une fois ce code mis en place il reste généralement identique d'une application à l'autre, d'où l'intéret de coder une bibliothèque pour factoriser son code en parallèle des TDs.
+Bienvenu sur ce site ! Ici vous pourrez apprendre à utiliser l'API OpenGL moderne (version supérieure à 3) afin de créer des applications interactives 3D. Le contenu de ce site fait parti de la formation en synthèse d'images donné à l'Université Paris-Est Marne la Vallée, au sein du Master Sciences de l'Image et de l'école d'ingénieurs Imac. 
+
+Bien évidemment, vous pouvez profiter du contenu de ce site sans suivre l'une de ces formations. Sachez juste qu'il y aura plusieurs références à ces formations au sein des pages que vous lirez. Vous êtes également libre de poser des questions dans les commentaires, ou encore de m'aider à améliorer le site via des pull request sur Github.
 
 ## Qu'est ce que OpenGL ?
 
@@ -25,4 +27,6 @@ En effet, l'avantage d'utiliser le GPU est d'avoir accès à un processeur spéc
 
 Direct3D, maintenu par Microsoft, est l'une des rares API concurrente à OpenGL. Tout ce qui a été dit plus haut est valable pour Direct3D. Cette dernière a eu à une époque beaucoup plus de popularité qu'OpenGL. Les choses sont en train de changer, surtout depuis que la plate forme de jeu Steam a été porté sous Linux :p
 
-## Vulkan, le niveau superieur
+## OpenGL 3 ?
+
+Si vous avez fait déjà fait de l'OpenGL 2, il est nécessaire que vous compreniez pourquoi vous devez tout oublier (ou presque) et qu'est ce qui va changer. OpenGL 3 est souvent jugé plus compliqué qu'OpenGL 2. En réalité ce qui est plus compliqué c'est surtout de s'y mettre :p En effet, la quantité de code necessaire pour obtenir un simple triangle coloré est impressionante, ce qui a de quoi décourager. Néanmmoins, une fois ce code mis en place il reste généralement identique d'une application à l'autre, d'où l'intéret de coder une bibliothèque pour factoriser son code en parallèle des TDs.

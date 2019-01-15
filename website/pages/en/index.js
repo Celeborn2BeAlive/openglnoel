@@ -63,6 +63,11 @@ class HomeSplash extends React.Component {
                 <Logo img_src={`${baseUrl}img/logo.png`} />
                 <div className="inner">
                     <ProjectTitle siteConfig={siteConfig} />
+                    <PromoSection>
+                        <Button href={docUrl('intro-sdk-01-philogl-01-introduction.html')}>Getting Started</Button>
+                        <Button href={docUrl('bronze-02-hello-triangle-01-code-de-base.html')}>Imac 2 / Master 1</Button>
+                        <Button href={docUrl('gold-01-intro-sdk-01-introduction.html')}>Imac 3 / Master 2</Button>
+                    </PromoSection>
                 </div>
             </SplashContainer>
         );
@@ -87,8 +92,47 @@ class Index extends React.Component {
             </Container>
         );
 
+        const BronzeLevel = () => (
+            <Block background="white">
+                {[
+                    {
+                        content: `Apprenez à dessiner en 2D avec OpenGL 3+. Au programme: VBOs, VAOs, Shaders, Textures et Transformations 2D.<hr>Niveau Imac 2 et Master 1.`,
+                        image: `${baseUrl}img/iknowopengl-horizontal.png`,
+                        imageAlign: 'left',
+                        title: 'Bronze Level',
+                    },
+                ]}
+            </Block>
+        );
+
+        const SilverLevel = () => (
+            <Block background="light">
+                {[
+                    {
+                        content: `Apprenez à dessiner en 3D avec OpenGL 3+. Au programme: Théorie, Transformations 3D, Caméras, Lumières et Matériaux.<hr>Niveau Imac 2 et Master 1.`,
+                        image: `${baseUrl}img/dontneedmathgirl-horizontal.png`,
+                        imageAlign: 'right',
+                        title: 'Silver Level',
+                    },
+                ]}
+            </Block>
+        );
+
+        const GoldLevel = () => (
+            <Block background="white">
+                {[
+                    {
+                        content: `Techniques avancées pour la 3D avec OpenGL 3+. Au programme: Deferred Rendering, Shadow Mapping, Post Processing, Computes Shaders.<hr>Niveau Imac 3 et Master 2.`,
+                        image: `${baseUrl}img/onedoesnotsimplyuseopengl3.jpg`,
+                        imageAlign: 'left',
+                        title: 'Gold Level',
+                    },
+                ]}
+            </Block>
+        );
+
         const Features = () => (
-            <Block layout="fourColumn">
+            <Block layout="fourColumn" background="light">
                 {[
                     {
                         content: 'Installation du SDK des TDs pour commencer à coder.',
@@ -97,16 +141,22 @@ class Index extends React.Component {
                         title: 'Introduction et SDK',
                     },
                     {
-                        content: "Les bases d'OpenGL 3+: VBOs, VAOs, shaders, textures, etc. (Niveau Imac 2 et Master 1).",
+                        content: "OpenGL 3+ pour la 2D.",
                         // image: `${baseUrl}img/logo.png`,
                         imageAlign: 'top',
                         title: 'Bronze Level',
                     },
                     {
-                        content: 'Techniques avancées: Deferred rendering, shadow mapping, compute shaders, PBR, etc. (Niveau Imac 3 et Master 2).',
+                        content: 'OpenGL 3+ pour la 3D.',
                         // image: `${baseUrl}img/logo.png`,
                         imageAlign: 'top',
                         title: 'Silver Level',
+                    },
+                    {
+                        content: 'Techniques avancées en OpenGL pour la 3D.',
+                        // image: `${baseUrl}img/logo.png`,
+                        imageAlign: 'top',
+                        title: 'Gold Level',
                     },
                 ]}
             </Block>
@@ -117,6 +167,9 @@ class Index extends React.Component {
                 <HomeSplash siteConfig={siteConfig} language={language} />
                 <div>
                     <Features />
+                    <BronzeLevel />
+                    <SilverLevel />
+                    <GoldLevel />
                 </div>
             </div>
         );

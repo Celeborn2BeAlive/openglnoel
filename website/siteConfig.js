@@ -38,8 +38,8 @@ const siteConfig = {
 
     // For no header links in the top nav bar -> headerLinks: [],
     headerLinks: [
-        { doc: 'intro-sdk-todo', label: 'Introduction et SDK' },
-        { doc: 'bronze-01-philogl-01-introduction', label: 'Bronze' },
+        { doc: 'intro-sdk-01-philogl-01-introduction', label: 'Introduction et SDK' },
+        { doc: 'bronze-02-hello-triangle-01-code-de-base', label: 'Bronze' },
         { doc: 'silver-01-3d-theorie-01-introduction', label: 'Silver' },
         { doc: 'gold-01-intro-sdk-01-introduction', label: 'Gold' },
         { blog: true, label: 'Blog' },

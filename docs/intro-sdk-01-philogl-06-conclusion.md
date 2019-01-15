@@ -1,5 +1,5 @@
 ---
-id: bronze-01-philogl-06-conclusion
+id: intro-sdk-01-philogl-06-conclusion
 title: Conclusion
 ---
 

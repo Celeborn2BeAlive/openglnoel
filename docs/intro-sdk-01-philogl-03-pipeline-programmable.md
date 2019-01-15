@@ -1,5 +1,5 @@
 ---
-id: bronze-01-philogl-03-pipeline-programmable
+id: intro-sdk-01-philogl-03-pipeline-programmable
 title: Pipeline Programmable
 ---
 

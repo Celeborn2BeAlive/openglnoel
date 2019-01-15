@@ -3,35 +3,36 @@ id: gold-02-forward-renderer-07-load-obj
 title: Chargement de modèles OBJ
 ---
 
-> Vous pouvez obtenir différents modèles OBJ sur [cette page](http://graphics.cs.williams.edu/data/meshes.xml) (je vous conseille de commencer par essayer avec Crytek-Sponza).
+> Vous pouvez obtenir différents modèles OBJ sur [cette page](https://casual-effects.com/data/) (je vous conseille de commencer par essayer avec Crytek-Sponza).
 
 ## API
 
 Utiliser la fonction suivante de la lib pour charger un modèle OBJ:
 
 ```cpp
-void glmlv::loadObj(const glmlv::fs::path & objPath, glmlv::ObjData & data);
+void glmlv::loadAssimpScene(const glmlv::fs::path & objPath, glmlv::SceneData & data);
 ```
 
 Celle ci charge le fichier dont le chemin est passé en paramètre (pensez à mettre le modèle dans le repertoire *assets*).
-Elle remplit une structure de type **glmlv::ObjData** contenant les informations suivantes:
+Elle remplit une structure de type **glmlv::SceneData** contenant les informations suivantes:
 
 ```cpp
-struct ObjData
+struct SceneData
 {
-    size_t shapeCount; // Nombre d'objets dans l'OBJ
-    size_t materialCount; // Nombre de matériaux
-    // Point min et max de la bounding box de l'OBJ:
-    glm::vec3 bboxMin;
-    glm::vec3 bboxMax;
-    std::vector<Vertex3f3f2f> vertexBuffer; // Tableau de sommets
-    std::vector<uint32_t> indexBuffer; // Tableau d'indices
-    std::vector<uint32_t> indexCountPerShape; // Nombre d'indices par objet
+    // Points min et max de la bounding box englobant la scene
+    glm::vec3 bboxMin = glm::vec3(std::numeric_limits<float>::max());
+    glm::vec3 bboxMax = glm::vec3(std::numeric_limits<float>::lowest());
 
-    std::vector<int32_t> materialIDPerShape; // Index de materiaux de chaque objet (pointe dans le tableau materials)
+    std::vector<Vertex3f3f2f> vertexBuffer; // Tableau de sommets
+    std::vector<uint32_t> indexBuffer; // Tableau d'index de sommets
+
+    size_t shapeCount = 0; // Nombre d'objets à dessiner
+    std::vector<uint32_t> indexCountPerShape; // Nomber d'index de sommets pour chaque objet
+    std::vector<glm::mat4> localToWorldMatrixPerShape; // Matrice localToWorld de chaque objet
+    std::vector<int32_t> materialIDPerShape; // Index du materiau de chaque objet (-1 si pas de materiaux)
 
     std::vector<PhongMaterial> materials; // Tableau des materiaux
-    std::vector<Image2DRGBA> textures; // Tableau dex textures référencées par les materiaux
+    std::vector<Image2DRGBA> textures; // Tableau des textures référencés par les materiaux
 }
 ```
 
@@ -40,8 +41,8 @@ Les tableaux vertexBuffer et indexBuffer doivent être utilisés pour remplir un
 Les champs bboxMin et bboxMax permettent de connaitre les dimensions de la scene afin d'adapter la vitesse de la caméra et la matrice de projection. Par exemple:
 
 ```cpp
-ObjData data;
-loadObj(path, data);
+SceneData data;
+loadAssimpScene(path, data);
 
 const auto sceneDiagonalSize = glm::length(data.bboxMax - data.bboxMin);
 m_viewController.setSpeed(sceneDiagonalSize * 0.1f); // 10% de la scene parcouru par seconde
@@ -65,7 +66,7 @@ Dans le code ci-dessus, l'index offset permet de dire à OpenGL ou se trouve les
 
 Le tableau textures contient les textures référencées dans l'OBJ. Après chargement de l'OBJ, il faut créer une texture OpenGL pour chacune.
 
-Le tableau materials contient l'ensemble des materiaux référencés dans la scène. La fonction loadObj ne charge que les données de matériaux nécessaires à un modèle de shading de Blinn-Phong (Ambiant + Diffus + Glossy).
+Le tableau materials contient l'ensemble des materiaux référencés dans la scène. La fonction loadAssimpScene ne charge que les données de matériaux nécessaires à un modèle de shading de Blinn-Phong (Ambiant + Diffus + Glossy).
 
 Finalement, le tableau materialIDPerShape indique le materiau de chaque objet (l'index d'un élement du tableau materials).
 
@@ -78,12 +79,12 @@ Comme pour les exercices précédent, il est conseillé d'y aller par étape. D'
 
 ## Modèle de Shading
 
-Améliorer le modèle de shading utilisé pour utiliser le modèle de Blinn-Phong plutot qu'un simple modèle Diffus (voir [cet ancien TD](http://igm.univ-mlv.fr/~lnoel/index.php?section=teaching&teaching=opengl&teaching_section=tds&td=td8#intro) pour les équations).
+Améliorer le modèle de shading utilisé pour utiliser le modèle de Blinn-Phong plutot qu'un simple modèle Diffus (voir [cet ancien TD](gold-02-forward-renderer-07-load-obj) pour les équations).
 
 Cela implique de rajouter des variables uniformes pour le coefficient speculaire, la texture speculaire, l'exposant de shininess et la texture de shininess.
 
 Vous pouvez également rajouter le terme ambiant en addition.
 
-Toutes les informations necessaires sont chargés dans les matériaux de ObjData.
+Toutes les informations necessaires sont chargés dans les matériaux de SceneData.
 
 > Si vous bloquez sur un element du TP, vous pouvez puller la branche *cheat* du repo et regarder le code de l'application *forward-renderer-06-load-obj*.

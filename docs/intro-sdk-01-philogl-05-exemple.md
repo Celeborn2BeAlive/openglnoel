@@ -1,5 +1,5 @@
 ---
-id: bronze-01-philogl-05-exemple
+id: intro-sdk-01-philogl-05-exemple
 title: Exemple
 ---
 
