@@ -8,12 +8,11 @@
 int Application::run()
 {
 
-
-	glBindVertexArray(vao);
-
-	glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
-
-	glBindVertexArray(0);
+	float clearColor[3] = { 0.5, 0.8, 0.2 };
+	glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.f);
+	//glBindVertexArray(vaoCube);
+	//glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
+	//glBindVertexArray(0);
 
     // Loop until the user closes the window
     for (auto iterationCount = 0u; !m_GLFWHandle.shouldClose(); ++iterationCount)
@@ -23,7 +22,42 @@ int Application::run()
         // Put here rendering code
 		const auto fbSize = m_GLFWHandle.framebufferSize();
 		glViewport(0, 0, fbSize.x, fbSize.y);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		const auto projMatrix = glm::perspective(70.f, float(fbSize.x) / fbSize.y, 0.01f, 100.f);
+		const auto viewMatrix = glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+
+		{
+			const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(-2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
+
+			const auto mvMatrix = viewMatrix * modelMatrix;
+			const auto mvpMatrix = projMatrix * mvMatrix;
+			const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
+
+			glUniformMatrix4fv(m_uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+			glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
+			glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
+			glBindVertexArray(vaoCube);
+			glDrawElements(GL_TRIANGLES, Cube.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
+		}
+
+		{
+			const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
+
+			const auto mvMatrix = viewMatrix * modelMatrix;
+			const auto mvpMatrix = projMatrix * mvMatrix;
+			const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
+
+			glUniformMatrix4fv(m_uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+			glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
+			glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
+			glBindVertexArray(vaoSphere);
+			glDrawElements(GL_TRIANGLES, Sphere.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
+		}
+
+
 
         // GUI code:
 		glmlv::imguiNewFrame();
@@ -31,6 +65,10 @@ int Application::run()
         {
             ImGui::Begin("GUI");
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+			if (ImGui::ColorEdit3("clearColor", clearColor)) {
+				glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.f);
+			}
             ImGui::End();
         }
 
@@ -57,36 +95,115 @@ Application::Application(int argc, char** argv):
     m_ShadersRootPath { m_AppPath.parent_path() / "shaders" }
 
 {
-    ImGui::GetIO().IniFilename = m_ImGuiIniFilename.c_str(); // At exit, ImGUI will store its windows positions in this file
 
-    // Put here initialization code
-	const auto applicationPath = glmlv::fs::path{ argv[0] };
-	const auto shadersRootPath = applicationPath.parent_path() / "shaders";
 
-	auto program = glmlv::compileProgram(shadersRootPath + "forward.vs.glsl",
-		shadersRootPath + "forward.fs.glsl");
-	
+	ImGui::GetIO().IniFilename = m_ImGuiIniFilename.c_str(); // At exit, ImGUI will store its windows positions in this file
+
+	const GLint vboBindingIndex = 0; // Arbitrary choice between 0 and glGetIntegerv(GL_MAX_VERTEX_ATTRIB_BINDINGS)
+
+	const GLint positionAttrLocation = 0;
+	const GLint normalAttrLocation = 1;
+	const GLint texCoordsAttrLocation = 2;
+
+	glGenBuffers(1, &vboCube);
+	glGenBuffers(1, &iboCube);
+	glGenBuffers(1, &vboSphere);
+	glGenBuffers(1, &iboSphere);
+
+	Cube = glmlv::makeCube();
+	Sphere = glmlv::makeSphere(32);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vboCube);
+	glBufferStorage(GL_ARRAY_BUFFER, Cube.vertexBuffer.size() * sizeof(glmlv::Vertex3f3f2f), Cube.vertexBuffer.data(), 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vboSphere);
+	glBufferStorage(GL_ARRAY_BUFFER, Sphere.vertexBuffer.size() * sizeof(glmlv::Vertex3f3f2f), Cube.vertexBuffer.data(), 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, iboCube);
+	glBufferStorage(GL_ARRAY_BUFFER, Cube.indexBuffer.size() * sizeof(uint32_t), Cube.indexBuffer.data(), 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, iboSphere);
+	glBufferStorage(GL_ARRAY_BUFFER, Sphere.indexBuffer.size() * sizeof(uint32_t), Cube.indexBuffer.data(), 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// Lets use a lambda to factorize VAO initialization:
+	const auto initVAO = [positionAttrLocation, normalAttrLocation, texCoordsAttrLocation](GLuint& vao, GLuint vbo, GLuint ibo)
+	{
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+
+		// We tell OpenGL what vertex attributes our VAO is describing:
+		glEnableVertexAttribArray(positionAttrLocation);
+		glEnableVertexAttribArray(normalAttrLocation);
+		glEnableVertexAttribArray(texCoordsAttrLocation);
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo); // We bind the VBO because the next 3 calls will read what VBO is bound in order to know where the data is stored
+
+		glVertexAttribPointer(positionAttrLocation, 3, GL_FLOAT, GL_FALSE, sizeof(glmlv::Vertex3f3f2f), (const GLvoid*)offsetof(glmlv::Vertex3f3f2f, position));
+		glVertexAttribPointer(normalAttrLocation, 3, GL_FLOAT, GL_FALSE, sizeof(glmlv::Vertex3f3f2f), (const GLvoid*)offsetof(glmlv::Vertex3f3f2f, normal));
+		glVertexAttribPointer(texCoordsAttrLocation, 2, GL_FLOAT, GL_FALSE, sizeof(glmlv::Vertex3f3f2f), (const GLvoid*)offsetof(glmlv::Vertex3f3f2f, texCoords));
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0); // We can unbind the VBO because OpenGL has "written" in the VAO what VBO it needs to read when the VAO will be drawn
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo); // Binding the IBO to GL_ELEMENT_ARRAY_BUFFER while a VAO is bound "writes" it in the VAO for usage when the VAO will be drawn
+
+		glBindVertexArray(0);
+	};
+
+	initVAO(vaoCube, vboCube, iboCube);
+	initVAO(vaoSphere, vboSphere, iboSphere);
+
+	glEnable(GL_DEPTH_TEST);
+
+	program = glmlv::compileProgram({ m_ShadersRootPath / m_AppName / "forward.vs.glsl", m_ShadersRootPath / m_AppName / "forward.fs.glsl" });
+	program.use();
+
+	m_uModelViewProjMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewProjMatrix");
+	m_uModelViewMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewMatrix");
+	m_uNormalMatrixLocation = glGetUniformLocation(program.glId(), "uNormalMatrix");
+
+
+
+}
+
+//OLD CODE
+/*
+ImGui::GetIO().IniFilename = m_ImGuiIniFilename.c_str(); // At exit, ImGUI will store its windows positions in this file
+
+	// Put here initialization code
+
+	auto program = glmlv::compileProgram({ m_ShadersRootPath / m_AppName / "forward.vs.glsl",
+		m_ShadersRootPath / m_AppName / "forward.fs.glsl" });
+
 	program.use();
 
 
-	const auto Cube = glmlv::makeCube();
+	Cube = glmlv::makeCube();
+	Sphere = glmlv::makeSphere(32);
+
 	count = Cube.vertexBuffer.size();
-	//vao
-	glGenBuffers(1, &vao);
-	glGenVertexArrays(1, &vao);
+	//vao cube
+	glGenBuffers(1, &vaoCube);
+	glGenVertexArrays(1, &vaoCube);
+
+	//vao sphere
+	glGenBuffers(1, &vaoSphere);
+	glGenVertexArrays(1, &vaoSphere);
+
 	//vbo
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glGenBuffers(1, &vboCube);
+	glBindBuffer(GL_ARRAY_BUFFER, vboCube);
 	//ibo
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glGenBuffers(1, &iboCube);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboCube);
 
 	glBufferStorage(GL_ARRAY_BUFFER, sizeof(Cube.vertexBuffer[0])*Cube.vertexBuffer.size(), Cube.vertexBuffer.data(), 0);
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glGenVertexArrays(1, &vaoCube);
+	glBindVertexArray(vaoCube);
+	glBindBuffer(GL_ARRAY_BUFFER, vboCube);
 
 	//Postion
 	const auto positionAttrIdx = 0;
@@ -127,4 +244,7 @@ Application::Application(int argc, char** argv):
 
 	glBindVertexArray(0);
 
-}
+	m_uModelViewProjMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewProjMatrix");
+	m_uModelViewMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewMatrix");
+	m_uNormalMatrixLocation = glGetUniformLocation(program.glId(), "uNormalMatrix");
+*/
