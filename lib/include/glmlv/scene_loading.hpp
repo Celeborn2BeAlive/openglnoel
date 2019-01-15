@@ -25,25 +25,26 @@ namespace glmlv
             int32_t shininessTextureId = -1;
         };
 
+		// Points min et max de la bounding box englobant la scene
         glm::vec3 bboxMin = glm::vec3(std::numeric_limits<float>::max());
         glm::vec3 bboxMax = glm::vec3(std::numeric_limits<float>::lowest());
 
-        std::vector<Vertex3f3f2f> vertexBuffer;
-        std::vector<uint32_t> indexBuffer;
+        std::vector<Vertex3f3f2f> vertexBuffer; // Tableau de sommets
+        std::vector<uint32_t> indexBuffer; // Tableau d'index de sommets
 
-		size_t shapeCount = 0;
-        std::vector<uint32_t> indexCountPerShape;
-		std::vector<glm::mat4> localToWorldMatrixPerShape;
-        std::vector<int32_t> materialIDPerShape;
+		size_t shapeCount = 0; // Nombre d'objets à dessiner
+        std::vector<uint32_t> indexCountPerShape; // Nomber d'index de sommets pour chaque objet
+		std::vector<glm::mat4> localToWorldMatrixPerShape; // Matrice localToWorld de chaque objet
+        std::vector<int32_t> materialIDPerShape; // Index du materiau de chaque objet (-1 si pas de materiaux)
 
-        std::vector<PhongMaterial> materials;
-        std::vector<Image2DRGBA> textures;
+        std::vector<PhongMaterial> materials; // Tableau des materiaux
+        std::vector<Image2DRGBA> textures; // Tableau des textures référencés par les materiaux
     };
 
-    void loadScene(const fs::path & objPath, const fs::path & mtlBaseDir, SceneData & data, bool loadTextures = true);
+    void loadAssimpScene(const fs::path & path, const fs::path & mtlBaseDir, SceneData & data, bool loadTextures = true);
 
-    inline void loadScene(const fs::path & objPath, SceneData & data, bool loadTextures = true)
+    inline void loadAssimpScene(const fs::path & path, SceneData & data, bool loadTextures = true)
     {
-        return loadScene(objPath, objPath.parent_path(), data, loadTextures);
+        return loadAssimpScene(path, path.parent_path(), data, loadTextures);
     }
 }

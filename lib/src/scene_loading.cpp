@@ -27,7 +27,7 @@ glm::mat4 aiMatrixToGlmMatrix(const aiMatrix4x4 & mat)
 	);
 }
 
-void loadScene(const fs::path & objPath, const fs::path & mtlBaseDir, SceneData & data, bool loadTextures)
+void loadAssimpScene(const fs::path & objPath, const fs::path & mtlBaseDir, SceneData & data, bool loadTextures)
 {
 	Assimp::Importer importer;
 	const aiScene *scene = importer.ReadFile(objPath.string().c_str(), aiProcess_Triangulate);
