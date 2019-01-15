@@ -7,8 +7,8 @@
 
 int Application::run()
 {
-	float clearColor[3] = { 0.5, 0.8, 0.2 };
-	glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.f);
+    float clearColor[3] = { 0.5, 0.8, 0.2 };
+    glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.f);
 
     // Loop until the user closes the window
     for (auto iterationCount = 0u; !m_GLFWHandle.shouldClose(); ++iterationCount)
@@ -32,7 +32,7 @@ int Application::run()
         }
 
         // GUI code:
-		glmlv::imguiNewFrame();
+        glmlv::imguiNewFrame();
 
         {
             ImGui::Begin("GUI");
@@ -43,7 +43,7 @@ int Application::run()
             ImGui::End();
         }
 
-		glmlv::imguiRenderFrame();
+        glmlv::imguiRenderFrame();
 
         /* Poll for and process events */
         glfwPollEvents();
@@ -69,8 +69,6 @@ Application::Application(int argc, char** argv):
 
 {
     ImGui::GetIO().IniFilename = m_ImGuiIniFilename.c_str(); // At exit, ImGUI will store its windows positions in this file
-
-    const GLint vboBindingIndex = 0; // Arbitrary choice between 0 and glGetIntegerv(GL_MAX_VERTEX_ATTRIB_BINDINGS)
 
     const GLint positionAttrLocation = 0;
     const GLint normalAttrLocation = 1;
