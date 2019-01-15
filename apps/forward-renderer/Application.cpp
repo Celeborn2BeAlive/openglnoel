@@ -117,13 +117,13 @@ Application::Application(int argc, char** argv):
 	glBufferStorage(GL_ARRAY_BUFFER, Cube.vertexBuffer.size() * sizeof(glmlv::Vertex3f3f2f), Cube.vertexBuffer.data(), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vboSphere);
-	glBufferStorage(GL_ARRAY_BUFFER, Sphere.vertexBuffer.size() * sizeof(glmlv::Vertex3f3f2f), Cube.vertexBuffer.data(), 0);
+	glBufferStorage(GL_ARRAY_BUFFER, Sphere.vertexBuffer.size() * sizeof(glmlv::Vertex3f3f2f), Sphere.vertexBuffer.data(), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, iboCube);
 	glBufferStorage(GL_ARRAY_BUFFER, Cube.indexBuffer.size() * sizeof(uint32_t), Cube.indexBuffer.data(), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, iboSphere);
-	glBufferStorage(GL_ARRAY_BUFFER, Sphere.indexBuffer.size() * sizeof(uint32_t), Cube.indexBuffer.data(), 0);
+	glBufferStorage(GL_ARRAY_BUFFER, Sphere.indexBuffer.size() * sizeof(uint32_t), Sphere.indexBuffer.data(), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
