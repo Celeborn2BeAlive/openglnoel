@@ -22,9 +22,27 @@ private:
     const std::string m_ImGuiIniFilename;
     const glmlv::fs::path m_ShadersRootPath;
 
-	//Creation of vao, vbo and ibo
-	GLuint vao, vbo, ibo;
+	//Creation of vao, vbo and ibo for cube
+	GLuint vaoCube = 0;
+	GLuint vboCube = 0;
+	GLuint iboCube = 0;
+
+	//Creation of vao, vbo and ibo for sphere
+	GLuint vaoSphere;
+	GLuint vboSphere;
+	GLuint iboSphere;
+
+	//the cube
+	glmlv::SimpleGeometry Cube;
+
+	//the sphere
+	glmlv::SimpleGeometry Sphere;
 
 	GLsizei count;
 
+	GLint m_uModelViewProjMatrixLocation;
+	GLint m_uModelViewMatrixLocation;
+	GLint m_uNormalMatrixLocation;
+
+	glmlv::GLProgram program;
 };
