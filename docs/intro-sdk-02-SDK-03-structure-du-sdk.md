@@ -38,7 +38,7 @@ Le template contient plusieurs bibliothèques externes (dans *third-party*) afin
 
 Mon objectif n'étant pas de vous apprendre à utiliser ces libs, je détaillerais assez peu leurs fonctionnalités dans les TPs. Les liens ci-dessus redirigent vers des documentations assez complètes pour que vous puissiez vous débrouiller :)
 
-A noter que ImGui fournie une fonction ImGui::ShowTestWindow dont le code montre des exemples d'utilisation d'a peu près tous les widgets de la lib. Le code de cette fonction est dans le fichier *imgui_demo.cpp* du repertoire contenant la lib.
+A noter que ImGui fournie une fonction ImGui::ShowDemoWindow dont le code montre des exemples d'utilisation d'a peu près tous les widgets de la lib. Le code de cette fonction est dans le fichier *imgui_demo.cpp* du repertoire contenant la lib.
 
 ## Lib interne (glmlv)
 
