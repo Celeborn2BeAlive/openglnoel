@@ -14,7 +14,7 @@ Voir les différents shaders des applications déjà présente pour vous aider.
 - Le vertex shader doit prendre en entrée une position (vec3 aPosition), une normale (vec3 aNormal) et des texCoords (vec2 aTexCoords)
 - N'oubliez pas de définir les locations des attributs
 - Ajouter des variable uniformes *mat4 uModelViewProjMatrix*, *mat4 uModelViewMatrix*, *mat4 uNormalMatrix* correspondant aux matrices standard en 3D
-- Ajouter des variables out *vec3 vViewSpacePosition*, *vec3 vViewSpaceNormal*, *vec3 vTexCoords*
+- Ajouter des variables out *vec3 vViewSpacePosition*, *vec3 vViewSpaceNormal*, *vec2 vTexCoords*
 - Dans le main du shader, remplir les différentes variables out et la variable *gl_Position* en respectant le pseudo-code suivant et en faisant les convertions de type necessaires:
 
 ```
