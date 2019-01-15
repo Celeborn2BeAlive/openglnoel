@@ -25,9 +25,9 @@ int Application::run()
         
         float ratio = m_nWindowWidth/m_nWindowHeight;
 
-        glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f),ratio,0.1f,100.f);
-        glm::mat4 MVMatrix = glm::translate(glm::mat4(1),glm::vec3(0.0f,0.0f,-5.0f));
-        glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
+        //glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f),ratio,0.1f,100.f);
+        //glm::mat4 MVMatrix = glm::translate(glm::mat4(1),glm::vec3(0.0f,0.0f,-5.0f));
+        //glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
         
         //LOCALISATION VAR UNIFORMES
         GLint loc_MVP = program.getUniformLocation("uMVPMatrix"); 
@@ -43,28 +43,52 @@ int Application::run()
     for (auto iterationCount = 0u; !m_GLFWHandle.shouldClose(); ++iterationCount)
     {
     
-    
+        //POUR FPS
+        const auto seconds = glfwGetTime();
+
+        const auto viewportSize = m_GLFWHandle.framebufferSize();
+        glViewport(0, 0, viewportSize.x, viewportSize.y);
+
+        const auto projMatrix = glm::perspective(glm::radians(70.f), float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);
+        const auto viewMatrix = m_viewController.getViewMatrix();
+        const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(-2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
+
+        const auto mvMatrix = viewMatrix * modelMatrix;
+        const auto mvpMatrix = projMatrix * mvMatrix;
+        const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
+        //POUR FPS
     
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
         glBindVertexArray(m_sphereVAO);
 
-        glUniformMatrix4fv(loc_MVP,1,GL_FALSE,glm::value_ptr(ProjMatrix * MVMatrix));
-        glUniformMatrix4fv(loc_MV,1,GL_FALSE,glm::value_ptr(MVMatrix));
-        glUniformMatrix4fv(loc_N,1,GL_FALSE,glm::value_ptr(NormalMatrix));
+        glUniformMatrix4fv(loc_MVP,1,GL_FALSE,glm::value_ptr(mvpMatrix));
+        glUniformMatrix4fv(loc_MV,1,GL_FALSE,glm::value_ptr(mvMatrix));
+        glUniformMatrix4fv(loc_N,1,GL_FALSE,glm::value_ptr(normalMatrix));
 
-        glDrawElements(GL_TRIANGLES, m_sphereGeometry.indexBuffer.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, m_sphereGeometry.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
   
         glBindVertexArray(0);
 
 
     
         
+        /* Poll for and process events */
+        glfwPollEvents();
         
         
         // Update the display
 		m_GLFWHandle.swapBuffers(); // Swap front and back buffers
+
+
+
+        auto ellapsedTime = glfwGetTime() - seconds;
+        auto guiHasFocus = ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard;
+        if (!guiHasFocus) {
+            m_viewController.update(float(ellapsedTime));
+        }
+
     }
 
 
@@ -136,6 +160,8 @@ Application::Application(int argc, char** argv):
         glBindBuffer(GL_ARRAY_BUFFER,0);
         glBindVertexArray(0);
 
+        //Pour la vue FPS
+        m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 
         //activer test profondeur GPU
         glEnable(GL_DEPTH_TEST);

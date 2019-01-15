@@ -32,4 +32,6 @@ private:
     GLuint m_sphereVBO = 0;
     GLuint m_sphereIBO = 0;
     GLuint m_sphereVAO = 0;
+
+    glmlv::ViewController m_viewController{ m_GLFWHandle.window(), 3.f };
 };
