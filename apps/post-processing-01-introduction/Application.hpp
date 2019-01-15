@@ -17,6 +17,10 @@ public:
 
     int run();
 private:
+    void initScene();
+
+    void initShadersData();
+
     static glm::vec3 computeDirectionVector(float phiRadians, float thetaRadians)
     {
         const auto cosPhi = glm::cos(phiRadians);
@@ -33,6 +37,33 @@ private:
     const std::string m_AppName;
     const std::string m_ImGuiIniFilename;
     const glmlv::fs::path m_ShadersRootPath;
+    const glmlv::fs::path m_AssetsRootPath;
+
+    // GBuffer:
+    enum GBufferTextureType
+    {
+        GPosition = 0,
+        GNormal,
+        GAmbient,
+        GDiffuse,
+        GGlossyShininess,
+        GDepth,
+        GBufferTextureCount
+    };
+
+    const char * m_GBufferTexNames[GBufferTextureCount + 1] = { "position", "normal", "ambient", "diffuse", "glossyShininess", "depth", "beauty" }; // Tricks, since we cant blit depth, we use its value to draw the result of the shading pass
+    const GLenum m_GBufferTextureFormat[GBufferTextureCount] = { GL_RGB32F, GL_RGB32F, GL_RGB32F, GL_RGB32F, GL_RGBA32F, GL_DEPTH_COMPONENT32F };
+    GLuint m_GBufferTextures[GBufferTextureCount];
+    GLuint m_GBufferFBO; // Framebuffer object
+
+    GLuint m_BeautyTexture;
+    GLuint m_BeautyFBO;
+
+    GBufferTextureType m_CurrentlyDisplayed = GBufferTextureCount; // Default to beauty
+
+    // Triangle covering the whole screen, for the shading pass:
+    GLuint m_TriangleVBO = 0;
+    GLuint m_TriangleVAO = 0;
 
     // Scene data in GPU:
     GLuint m_SceneVBO = 0;
@@ -45,11 +76,11 @@ private:
         uint32_t indexCount; // Number of indices
         uint32_t indexOffset; // Offset in GPU index buffer
         int materialID = -1;
-		glm::mat4 localToWorldMatrix;
     };
 
     std::vector<ShapeInfo> m_shapes; // For each shape of the scene, its number of indices
-    float m_SceneSize = 0.f; // Used for camera speed and projection matrix parameters
+    glm::vec3 m_SceneSize = glm::vec3(0.f); // Used for camera speed and projection matrix parameters
+    float m_SceneSizeLength = 0.f;
 
     struct PhongMaterial
     {
@@ -71,19 +102,19 @@ private:
 
     GLuint m_textureSampler = 0; // Only one sampler object since we will use the same sampling parameters for all textures
 
-    glmlv::GLProgram m_program;
-
+    // Camera
     glmlv::ViewController m_viewController{ m_GLFWHandle.window(), 3.f };
+
+    // GLSL programs
+    glmlv::GLProgram m_geometryPassProgram;
+    glmlv::GLProgram m_shadingPassProgram;
+    glmlv::GLProgram m_displayDepthProgram;
+    glmlv::GLProgram m_displayPositionProgram;
+
+    // Geometry pass uniforms
     GLint m_uModelViewProjMatrixLocation;
     GLint m_uModelViewMatrixLocation;
     GLint m_uNormalMatrixLocation;
-
-    GLint m_uDirectionalLightDirLocation;
-    GLint m_uDirectionalLightIntensityLocation;
-
-    GLint m_uPointLightPositionLocation;
-    GLint m_uPointLightIntensityLocation;
-
     GLint m_uKaLocation;
     GLint m_uKdLocation;
     GLint m_uKsLocation;
@@ -93,7 +124,22 @@ private:
     GLint m_uKsSamplerLocation;
     GLint m_uShininessSamplerLocation;
 
-    float m_DirLightPhiAngleDegrees = 90.f;
+    // Shading pass uniforms
+    GLint m_uGBufferSamplerLocations[GDepth];
+    GLint m_uDirectionalLightDirLocation;
+    GLint m_uDirectionalLightIntensityLocation;
+    GLint m_uPointLightPositionLocation;
+    GLint m_uPointLightIntensityLocation;
+
+    // Display depth pass uniforms
+    GLint m_uGDepthSamplerLocation;
+
+    // Display position pass uniforms
+    GLint m_uGPositionSamplerLocation;
+    GLint m_uSceneSizeLocation;
+
+    // Lights
+    float m_DirLightPhiAngleDegrees = 140.f;
     float m_DirLightThetaAngleDegrees = 45.f;
     glm::vec3 m_DirLightDirection = computeDirectionVector(glm::radians(m_DirLightPhiAngleDegrees), glm::radians(m_DirLightThetaAngleDegrees));
     glm::vec3 m_DirLightColor = glm::vec3(1, 1, 1);
@@ -102,4 +148,5 @@ private:
     glm::vec3 m_PointLightPosition = glm::vec3(0, 1, 0);
     glm::vec3 m_PointLightColor = glm::vec3(1, 1, 1);
     float m_PointLightIntensity = 5.f;
+
 };
