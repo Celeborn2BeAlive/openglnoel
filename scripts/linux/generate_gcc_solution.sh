@@ -1,5 +1,5 @@
 SOURCE_DIR=$(pwd)/$(dirname "$0")/../..
-BUILD_DIR=$SOURCE_DIR/../openglnoel-build-2
+BUILD_DIR=$SOURCE_DIR/../openglnoel-build
 INSTALL_DIR=$SOURCE_DIR/../openglnoel-install
 mkdir -p $BUILD_DIR
 pushd $BUILD_DIR
