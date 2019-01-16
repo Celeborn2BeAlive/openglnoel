@@ -3,7 +3,7 @@ id: gold-02-forward-renderer-03-shaders
 title: Shaders
 ---
 
-Créez un sous-dossier *shader* dans le dossier de l'application *foward-renderer* et créez le fichiers *forward.vs.glsl* et *forward.fs.glsl*.
+Créez un sous-dossier *shaders* dans le dossier de l'application *foward-renderer* et créez le fichiers *forward.vs.glsl* et *forward.fs.glsl*.
 
 Voir les différents shaders des applications déjà présente pour vous aider.
 
