@@ -35,6 +35,7 @@ Le template contient plusieurs bibliothèques externes (dans *third-party*) afin
 - [assimp](https://github.com/assimp/assimp): bibliotheque pour charger des modeles 3D dans differents formats.
 - [stb](https://github.com/nothings/stb) contient les header *stb_image.h* et *stb_image_write.h* de la bibliothèque stb, afin de lire et écrire des images.
 - [tiny_gltf](https://github.com/syoyo/tinygltf): bibliotheque pour charger des modeles 3D au [format glTF](https://github.com/KhronosGroup/glTF), très présent sur le site de partage [https://sketchfab.com/](https://sketchfab.com/).
+- [tinyobjloader](https://github.com/syoyo/tinyobjloader): bibliotheque pour charger des modeles 3D au format OBJ. Remplace assimp par defaut sur linux, car plus legère (et le quota d'espace disque à la FAC est faible...)
 
 Mon objectif n'étant pas de vous apprendre à utiliser ces libs, je détaillerais assez peu leurs fonctionnalités dans les TPs. Les liens ci-dessus redirigent vers des documentations assez complètes pour que vous puissiez vous débrouiller :)
 

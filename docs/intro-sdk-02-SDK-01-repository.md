@@ -123,3 +123,20 @@ Git devrait alors vous demander votre username/password pour vous autoriser à p
 ## Conseils pour la gestion du repo
 
 Afin d'exploiter au mieux votre repo, je vous conseiller de commiter vos changement assez souvent afin de "sauvegarder" votre code. Pensez à pusher quelques fois par TDs afin d'avoir vos changement en ligne et que je puisse les consulter.
+
+## Récuperer des modification sur votre fork depuis le repo original
+
+Il m'arrivera parfois de faire des modifications sur le repo original, pour du debug ou l'ajout de libs par exemple. Afin de récuperer ces modifications sur votre fork, il faut faire une **pull request**.
+
+- Aller sur la page github de votre fork
+- Onglet *Pull Request*
+- Cliquer sur *New Pull Request*
+- Cliquer sur **compare accross forks** en haut de la page
+- En haut choisir comme base repository le votre dans la liste des fork, et choisir la branche (en general master, mais vous voudrez peut etre récuperer les modifs de branches de triche aussi)
+- Choisir comme head repository le mien (*Celeborn2BeAlive/openglnoel*)
+- Cliquer sur *Create pull request*, lui donner un titre, et confirmer la creation
+- Cliquer sur *Merge pull request*, puis *Confirm merge*
+
+S'il y a des conflit il faudra peut être les traiter. Suivez les instructions de Github pour ça.
+
+Après avoir mergé la pull request, vous pouvez *git pull* dans votre repository local pour recuperer les modifications.
