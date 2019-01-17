@@ -20,12 +20,21 @@ int Application::run()
         const auto seconds = glfwGetTime();
 
         // Put here rendering code
-		const auto fbSize = m_GLFWHandle.framebufferSize();
-		glViewport(0, 0, fbSize.x, fbSize.y);
+		const auto viewportSize = m_GLFWHandle.framebufferSize();
+		glViewport(0, 0, viewportSize.x, viewportSize.y);
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		const auto projMatrix = glm::perspective(70.f, float(fbSize.x) / fbSize.y, 0.01f, 100.f);
-		const auto viewMatrix = glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+		const auto projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);
+		const auto viewMatrix = viewController.getViewMatrix();
+
+		//light management
+		glUniform3fv(uDirectionalLightDirLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(glm::normalize(DirLightDirection), 0))));
+		glUniform3fv(uDirectionalLightIntensityLocation, 1, glm::value_ptr(DirLightColor * DirLightIntensity));
+
+		glUniform3fv(uPointLightPositionLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(PointLightPosition, 1))));
+		glUniform3fv(uPointLightIntensityLocation, 1, glm::value_ptr(PointLightColor * m_PointLightIntensity));
+
 
 		{
 			const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(-2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
@@ -34,9 +43,9 @@ int Application::run()
 			const auto mvpMatrix = projMatrix * mvMatrix;
 			const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
 
-			glUniformMatrix4fv(m_uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-			glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
-			glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+			glUniformMatrix4fv(uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+			glUniformMatrix4fv(uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
+			glUniformMatrix4fv(uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
 			glBindVertexArray(vaoCube);
 			glDrawElements(GL_TRIANGLES, Cube.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
@@ -49,9 +58,9 @@ int Application::run()
 			const auto mvpMatrix = projMatrix * mvMatrix;
 			const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
 
-			glUniformMatrix4fv(m_uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-			glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
-			glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+			glUniformMatrix4fv(uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+			glUniformMatrix4fv(uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
+			glUniformMatrix4fv(uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
 			glBindVertexArray(vaoSphere);
 			glDrawElements(GL_TRIANGLES, Sphere.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
@@ -69,6 +78,30 @@ int Application::run()
 			if (ImGui::ColorEdit3("clearColor", clearColor)) {
 				glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.f);
 			}
+			//light
+			if (ImGui::CollapsingHeader("Directional Light"))
+			{
+				ImGui::ColorEdit3("DirLightColor", glm::value_ptr(DirLightColor));
+				ImGui::DragFloat("DirLightIntensity", &DirLightIntensity, 0.1f, 0.f, 100.f);
+				if (ImGui::DragFloat("Phi Angle", &DirLightPhiAngleDegrees, 1.0f, 0.0f, 360.f) ||
+					ImGui::DragFloat("Theta Angle", &DirLightThetaAngleDegrees, 1.0f, 0.0f, 180.f)) {
+					DirLightDirection = computeDirectionVector(glm::radians(DirLightPhiAngleDegrees), glm::radians(DirLightThetaAngleDegrees));
+				}
+			}
+
+			if (ImGui::CollapsingHeader("Point Light"))
+			{
+				ImGui::ColorEdit3("PointLightColor", glm::value_ptr(PointLightColor));
+				ImGui::DragFloat("PointLightIntensity", &m_PointLightIntensity, 0.1f, 0.f, 16000.f);
+				ImGui::InputFloat3("Position", glm::value_ptr(PointLightPosition));
+			}
+
+			if (ImGui::CollapsingHeader("Materials"))
+			{
+				ImGui::ColorEdit3("Cube Kd", glm::value_ptr(CubeKd));
+				ImGui::ColorEdit3("Sphere Kd", glm::value_ptr(SphereKd));
+			}
+
             ImGui::End();
         }
 
@@ -80,6 +113,7 @@ int Application::run()
         auto guiHasFocus = ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard;
         if (!guiHasFocus) {
             // Put here code to handle user interactions
+			viewController.update(float(ellapsedTime));
         }
 
 		m_GLFWHandle.swapBuffers(); // Swap front and back buffers
@@ -159,11 +193,26 @@ Application::Application(int argc, char** argv):
 	program = glmlv::compileProgram({ m_ShadersRootPath / m_AppName / "forward.vs.glsl", m_ShadersRootPath / m_AppName / "forward.fs.glsl" });
 	program.use();
 
-	m_uModelViewProjMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewProjMatrix");
-	m_uModelViewMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewMatrix");
-	m_uNormalMatrixLocation = glGetUniformLocation(program.glId(), "uNormalMatrix");
+	//light
+	uModelViewProjMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewProjMatrix");
+	uModelViewMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewMatrix");
+	uNormalMatrixLocation = glGetUniformLocation(program.glId(), "uNormalMatrix");
+
+	uModelViewProjMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewProjMatrix");
+	uModelViewMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewMatrix");
+	uNormalMatrixLocation = glGetUniformLocation(program.glId(), "uNormalMatrix");
 
 
+	uDirectionalLightDirLocation = glGetUniformLocation(program.glId(), "uDirectionalLightDir");
+	uDirectionalLightIntensityLocation = glGetUniformLocation(program.glId(), "uDirectionalLightIntensity");
+
+	uPointLightPositionLocation = glGetUniformLocation(program.glId(), "uPointLightPosition");
+	uPointLightIntensityLocation = glGetUniformLocation(program.glId(), "uPointLightIntensity");
+
+	uKdLocation = glGetUniformLocation(program.glId(), "uKd");
+
+	//view
+	viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 
 }
 
