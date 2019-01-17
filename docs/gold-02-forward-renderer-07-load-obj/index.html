@@ -41,13 +41,13 @@
 <p>Vous pouvez obtenir différents modèles OBJ sur <a href="https://casual-effects.com/data/">cette page</a> (je vous conseille de commencer par essayer avec Crytek-Sponza).</p>
 </blockquote>
 <blockquote>
-<p><span class="badge warning"></span> Le 16/01/2019 - J'ai choisis d'ajouter tinyobjloader pour remplacer assimp sur les machines de l'université en raison des quotas d'espace disque faible. Assimp n'est donc plus compilé avec les scripts linux (j'ai choisis de le laisser sous windows). Le code source d'assimp est toujours présent dans le repository car c'est surtout la version compilée qui prend de la place. Pour récupérer les modifications du repository sur votre fork, commencez par restaurer le CMakeLists.txt dans son etat d'origine si il avait été modifié pour de plus compiler Assimp. Ensute commitez et pushez tout votre code pour le sauvegarder. Enfin suivez <a href="http://localhost:3000/openglnoel/docs/intro-sdk-02-SDK-01-repository#recuperer-des-modification-sur-votre-fork-depuis-le-repo-original">cette procédure pour faire une <em>Pull Request</em></a>. Il faut merger les brancher master et cheat-gold.</p>
+<p><span class="badge warning"></span> Le 16/01/2019 - J'ai choisis d'ajouter tinyobjloader pour remplacer assimp sur les machines de l'université en raison des quotas d'espace disque faible. Assimp n'est donc plus compilé avec les scripts linux (j'ai choisis de le laisser sous windows). Le code source d'assimp est toujours présent dans le repository car c'est surtout la version compilée qui prend de la place. Pour récupérer les modifications du repository sur votre fork, commencez par restaurer le CMakeLists.txt dans son etat d'origine si il avait été modifié pour ne plus compiler Assimp. Ensute commitez et pushez tout votre code pour le sauvegarder. Enfin suivez <a href="/openglnoel/docs/intro-sdk-02-SDK-01-repository#recuperer-des-modification-sur-votre-fork-depuis-le-repo-original">cette procédure pour faire une <em>Pull Request</em></a>. Il faut merger les branches master et cheat-gold.</p>
 </blockquote>
 <h2><a class="anchor" aria-hidden="true" id="api"></a><a href="#api" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API</h2>
 <p>Utiliser la fonction suivante de la lib pour charger un modèle OBJ:</p>
 <pre><code class="hljs css language-cpp"><span class="hljs-keyword">void</span> glmlv::loadObjScene(<span class="hljs-keyword">const</span> glmlv::fs::path &amp; objPath, glmlv::SceneData &amp; data);
 </code></pre>
-<p>Celle ci charge le fichier dont le chemin est passé en paramètre (pensez à mettre le modèle dans le repertoire <em>assets</em>).
+<p>Celle-ci charge le fichier dont le chemin est passé en paramètre (pensez à mettre le modèle dans le repertoire <em>assets</em>).
 Elle remplit une structure de type <strong>glmlv::SceneData</strong> contenant les informations suivantes:</p>
 <pre><code class="hljs css language-cpp"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">SceneData</span>
 {</span>
@@ -98,7 +98,7 @@ De la même manière, si un champs texture n'est pas renseigné pour un matéria
 <p>Améliorer le modèle de shading utilisé pour utiliser le modèle de Blinn-Phong plutot qu'un simple modèle Diffus (voir <a href="gold-02-forward-renderer-07-load-obj">cet ancien TD</a> pour les équations).</p>
 <p>Cela implique de rajouter des variables uniformes pour le coefficient speculaire, la texture speculaire, l'exposant de shininess et la texture de shininess.</p>
 <p>Vous pouvez également rajouter le terme ambiant en addition.</p>
-<p>Toutes les informations necessaires sont chargés dans les matériaux de SceneData.</p>
+<p>Toutes les informations necessaires sont chargées dans les matériaux de SceneData.</p>
 <blockquote>
 <p>Si vous bloquez sur un element du TP, vous pouvez puller la branche <em>cheat</em> du repo et regarder le code de l'application <em>forward-renderer-06-load-obj</em>.</p>
 </blockquote>
