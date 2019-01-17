@@ -122,7 +122,7 @@ Git devrait alors vous demander votre username/password pour vous autoriser à p
 
 ## Conseils pour la gestion du repo
 
-Afin d'exploiter au mieux votre repo, je vous conseiller de commiter vos changement assez souvent afin de "sauvegarder" votre code. Pensez à pusher quelques fois par TDs afin d'avoir vos changement en ligne et que je puisse les consulter.
+Afin d'exploiter au mieux votre repo, je vous conseille de commiter vos changements assez souvent afin de "sauvegarder" votre code. Pensez à pusher quelques fois par TDs afin d'avoir vos changements en ligne et que je puisse les consulter.
 
 ## Récuperer des modification sur votre fork depuis le repo original
 
@@ -137,6 +137,6 @@ Il m'arrivera parfois de faire des modifications sur le repo original, pour du d
 - Cliquer sur *Create pull request*, lui donner un titre, et confirmer la creation
 - Cliquer sur *Merge pull request*, puis *Confirm merge*
 
-S'il y a des conflit il faudra peut être les traiter. Suivez les instructions de Github pour ça.
+S'il y a des conflits il faudra peut être les traiter. Suivez les instructions de Github pour ça.
 
 Après avoir mergé la pull request, vous pouvez *git pull* dans votre repository local pour recuperer les modifications.
