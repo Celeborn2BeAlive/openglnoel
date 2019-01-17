@@ -5,7 +5,7 @@ title: Chargement de modèles OBJ
 
 > Vous pouvez obtenir différents modèles OBJ sur [cette page](https://casual-effects.com/data/) (je vous conseille de commencer par essayer avec Crytek-Sponza).
 
-> <span class="badge warning"></span> Le 16/01/2019 - J'ai choisis d'ajouter tinyobjloader pour remplacer assimp sur les machines de l'université en raison des quotas d'espace disque faible. Assimp n'est donc plus compilé avec les scripts linux (j'ai choisis de le laisser sous windows). Le code source d'assimp est toujours présent dans le repository car c'est surtout la version compilée qui prend de la place. Pour récupérer les modifications du repository sur votre fork, commencez par restaurer le CMakeLists.txt dans son etat d'origine si il avait été modifié pour de plus compiler Assimp. Ensute commitez et pushez tout votre code pour le sauvegarder. Enfin suivez [cette procédure pour faire une *Pull Request*](http://localhost:3000/openglnoel/docs/intro-sdk-02-SDK-01-repository#recuperer-des-modification-sur-votre-fork-depuis-le-repo-original). Il faut merger les brancher master et cheat-gold.
+> <span class="badge warning"></span> Le 16/01/2019 - J'ai choisis d'ajouter tinyobjloader pour remplacer assimp sur les machines de l'université en raison des quotas d'espace disque faible. Assimp n'est donc plus compilé avec les scripts linux (j'ai choisis de le laisser sous windows). Le code source d'assimp est toujours présent dans le repository car c'est surtout la version compilée qui prend de la place. Pour récupérer les modifications du repository sur votre fork, commencez par restaurer le CMakeLists.txt dans son etat d'origine si il avait été modifié pour ne plus compiler Assimp. Ensute commitez et pushez tout votre code pour le sauvegarder. Enfin suivez [cette procédure pour faire une *Pull Request*](/openglnoel/docs/intro-sdk-02-SDK-01-repository#recuperer-des-modification-sur-votre-fork-depuis-le-repo-original). Il faut merger les branches master et cheat-gold.
 
 ## API
 
@@ -15,7 +15,7 @@ Utiliser la fonction suivante de la lib pour charger un modèle OBJ:
 void glmlv::loadObjScene(const glmlv::fs::path & objPath, glmlv::SceneData & data);
 ```
 
-Celle ci charge le fichier dont le chemin est passé en paramètre (pensez à mettre le modèle dans le repertoire *assets*).
+Celle-ci charge le fichier dont le chemin est passé en paramètre (pensez à mettre le modèle dans le repertoire *assets*).
 Elle remplit une structure de type **glmlv::SceneData** contenant les informations suivantes:
 
 ```cpp
@@ -87,6 +87,6 @@ Cela implique de rajouter des variables uniformes pour le coefficient speculaire
 
 Vous pouvez également rajouter le terme ambiant en addition.
 
-Toutes les informations necessaires sont chargés dans les matériaux de SceneData.
+Toutes les informations necessaires sont chargées dans les matériaux de SceneData.
 
 > Si vous bloquez sur un element du TP, vous pouvez puller la branche *cheat* du repo et regarder le code de l'application *forward-renderer-06-load-obj*.
