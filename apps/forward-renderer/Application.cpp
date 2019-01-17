@@ -2,8 +2,12 @@
 
 #include <iostream>
 
+#include <glmlv/Image2DRGBA.hpp>
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/io.hpp>
+
 
 int Application::run()
 {
@@ -28,14 +32,19 @@ int Application::run()
 		const auto projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);
 		const auto viewMatrix = viewController.getViewMatrix();
 
-		//light management
+		//light 
 		glUniform3fv(uDirectionalLightDirLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(glm::normalize(DirLightDirection), 0))));
 		glUniform3fv(uDirectionalLightIntensityLocation, 1, glm::value_ptr(DirLightColor * DirLightIntensity));
 
 		glUniform3fv(uPointLightPositionLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(PointLightPosition, 1))));
 		glUniform3fv(uPointLightIntensityLocation, 1, glm::value_ptr(PointLightColor * m_PointLightIntensity));
 
+		//texture
+		glActiveTexture(GL_TEXTURE0);
+		glUniform1i(uKdSamplerLocation, 0); 
+		glBindSampler(0, textureSampler); 
 
+		//for the cube
 		{
 			const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(-2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
 
@@ -47,10 +56,15 @@ int Application::run()
 			glUniformMatrix4fv(uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
 			glUniformMatrix4fv(uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
+			glUniform3fv(uKdLocation, 1, glm::value_ptr(CubeKd));
+
+			glBindTexture(GL_TEXTURE_2D, cubeTextureKd);
+
 			glBindVertexArray(vaoCube);
 			glDrawElements(GL_TRIANGLES, Cube.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
 		}
 
+		//for the sphere
 		{
 			const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
 
@@ -62,10 +76,15 @@ int Application::run()
 			glUniformMatrix4fv(uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
 			glUniformMatrix4fv(uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
+			glUniform3fv(uKdLocation, 1, glm::value_ptr(SphereKd));
+
+			glBindTexture(GL_TEXTURE_2D, sphereTextureKd);
+
 			glBindVertexArray(vaoSphere);
 			glDrawElements(GL_TRIANGLES, Sphere.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
 		}
-
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindSampler(0, 0); // Unbind the sampler
 
 
         // GUI code:
@@ -126,7 +145,8 @@ Application::Application(int argc, char** argv):
     m_AppPath { glmlv::fs::path{ argv[0] } },
     m_AppName { m_AppPath.stem().string() },
     m_ImGuiIniFilename { m_AppName + ".imgui.ini" },
-    m_ShadersRootPath { m_AppPath.parent_path() / "shaders" }
+    m_ShadersRootPath { m_AppPath.parent_path() / "shaders" },
+	m_AssetsRootPath{ m_AppPath.parent_path() / "assets" }
 
 {
 
@@ -188,11 +208,43 @@ Application::Application(int argc, char** argv):
 	initVAO(vaoCube, vboCube, iboCube);
 	initVAO(vaoSphere, vboSphere, iboSphere);
 
+	//texture
+	glActiveTexture(GL_TEXTURE0); // We will work on GL_TEXTURE0 texture unit. Since the shader only use one texture at a time, we only need one texture unit
+	{
+		glmlv::Image2DRGBA image = glmlv::readImage(m_AssetsRootPath / m_AppName / "textures" / "img1.jpg");
+
+		glGenTextures(1, &cubeTextureKd);
+		glBindTexture(GL_TEXTURE_2D, cubeTextureKd);
+		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, image.width(), image.height());
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image.width(), image.height(), GL_RGBA, GL_UNSIGNED_BYTE, image.data());
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+
+	{
+		glmlv::Image2DRGBA image = glmlv::readImage(m_AssetsRootPath / m_AppName / "textures" / "img2.png");
+
+		glGenTextures(1, &sphereTextureKd);
+		glBindTexture(GL_TEXTURE_2D, sphereTextureKd);
+		glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, image.width(), image.height());
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image.width(), image.height(), GL_RGBA, GL_UNSIGNED_BYTE, image.data());
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	// Note: no need to bind a sampler for modifying it: the sampler API is already direct_state_access
+	glGenSamplers(1, &textureSampler);
+	glSamplerParameteri(textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glSamplerParameteri(textureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+
+
 	glEnable(GL_DEPTH_TEST);
 
 	program = glmlv::compileProgram({ m_ShadersRootPath / m_AppName / "forward.vs.glsl", m_ShadersRootPath / m_AppName / "forward.fs.glsl" });
 	program.use();
 
+	
 	//light
 	uModelViewProjMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewProjMatrix");
 	uModelViewMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewMatrix");
@@ -210,6 +262,8 @@ Application::Application(int argc, char** argv):
 	uPointLightIntensityLocation = glGetUniformLocation(program.glId(), "uPointLightIntensity");
 
 	uKdLocation = glGetUniformLocation(program.glId(), "uKd");
+
+	uKdSamplerLocation = glGetUniformLocation(program.glId(), "uKdSampler");
 
 	//view
 	viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));

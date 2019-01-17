@@ -30,6 +30,7 @@ private:
     const std::string m_AppName;
     const std::string m_ImGuiIniFilename;
     const glmlv::fs::path m_ShadersRootPath;
+	const glmlv::fs::path m_AssetsRootPath;
 
 	//Creation of vao, vbo and ibo for cube
 	GLuint vaoCube = 0;
@@ -78,5 +79,12 @@ private:
 
 	glm::vec3 CubeKd = glm::vec3(1, 0, 0);
 	glm::vec3 SphereKd = glm::vec3(0, 1, 0);
-	
+
+	GLuint textureSampler = 0;
+	GLint uKdSamplerLocation;
+
+	GLuint cubeTextureKd = 0;
+	GLuint sphereTextureKd = 0;
+
+
 };
