@@ -81,7 +81,7 @@ Comme pour les exercices précédent, il est conseillé d'y aller par étape. D'
 
 ## Modèle de Shading
 
-Améliorer le modèle de shading utilisé pour utiliser le modèle de Blinn-Phong plutot qu'un simple modèle Diffus (voir [cet ancien TD](gold-02-forward-renderer-07-load-obj) pour les équations).
+Améliorer le modèle de shading utilisé pour utiliser le modèle de Blinn-Phong plutot qu'un simple modèle Diffus (voir [cet ancien TD](silver-04-lighting-01-introduction) pour les équations).
 
 Cela implique de rajouter des variables uniformes pour le coefficient speculaire, la texture speculaire, l'exposant de shininess et la texture de shininess.
 
