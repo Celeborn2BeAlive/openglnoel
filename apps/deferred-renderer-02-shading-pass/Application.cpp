@@ -303,7 +303,7 @@ void Application::initScene(const glmlv::fs::path & objPath)
 
     {
         glmlv::SceneData data;
-        loadAssimpScene(objPath, data);
+        loadObjScene(objPath, data);
         m_SceneSize = data.bboxMax - data.bboxMin;
         m_SceneSizeLength = glm::length(m_SceneSize);
 
