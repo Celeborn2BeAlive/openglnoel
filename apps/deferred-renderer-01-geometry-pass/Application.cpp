@@ -211,7 +211,7 @@ void Application::initScene(const glmlv::fs::path & objPath)
 
     {
         glmlv::SceneData data;
-        loadAssimpScene(objPath, data);
+        loadObjScene(objPath, data);
         m_SceneSize = glm::length(data.bboxMax - data.bboxMin);
 
         std::cout << "# of shapes    : " << data.shapeCount << std::endl;

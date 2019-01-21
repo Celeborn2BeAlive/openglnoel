@@ -396,7 +396,7 @@ void Application::initScene()
     {
         const auto objPath = m_AssetsRootPath / "glmlv" / "models" / "crytek-sponza" / "sponza.obj";
         glmlv::SceneData data;
-        loadAssimpScene(objPath, data);
+        loadObjScene(objPath, data);
         m_SceneSize = data.bboxMax - data.bboxMin;
         m_SceneSizeLength = glm::length(m_SceneSize);
         m_SceneCenter = 0.5f * (data.bboxMax + data.bboxMin);
