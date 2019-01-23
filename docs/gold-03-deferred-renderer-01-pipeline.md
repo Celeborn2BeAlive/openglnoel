@@ -5,8 +5,8 @@ title: Pipeline de Rendu
 
 ## C'est quoi le problème ?
 
-Un problème bien connu du *forward shading* est le traitement par le fragment shader de fragments qui ne seront pas visible à l'écran.
-Tous les fragment occultés par d'autre fragments sont traités car le fragment shader peut potentiellement modifier la profondeur des fragments et donc les rendre visible.
+Un problème bien connu du *forward shading* est le traitement par le fragment shader de fragments qui ne seront pas visibles à l'écran.
+Tous les fragments occultés par d'autre fragments sont traités car le fragment shader peut potentiellement modifier la profondeur des fragments et donc les rendre visibles.
 Ainsi, si le fragment shader est complexe, tous ces calculs inutiles peuvent devenir couteux.
 
 En plus de cela, il est assez difficile en une seule passe de rendu de pouvoir optimiser son algorithme pour faire moins de calcul.
@@ -26,10 +26,10 @@ Ces informations sont celles utilisées pour le lighting: position, normale et t
 Comme ces informations sont majoritairement de nature géométrique, l'ensemble des textures de sortie est généralement appelé **GBuffer** et cette première passe de rendu s'appelle la **Geometry Pass**.
 
 Une fois la première passe accomplie et le GBuffer remplit, on effectue la **Shading Pass**, qui consiste à utiliser le GBuffer pour illuminer chaque pixel.
-Au cours de cette passe, on dessiner simplement un quad couvrant l'écran, le vertex shader ne fait donc quasiment rien.
-Au contraire, le fragment shader lit dans les textures du GBuffer les informations du pixel courant (qui ont été enregistré pendant la geometry pass) et calcule la couleur finale à partir de ces infos et des lumières de la scène.
+Au cours de cette passe, on dessine simplement un quad couvrant l'écran, le vertex shader ne fait donc quasiment rien.
+Au contraire, le fragment shader lit dans les textures du GBuffer les informations du pixel courant (qui ont été enregistrées pendant la geometry pass) et calcule la couleur finale à partir de ces infos et des lumières de la scène.
 
-L'image ci-dessous montre en haut un rendu final, résultat de la Shading Pass appliquée au GBuffer donc les textures sont montrés en bas:
+L'image ci-dessous montre en haut un rendu final, résultat de la Shading Pass appliquée au GBuffer dont les textures sont montrées en bas:
 ![GBuffer](/openglnoel/img/gbuffer_1.png)
 
 A noter qu'il y énormément de manière de remplir un GBuffer en fonction des performances voulues.
