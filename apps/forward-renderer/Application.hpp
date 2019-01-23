@@ -33,9 +33,9 @@ private:
 	const glmlv::fs::path m_AssetsRootPath;
 
 	//Creation of vao, vbo and ibo for cube
-	GLuint vaoCube = 0;
-	GLuint vboCube = 0;
-	GLuint iboCube = 0;
+	GLuint vaoObjModel = 0;
+	GLuint vboObjModel = 0;
+	GLuint iboObjModel = 0;
 
 	//Creation of vao, vbo and ibo for sphere
 	GLuint vaoSphere;
@@ -75,7 +75,7 @@ private:
 
 	glm::vec3 PointLightPosition = glm::vec3(0, 1, 0);
 	glm::vec3 PointLightColor = glm::vec3(1, 1, 1);
-	float m_PointLightIntensity = 5.f;
+	float PointLightIntensity = 5.f;
 
 	glm::vec3 CubeKd = glm::vec3(1, 0, 0);
 	glm::vec3 SphereKd = glm::vec3(0, 1, 0);

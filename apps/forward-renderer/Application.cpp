@@ -37,7 +37,7 @@ int Application::run()
 		glUniform3fv(uDirectionalLightIntensityLocation, 1, glm::value_ptr(DirLightColor * DirLightIntensity));
 
 		glUniform3fv(uPointLightPositionLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(PointLightPosition, 1))));
-		glUniform3fv(uPointLightIntensityLocation, 1, glm::value_ptr(PointLightColor * m_PointLightIntensity));
+		glUniform3fv(uPointLightIntensityLocation, 1, glm::value_ptr(PointLightColor * PointLightIntensity));
 
 		//texture
 		glActiveTexture(GL_TEXTURE0);
@@ -60,7 +60,7 @@ int Application::run()
 
 			glBindTexture(GL_TEXTURE_2D, cubeTextureKd);
 
-			glBindVertexArray(vaoCube);
+			glBindVertexArray(vaoObjModel);
 			glDrawElements(GL_TRIANGLES, Cube.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
 		}
 
@@ -83,6 +83,9 @@ int Application::run()
 			glBindVertexArray(vaoSphere);
 			glDrawElements(GL_TRIANGLES, Sphere.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
 		}
+
+
+
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindSampler(0, 0); // Unbind the sampler
 
@@ -111,7 +114,7 @@ int Application::run()
 			if (ImGui::CollapsingHeader("Point Light"))
 			{
 				ImGui::ColorEdit3("PointLightColor", glm::value_ptr(PointLightColor));
-				ImGui::DragFloat("PointLightIntensity", &m_PointLightIntensity, 0.1f, 0.f, 16000.f);
+				ImGui::DragFloat("PointLightIntensity", &PointLightIntensity, 0.1f, 0.f, 16000.f);
 				ImGui::InputFloat3("Position", glm::value_ptr(PointLightPosition));
 			}
 
@@ -159,21 +162,21 @@ Application::Application(int argc, char** argv):
 	const GLint normalAttrLocation = 1;
 	const GLint texCoordsAttrLocation = 2;
 
-	glGenBuffers(1, &vboCube);
-	glGenBuffers(1, &iboCube);
+	glGenBuffers(1, &vboObjModel);
+	glGenBuffers(1, &iboObjModel);
 	glGenBuffers(1, &vboSphere);
 	glGenBuffers(1, &iboSphere);
 
 	Cube = glmlv::makeCube();
 	Sphere = glmlv::makeSphere(32);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vboCube);
+	glBindBuffer(GL_ARRAY_BUFFER, vboObjModel);
 	glBufferStorage(GL_ARRAY_BUFFER, Cube.vertexBuffer.size() * sizeof(glmlv::Vertex3f3f2f), Cube.vertexBuffer.data(), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vboSphere);
 	glBufferStorage(GL_ARRAY_BUFFER, Sphere.vertexBuffer.size() * sizeof(glmlv::Vertex3f3f2f), Sphere.vertexBuffer.data(), 0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, iboCube);
+	glBindBuffer(GL_ARRAY_BUFFER, iboObjModel);
 	glBufferStorage(GL_ARRAY_BUFFER, Cube.indexBuffer.size() * sizeof(uint32_t), Cube.indexBuffer.data(), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, iboSphere);
@@ -205,7 +208,7 @@ Application::Application(int argc, char** argv):
 		glBindVertexArray(0);
 	};
 
-	initVAO(vaoCube, vboCube, iboCube);
+	initVAO(vaoObjModel, vboObjModel, iboObjModel);
 	initVAO(vaoSphere, vboSphere, iboSphere);
 
 	//texture
