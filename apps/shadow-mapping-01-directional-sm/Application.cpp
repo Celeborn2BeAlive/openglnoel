@@ -98,7 +98,7 @@ int Application::run()
             glViewport(0, 0, m_nWindowWidth, m_nWindowHeight);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            const auto modelMatrix = glm::mat4();
+            const auto modelMatrix = glm::mat4(1);
 
             const auto mvMatrix = viewMatrix * modelMatrix;
             const auto mvpMatrix = projMatrix * mvMatrix;

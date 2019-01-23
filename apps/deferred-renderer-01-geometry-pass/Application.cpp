@@ -14,8 +14,8 @@
 
 int Application::run()
 {
-	float clearColor[3] = { 0.5, 0.8, 0.2 };
-	glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.f);
+    float clearColor[3] = { 0.5, 0.8, 0.2 };
+    glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.f);
 
     // Loop until the user closes the window
     for (auto iterationCount = 0u; !m_GLFWHandle.shouldClose(); ++iterationCount)
@@ -33,7 +33,7 @@ int Application::run()
             const auto projMatrix = glm::perspective(70.f, float(m_nWindowWidth) / m_nWindowHeight, 0.01f * m_SceneSize, m_SceneSize);
             const auto viewMatrix = m_viewController.getViewMatrix();
 
-            const auto modelMatrix = glm::mat4();
+            const auto modelMatrix = glm::mat4(1);
 
             const auto mvMatrix = viewMatrix * modelMatrix;
             const auto mvpMatrix = projMatrix * mvMatrix;
@@ -91,7 +91,7 @@ int Application::run()
             for (GLuint i : {0, 1, 2, 3})
                 glBindSampler(0, m_textureSampler);
         
-            //glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         }
 
         // Put here rendering code

@@ -33,7 +33,7 @@ int Application::run()
             glViewport(0, 0, m_nWindowWidth, m_nWindowHeight);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            const auto modelMatrix = glm::mat4();
+            const auto modelMatrix = glm::mat4(1);
 
             const auto mvMatrix = viewMatrix * modelMatrix;
             const auto mvpMatrix = projMatrix * mvMatrix;
@@ -359,7 +359,7 @@ void Application::initScene()
     {
         const auto objPath = m_AssetsRootPath / "glmlv" / "models" / "crytek-sponza" / "sponza.obj";
         glmlv::SceneData data;
-        loadAssimpScene(objPath, data);
+        loadObjScene(objPath, data);
         m_SceneSize = data.bboxMax - data.bboxMin;
         m_SceneSizeLength = glm::length(m_SceneSize);
 
