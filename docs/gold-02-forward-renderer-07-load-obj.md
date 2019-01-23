@@ -10,7 +10,7 @@ title: Chargement de modèles OBJ
 Utiliser la fonction suivante de la lib pour charger un modèle OBJ:
 
 ```cpp
-void glmlv::loadAssimpScene(const glmlv::fs::path & objPath, glmlv::SceneData & data);
+void glmlv::loadObjScene(const glmlv::fs::path & objPath, glmlv::SceneData & data);
 ```
 
 Celle ci charge le fichier dont le chemin est passé en paramètre (pensez à mettre le modèle dans le repertoire *assets*).
@@ -42,7 +42,7 @@ Les champs bboxMin et bboxMax permettent de connaitre les dimensions de la scene
 
 ```cpp
 SceneData data;
-loadAssimpScene(path, data);
+loadObjScene(path, data);
 
 const auto sceneDiagonalSize = glm::length(data.bboxMax - data.bboxMin);
 m_viewController.setSpeed(sceneDiagonalSize * 0.1f); // 10% de la scene parcouru par seconde
