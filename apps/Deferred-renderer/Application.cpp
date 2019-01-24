@@ -24,64 +24,18 @@ int Application::run()
     {
         const auto seconds = glfwGetTime();
 
-        // Put here rendering code
-		const auto viewportSize = m_GLFWHandle.framebufferSize();
-		glViewport(0, 0, viewportSize.x, viewportSize.y);
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		const auto projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.1f, m_SceneSize);
-		const auto viewMatrix = viewController.getViewMatrix();
-
-		//light 
-		glUniform3fv(uDirectionalLightDirLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(glm::normalize(DirLightDirection), 0))));
-		glUniform3fv(uDirectionalLightIntensityLocation, 1, glm::value_ptr(DirLightColor * DirLightIntensity));
-
-		glUniform3fv(uPointLightPositionLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(PointLightPosition, 1))));
-		glUniform3fv(uPointLightIntensityLocation, 1, glm::value_ptr(PointLightColor * PointLightIntensity));
-
-		// Same sampler for all texture units
-		for (GLuint i : {0, 1, 2, 3})
-			glBindSampler(i, textureSampler);
-
-		// Set texture unit of each sampler
-		glUniform1i(uKaSamplerLocation, 0);
-		glUniform1i(uKdSamplerLocation, 1);
-		glUniform1i(uKsSamplerLocation, 2);
-		glUniform1i(uShininessSamplerLocation, 3);
-
-		const auto bindMaterial = [&](const PhongMaterial & material)
+		// Geometry pass
 		{
-			glUniform3fv(uKaLocation, 1, glm::value_ptr(material.Ka));
-			glUniform3fv(uKdLocation, 1, glm::value_ptr(material.Kd));
-			glUniform3fv(uKsLocation, 1, glm::value_ptr(material.Ks));
-			glUniform1fv(uShininessLocation, 1, &material.shininess);
+			program.use();
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_GBufferFBO);
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, material.KaTextureId);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, material.KdTextureId);
-			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, material.KsTextureId);
-			glActiveTexture(GL_TEXTURE3);
-			glBindTexture(GL_TEXTURE_2D, material.shininessTextureId);
-		};
+			glViewport(0, 0, m_nWindowWidth, m_nWindowHeight);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glBindVertexArray(vaoObjModel);
-		
-		const PhongMaterial * currentMaterial = nullptr;
+			const auto projMatrix = glm::perspective(70.f, float(m_nWindowWidth) / m_nWindowHeight, 0.01f * m_SceneSize, m_SceneSize);
+			const auto viewMatrix = viewController.getViewMatrix();
 
-		// We draw each shape by specifying how much indices it carries, and with an offset in the global index buffer
-		for (const auto shape : m_shapes)
-		{
-			const auto & material = shape.materialID >= 0 ? m_SceneMaterials[shape.materialID] : m_DefaultMaterial;
-			if (currentMaterial != &material)
-			{
-				bindMaterial(material);
-				currentMaterial = &material;
-			}
-
-			const auto modelMatrix = shape.localToWorldMatrix;
+			const auto modelMatrix = glm::mat4(1);
 
 			const auto mvMatrix = viewMatrix * modelMatrix;
 			const auto mvpMatrix = projMatrix * mvMatrix;
@@ -91,12 +45,70 @@ int Application::run()
 			glUniformMatrix4fv(uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
 			glUniformMatrix4fv(uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
-			glDrawElements(GL_TRIANGLES, shape.indexCount, GL_UNSIGNED_INT, (const GLvoid*)(shape.indexOffset * sizeof(GLuint)));
+			// Same sampler for all texture units
+			glBindSampler(0, textureSampler);
+			glBindSampler(1, textureSampler);
+			glBindSampler(2, textureSampler);
+			glBindSampler(3, textureSampler);
+
+			// Set texture unit of each sampler
+			glUniform1i(uKaSamplerLocation, 0);
+			glUniform1i(uKdSamplerLocation, 1);
+			glUniform1i(uKsSamplerLocation, 2);
+			glUniform1i(uShininessSamplerLocation, 3);
+
+			const auto bindMaterial = [&](const PhongMaterial & material)
+			{
+				glUniform3fv(uKaLocation, 1, glm::value_ptr(material.Ka));
+				glUniform3fv(uKdLocation, 1, glm::value_ptr(material.Kd));
+				glUniform3fv(uKsLocation, 1, glm::value_ptr(material.Ks));
+				glUniform1fv(uShininessLocation, 1, &material.shininess);
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, material.KaTextureId);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, material.KdTextureId);
+				glActiveTexture(GL_TEXTURE2);
+				glBindTexture(GL_TEXTURE_2D, material.KsTextureId);
+				glActiveTexture(GL_TEXTURE3);
+				glBindTexture(GL_TEXTURE_2D, material.shininessTextureId);
+			};
+
+			glBindVertexArray(vaoObjModel);
+
+			const PhongMaterial * currentMaterial = nullptr;
+
+			// We draw each shape by specifying how much indices it carries, and with an offset in the global index buffer
+			for (const auto shape : m_shapes)
+			{
+				const auto & material = shape.materialID >= 0 ? m_SceneMaterials[shape.materialID] : m_DefaultMaterial;
+				if (currentMaterial != &material)
+				{
+					bindMaterial(material);
+					currentMaterial = &material;
+				}
+				glDrawElements(GL_TRIANGLES, shape.indexCount, GL_UNSIGNED_INT, (const GLvoid*)(shape.indexOffset * sizeof(GLuint)));
+			}
+
+			for (GLuint i : {0, 1, 2, 3})
+				glBindSampler(0, textureSampler);
+
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 		}
 
-		for (GLuint i : {0, 1, 2, 3})
-			glBindSampler(i, 0);
 
+        // Put here rendering code
+		const auto viewportSize = m_GLFWHandle.framebufferSize();
+		glViewport(0, 0, viewportSize.x, viewportSize.y);
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, m_GBufferFBO);
+        glReadBuffer(GL_COLOR_ATTACHMENT0 + m_CurrentlyDisplayed);
+        glBlitFramebuffer(0, 0, m_nWindowWidth, m_nWindowHeight,
+            0, 0, m_nWindowWidth, m_nWindowHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 
         // GUI code:
 		glmlv::imguiNewFrame();
@@ -117,22 +129,13 @@ int Application::run()
 				});
 			}
 
-			//light
-			if (ImGui::CollapsingHeader("Directional Light"))
+			if (ImGui::CollapsingHeader("GBuffer"))
 			{
-				ImGui::ColorEdit3("DirLightColor", glm::value_ptr(DirLightColor));
-				ImGui::DragFloat("DirLightIntensity", &DirLightIntensity, 0.1f, 0.f, 100.f);
-				if (ImGui::DragFloat("Phi Angle", &DirLightPhiAngleDegrees, 1.0f, 0.0f, 360.f) ||
-					ImGui::DragFloat("Theta Angle", &DirLightThetaAngleDegrees, 1.0f, 0.0f, 180.f)) {
-					DirLightDirection = computeDirectionVector(glm::radians(DirLightPhiAngleDegrees), glm::radians(DirLightThetaAngleDegrees));
+				for (int32_t i = GPosition; i < GDepth; ++i)
+				{
+					if (ImGui::RadioButton(m_GBufferTexNames[i], m_CurrentlyDisplayed == i))
+						m_CurrentlyDisplayed = GBufferTextureType(i);
 				}
-			}
-
-			if (ImGui::CollapsingHeader("Point Light"))
-			{
-				ImGui::ColorEdit3("PointLightColor", glm::value_ptr(PointLightColor));
-				ImGui::DragFloat("PointLightIntensity", &PointLightIntensity, 0.1f, 0.f, 16000.f);
-				ImGui::InputFloat3("Position", glm::value_ptr(PointLightPosition));
 			}
 
             ImGui::End();
@@ -169,13 +172,50 @@ Application::Application(int argc, char** argv):
 
 	ImGui::GetIO().IniFilename = m_ImGuiIniFilename.c_str(); // At exit, ImGUI will store its windows positions in this file
 
+	initScene(glmlv::fs::path{ argv[1] });
+	initShadersData();
+
+	glEnable(GL_DEPTH_TEST);
+	//view
+    viewController.setSpeed(m_SceneSize * 0.1f); // Let's travel 10% of the scene per second
+
+	// Init GBuffer
+	glGenTextures(GBufferTextureCount, m_GBufferTextures);
+
+	for (int32_t i = GPosition; i < GBufferTextureCount; ++i)
+	{
+		glBindTexture(GL_TEXTURE_2D, m_GBufferTextures[i]);
+		glTexStorage2D(GL_TEXTURE_2D, 1, m_GBufferTextureFormat[i], m_nWindowWidth, m_nWindowHeight);
+	}
+
+	glGenFramebuffers(1, &m_GBufferFBO);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_GBufferFBO);
+	for (int32_t i = GPosition; i < GDepth; ++i)
+	{
+		glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_GBufferTextures[i], 0);
+	}
+	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_GBufferTextures[GDepth], 0);
+
+	// we will write into 5 textures from the fragment shader
+	GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
+	glDrawBuffers(5, drawBuffers);
+
+	GLenum status = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+
+	if (status != GL_FRAMEBUFFER_COMPLETE) {
+		std::cerr << "FB error, status: " << status << std::endl;
+		throw std::runtime_error("FBO error");
+	}
+
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+}
+
+void Application::initScene(const glmlv::fs::path & objPath)
+{
 	glGenBuffers(1, &vboObjModel);
 	glGenBuffers(1, &iboObjModel);
 
-
 	{
-		//we can also do like for the textures m_AppPath.parent_path()/m_AppName/argv[1] and so just put file.obj on the arguments 
-		const auto objPath = glmlv::fs::path{ argv[1] };
 		glmlv::SceneData data;
 		loadObjScene(objPath, data);
 		m_SceneSize = glm::length(data.bboxMax - data.bboxMin);
@@ -184,7 +224,6 @@ Application::Application(int argc, char** argv):
 		std::cout << "# of materials : " << data.materials.size() << std::endl;
 		std::cout << "# of vertex    : " << data.vertexBuffer.size() << std::endl;
 		std::cout << "# of triangles    : " << data.indexBuffer.size() / 3 << std::endl;
-		std::cerr << "bbox : " << data.bboxMin << ", " << data.bboxMax << std::endl;
 
 		// Fill VBO
 		glBindBuffer(GL_ARRAY_BUFFER, vboObjModel);
@@ -205,7 +244,6 @@ Application::Application(int argc, char** argv):
 			shape.indexCount = data.indexCountPerShape[shapeID];
 			shape.indexOffset = indexOffset;
 			shape.materialID = data.materialIDPerShape[shapeID];
-			shape.localToWorldMatrix = data.localToWorldMatrixPerShape[shapeID];
 			indexOffset += shape.indexCount;
 		}
 
@@ -255,7 +293,6 @@ Application::Application(int argc, char** argv):
 		m_DefaultMaterial.shininessTextureId = m_WhiteTexture;
 	}
 
-
 	// Fill VAO
 	glGenVertexArrays(1, &vaoObjModel);
 	glBindVertexArray(vaoObjModel);
@@ -285,25 +322,15 @@ Application::Application(int argc, char** argv):
 	glGenSamplers(1, &textureSampler);
 	glSamplerParameteri(textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glSamplerParameteri(textureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
 
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_MULTISAMPLE);
+void Application::initShadersData()
+{
+	program = glmlv::compileProgram({ m_ShadersRootPath / m_AppName / "geometryPass.vs.glsl", m_ShadersRootPath / m_AppName / "geometryPass.fs.glsl" });
 
-	program = glmlv::compileProgram({ m_ShadersRootPath / m_AppName / "forward.vs.glsl", m_ShadersRootPath / m_AppName / "forward.fs.glsl" });
-	program.use();
-
-	
-	//light
 	uModelViewProjMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewProjMatrix");
 	uModelViewMatrixLocation = glGetUniformLocation(program.glId(), "uModelViewMatrix");
 	uNormalMatrixLocation = glGetUniformLocation(program.glId(), "uNormalMatrix");
-
-
-	uDirectionalLightDirLocation = glGetUniformLocation(program.glId(), "uDirectionalLightDir");
-	uDirectionalLightIntensityLocation = glGetUniformLocation(program.glId(), "uDirectionalLightIntensity");
-
-	uPointLightPositionLocation = glGetUniformLocation(program.glId(), "uPointLightPosition");
-	uPointLightIntensityLocation = glGetUniformLocation(program.glId(), "uPointLightIntensity");
 
 	uKaLocation = glGetUniformLocation(program.glId(), "uKa");
 	uKdLocation = glGetUniformLocation(program.glId(), "uKd");
@@ -313,8 +340,4 @@ Application::Application(int argc, char** argv):
 	uKdSamplerLocation = glGetUniformLocation(program.glId(), "uKdSampler");
 	uKsSamplerLocation = glGetUniformLocation(program.glId(), "uKsSampler");
 	uShininessSamplerLocation = glGetUniformLocation(program.glId(), "uShininessSampler");
-
-	//view
-	viewController.setSpeed(m_SceneSize * 0.1f); // Let's travel 10% of the scene per second
 }
-
