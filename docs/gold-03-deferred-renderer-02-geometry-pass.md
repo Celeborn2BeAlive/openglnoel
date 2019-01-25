@@ -3,7 +3,7 @@ id: gold-03-deferred-renderer-02-geometry-pass
 title: Geometrie Pass
 ---
 
-Comme indiqué en introduction, la première passe de rendu est la Geometry Pass, dont l'objectif est de "dessiner" dans un GBuffer les informations concernant les objets visible à l'écran.
+Comme indiqué en introduction, la première passe de rendu est la Geometry Pass, dont l'objectif est de "dessiner" dans un GBuffer les informations concernant les objets visibles à l'écran.
 
 Pour cela, il va falloir créer les textures OpenGL destinées à contenir ces informations, et les attacher à un **framebuffer object**, qui va permettre d'écrire dans ces textures plutot qu'a l'écran.
 
@@ -17,7 +17,7 @@ Renommez les shaders *forward.vs.glsl* et *forward.fs.glsl* en *geometryPass.vs.
 
 Il faut ensuite modifier le fragment shader (plus exactement le simplifier).
 
-Tout d'abors modifier les sorties. On avait:
+Tout d'abord modifier les sorties. On avait:
 
 ```glsl
 out vec3 fColor;
@@ -153,7 +153,7 @@ Au rendu assez peu de chose à changer.
 
 Avant de dessiner, binder le framebuffer sur la cible *GL_DRAW_FRAMEBUFFER*. Cela va indiquer à OpenGL que le fragment shader va écrire dans les textures attachées au FBO.
 
-Il faut également faire un *.use()* sur le programme correspondant au aux *geometryPass.glsl*
+Il faut également faire un *.use()* sur le programme correspondant aux *geometryPass.glsl*
 
 Après le dessin de la scène, débindez le FBO. Voila.
 
