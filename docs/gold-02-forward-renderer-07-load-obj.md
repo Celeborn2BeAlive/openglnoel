@@ -44,7 +44,7 @@ Les champs bboxMin et bboxMax permettent de connaitre les dimensions de la scene
 
 ```cpp
 SceneData data;
-loadAssimpScene(path, data);
+loadObjScene(path, data);
 
 const auto sceneDiagonalSize = glm::length(data.bboxMax - data.bboxMin);
 m_viewController.setSpeed(sceneDiagonalSize * 0.1f); // 10% de la scene parcouru par seconde
