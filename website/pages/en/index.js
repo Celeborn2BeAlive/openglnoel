@@ -96,7 +96,7 @@ class Index extends React.Component {
             <Block background="white">
                 {[
                     {
-                        content: `Apprenez à dessiner en 2D avec OpenGL 3+. Au programme: VBOs, VAOs, Shaders, Textures et Transformations 2D.<hr>Niveau Imac 2 et Master 1.`,
+                        content: `Apprenez à dessiner en 2D avec OpenGL 3+. Au programme: VBOs, VAOs, Shaders, Textures et Transformations 2D.<hr>Niveau Imac 2 et Master 2.`,
                         image: `${baseUrl}img/iknowopengl-horizontal.png`,
                         imageAlign: 'left',
                         title: 'Bronze Level',
@@ -109,7 +109,7 @@ class Index extends React.Component {
             <Block background="light">
                 {[
                     {
-                        content: `Apprenez à dessiner en 3D avec OpenGL 3+. Au programme: Théorie, Transformations 3D, Caméras, Lumières et Matériaux.<hr>Niveau Imac 2 et Master 1.`,
+                        content: `Apprenez à dessiner en 3D avec OpenGL 3+. Au programme: Théorie, Transformations 3D, Caméras, Lumières et Matériaux.<hr>Niveau Imac 2 et Master 2.`,
                         image: `${baseUrl}img/dontneedmathgirl-horizontal.png`,
                         imageAlign: 'right',
                         title: 'Silver Level',
