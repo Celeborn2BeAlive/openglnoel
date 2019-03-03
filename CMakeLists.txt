@@ -11,12 +11,7 @@ endif()
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 option(GLMLV_USE_BOOST_FILESYSTEM "Use boost for filesystem library instead of experimental std lib" OFF)
-
-if (GLMLV_USE_BOOST_FILESYSTEM)
-    add_definitions(
-        -DGLMLV_USE_BOOST_FILESYSTEM
-    )
-endif()
+option(GLMLV_USE_ASSIMP "Compile assimp and link glmlv with it" OFF)
 
 set(IMGUI_DIR imgui-1.66b)
 set(GLFW_DIR glfw-3.2.1)
@@ -26,9 +21,13 @@ set(JSON_DIR json-3.5.0)
 set(STB_DIR stb)
 set(ASSIMP_DIR assimp-4.1.0)
 set(TINYGLTF_DIR tiny_gltf)
+set(TINYOBJLOADER_DIR tiny_obj_loader)
 
 add_subdirectory(third-party/${GLFW_DIR})
-add_subdirectory(third-party/${ASSIMP_DIR})
+
+if (GLMLV_USE_ASSIMP)
+    add_subdirectory(third-party/${ASSIMP_DIR})
+endif()
 
 find_package(OpenGL REQUIRED)
 
@@ -79,6 +78,7 @@ target_include_directories(
     ${CMAKE_BINARY_DIR}/third-party/${ASSIMP_DIR}/include
     third-party/${STB_DIR}
     third-party/${TINYGLTF_DIR}
+    third-party/${TINYOBJLOADER_DIR}
     lib/include
 )
 
@@ -92,6 +92,11 @@ target_compile_definitions(
 if(GLMLV_USE_BOOST_FILESYSTEM)
     include_directories (
         ${Boost_INCLUDE_DIRS}
+    )
+    target_compile_definitions(
+        glmlv
+        PUBLIC
+        GLMLV_USE_BOOST_FILESYSTEM
     )
 endif()
 
@@ -125,15 +130,23 @@ set(
     ${OPENGL_LIBRARIES}
     glfw
     glmlv
-    assimp
 )
+
+if (GLMLV_USE_ASSIMP)
+    set(LIBRARIES ${LIBRARIES} assimp)
+    target_compile_definitions(
+        glmlv
+        PUBLIC
+        GLMLV_USE_ASSIMP
+    )
+endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX AND NOT GLMLV_USE_BOOST_FILESYSTEM)
     set(LIBRARIES ${LIBRARIES} stdc++fs)
 endif()
 
 if (GLMLV_USE_BOOST_FILESYSTEM)
-    set(LIBRARIES ${LIBRARIES} ${Boost_SYSTEM_LIBRARY}  ${Boost_FILESYSTEM_LIBRARY})
+    set(LIBRARIES ${LIBRARIES} ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
 endif()
 
 source_group ("glsl" REGULAR_EXPRESSION "*/*.glsl")

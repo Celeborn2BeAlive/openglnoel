@@ -41,10 +41,33 @@ namespace glmlv
         std::vector<Image2DRGBA> textures; // Tableau des textures référencés par les materiaux
     };
 
+#ifdef GLMLV_USE_ASSIMP
     void loadAssimpScene(const fs::path & path, const fs::path & mtlBaseDir, SceneData & data, bool loadTextures = true);
 
     inline void loadAssimpScene(const fs::path & path, SceneData & data, bool loadTextures = true)
     {
         return loadAssimpScene(path, path.parent_path(), data, loadTextures);
+    }
+#endif
+
+    void loadTinyObjScene(const fs::path & path, const fs::path & mtlBaseDir, SceneData & data, bool loadTextures = true);
+
+    inline void loadTinyObjScene(const fs::path & path, SceneData & data, bool loadTextures = true)
+    {
+        return loadTinyObjScene(path, path.parent_path(), data, loadTextures);
+    }
+
+    inline void loadObjScene(const fs::path & path, const fs::path & mtlBaseDir, SceneData & data, bool loadTextures = true)
+    {
+#ifdef GLMLV_USE_ASSIMP
+        return loadAssimpScene(path, mtlBaseDir, data, loadTextures);
+#else
+        return loadTinyObjScene(path, mtlBaseDir, data, loadTextures);
+#endif
+    }
+
+    inline void loadObjScene(const fs::path & path, SceneData & data, bool loadTextures = true)
+    {
+        return loadObjScene(path, path.parent_path(), data, loadTextures);
     }
 }
