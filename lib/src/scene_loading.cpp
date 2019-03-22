@@ -1,5 +1,7 @@
 #include <glmlv/scene_loading.hpp>
 
+#include <cstdio>
+#include <fstream>
 #include <iostream>
 #include <unordered_map>
 #include <unordered_set>
@@ -16,6 +18,8 @@
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
+#define TINYGLTF_IMPLEMENTATION
+#include <tiny_gltf.h>
 
 namespace glmlv
 {

@@ -8,6 +8,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/io.hpp>
 
+#include "tiny_gltf.h"
+
 int Application::run()
 {
 	float clearColor[3] = { 0.5, 0.8, 0.2 };
@@ -243,4 +245,37 @@ Application::Application(int argc, char** argv):
     m_uKdSamplerLocation = glGetUniformLocation(m_program.glId(), "uKdSampler");
 
     m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
+
+    if (argc < 2) {
+        printf("Needs input.gltf\n");
+        exit(1);
+    }
+
+    // FROM GL TF Example
+    tinygltf::Model model;
+    tinygltf::TinyGLTF gltf_ctx;
+    std::string err;
+    std::string warn;
+    std::string input_filename(argv[1]);
+
+    // Load .gltf
+    bool ret = false;
+    std::cout << "Reading ASCII glTF" << std::endl;
+    // assume ascii glTF.
+    ret = gltf_ctx.LoadASCIIFromFile(&model, &err, &warn, input_filename.c_str());
+
+    // Catch errors
+    if (!warn.empty()) {
+        printf("Warn: %s\n", warn.c_str());
+    }
+
+    if (!err.empty()) {
+        printf("Err: %s\n", err.c_str());
+    }
+
+    if (!ret) {
+        printf("Failed to parse glTF\n");
+    }
+
+
 }
