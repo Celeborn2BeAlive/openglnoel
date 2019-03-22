@@ -14,19 +14,13 @@ struct Vertex3f3f2f
     glm::vec3 position;
     glm::vec3 normal;
     glm::vec2 texCoords;
-	//glm::vec3 tangent;
 
     Vertex3f3f2f() = default;
 
-    Vertex3f3f2f(glm::vec3 position, glm::vec3 normal, glm::vec2 texCoord):
+    Vertex3f3f2f(glm::vec3 position, glm::vec3 normal, glm::vec2 texCoords):
         position(position), normal(normal), texCoords(texCoords)
     {
     }
-
-	/*Vertex3f3f2f(glm::vec3 position, glm::vec3 normal, glm::vec2 texCoord, glm::vec3 tangent) :
-		position(position), normal(normal), texCoords(texCoords), tangent(tangent)
-	{
-	}*/
 };
 
 struct SimpleGeometry
