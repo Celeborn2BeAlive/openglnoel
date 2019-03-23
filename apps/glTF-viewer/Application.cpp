@@ -44,8 +44,7 @@ int Application::run()
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(m_uKdSamplerLocation, 0); // Set the uniform to 0 because we use texture unit 0
         glBindSampler(0, m_textureSampler); // Tell to OpenGL what sampler we want to use on this texture unit
-
-        /*
+        
         {
             const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(-2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
 
@@ -64,7 +63,7 @@ int Application::run()
             glBindVertexArray(m_cubeVAO);
             glDrawElements(GL_TRIANGLES, m_cubeGeometry.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
         }
-
+        /*
         {
             const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
 
@@ -384,28 +383,16 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             glBindVertexArray(0);
         }
     }
-
-    std::cout << "#vaos : " << m_vaos.size() << std::endl;
-    std::cout << "#primitives : " << m_primitives.size() << std::endl;
-
-    std::cout << GL_FLOAT << std::endl;
-    std::cout << m_model.accessors[m_primitives[0].indices].componentType << std::endl;
-    std::cout <<  m_model.accessors[m_primitives[0].indices].count << std::endl;
 }
 
 void Application::drawGLTF()
 {
     for (int i = 0; i < m_vaos.size(); ++i)
-    {
-        
+    {        
         const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
         glBindVertexArray(m_vaos[i]);
-
-        //getMode(m_primitives[i].mode)
-        //indexAccessor.componentType
-        //indexAccessor.count
         //glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const void*) indexAccessor.byteOffset);
-        glDrawElements(GL_TRIANGLES, 36, GL_FLOAT, (const void*) indexAccessor.byteOffset);
+        glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, GL_UNSIGNED_INT, (const void*) indexAccessor.byteOffset);
     }
     glBindVertexArray(0);
 }
