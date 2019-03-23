@@ -253,19 +253,17 @@ Application::Application(int argc, char** argv):
     }
 
     // LOAD GLTF
-
-    glmlv::SceneData sceneData;
     const glmlv::fs::path gltfPath = m_AssetsRootPath / m_AppName / glmlv::fs::path{ argv[1] };
 
-    loadTinyGLTF(gltfPath, sceneData);
+    loadTinyGLTF(gltfPath);
 }
 
 
 // Load an obj model with tinyGLTF
-void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath, glmlv::SceneData & data)
+void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
 {
     // 1 - LOAD
-    
+
     /*
     // Load obj
     std::vector<tinyobj::shape_t> shapes;
