@@ -150,6 +150,10 @@ Application::Application(int argc, char** argv):
     const GLint positionAttrLocation = 0;
     const GLint normalAttrLocation = 1;
     const GLint texCoordsAttrLocation = 2;
+    // Map gltf attributes name to an index value of vs
+    m_attribs["POSITION"] = positionAttrLocation;
+    m_attribs["NORMAL"] = normalAttrLocation;
+    m_attribs["TEXCOORD_0"] = texCoordsAttrLocation;
 
     glGenBuffers(1, &m_cubeVBO);
     glGenBuffers(1, &m_cubeIBO);
@@ -247,13 +251,15 @@ Application::Application(int argc, char** argv):
 
     m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 
+
+
+    // LOAD GLTF
     if (argc < 2) {
         printf("Needs input.gltf\n");
         exit(1);
     }
-
-    // LOAD GLTF
     const glmlv::fs::path gltfPath = m_AssetsRootPath / m_AppName / glmlv::fs::path{ argv[1] };
+
     loadTinyGLTF(gltfPath);
 }
 
@@ -315,49 +321,57 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             glBindVertexArray(vaoId);
 
             // INDICES
-            tinygltf::Accessor &accesor = model.accessors[primitive.indices];
-            tinygltf::BufferView &bufferView = model.bufferViews[accesor.bufferView];
+            tinygltf::Accessor &accessor = model.accessors[primitive.indices];
+            tinygltf::BufferView &bufferView = model.bufferViews[accessor.bufferView];
             int &bufferIndex = bufferView.buffer;
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[bufferIndex]); // Ici on bind le buffer OpenGL qui a été rempli dans la premiere boucle
 
             // ATTRIBUTS
             // Pour chaque attributes de la primitive
-            for (int attId = 0; attId < primitive.attributes.size(); ++attId)
+            std::map<std::string, int>::const_iterator it(primitive.attributes.begin());
+            std::map<std::string, int>::const_iterator itEnd(primitive.attributes.end());
+
+            for (; it != itEnd; it++)
             {
-                accesor = model.accessors[primitive.attributes.find("POSITION")->second]; // key est "POSITION", ou "NORMAL", ou autre (voir l'image de spec du format)
-                bufferView = model.bufferViews[accesor.bufferView];
+                assert(it->second >= 0);
+                accessor = model.accessors[it->second];
+                bufferView = model.bufferViews[accessor.bufferView];
                 bufferIndex = bufferView.buffer;
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[bufferIndex]);
-                glEnableVertexAttribArray(attribIndexOf[key]); // Ici je suppose qu'on a prérempli une map attribIndexOf qui associe aux strings genre "POSITION" un index d'attribut du vertex shader (les location = XXX du vertex shader); dans les TPs on utilisait 0 pour position, 1 pour normal et 2 pour tex coords
-                glVertexAttribPointer(attribIndexOf[key], numberOfComponentOf[accessor.type], accessor.componentType, bufferView.byteStride, (const void*) (bufferView.byteOffset + accessor.byteOffset); // Ici encore il faut avoir remplit une map numberOfComponentOf qui associe un type gltf (comme "VEC2") au nombre de composantes (2 pour "VEC2", 3 pour "VEC3")
+                
+                // Get number of component
+                int size = 1;
+                if (accessor.type == TINYGLTF_TYPE_SCALAR) {
+                    size = 1;
+                } else if (accessor.type == TINYGLTF_TYPE_VEC2) {
+                    size = 2;
+                } else if (accessor.type == TINYGLTF_TYPE_VEC3) {
+                    size = 3;
+                } else if (accessor.type == TINYGLTF_TYPE_VEC4) {
+                    size = 4;
+                } else {
+                    assert(0);
+                }
+                
+                // it->first would be "POSITION", "NORMAL", "TEXCOORD_0", ...
+                if ((it->first.compare("POSITION") == 0) ||
+                    (it->first.compare("NORMAL") == 0) ||
+                    (it->first.compare("TEXCOORD_0") == 0))
+                {
+                    if (m_attribs[it->first] >= 0)
+                    {
+                        // Compute byteStride from Accessor + BufferView combination.
+                        int byteStride = bufferView.byteStride;
+                        assert(byteStride != -1);
+                        glEnableVertexAttribArray(m_attribs[it->first]);
+                        glVertexAttribPointer(m_attribs[it->first], size, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const void*) (bufferView.byteOffset + accessor.byteOffset));
+                    }
+                }
             }
+
+            // On rempli le vao et les primitives
             vaos.push_back(vaoId);
             primitives.push_back(primitive);
         }
     }
 }
-
-
-    // Lets use a lambda to factorize VAO initialization:
-    const auto initVAO = [positionAttrLocation, normalAttrLocation, texCoordsAttrLocation](GLuint& vao, GLuint vbo, GLuint ibo)
-    {
-        glGenVertexArrays(1, &vao);
-        glBindVertexArray(vao);
-
-        // We tell OpenGL what vertex attributes our VAO is describing:
-        glEnableVertexAttribArray(positionAttrLocation);
-        glEnableVertexAttribArray(normalAttrLocation);
-        glEnableVertexAttribArray(texCoordsAttrLocation);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vbo); // We bind the VBO because the next 3 calls will read what VBO is bound in order to know where the data is stored
-
-        glVertexAttribPointer(positionAttrLocation, 3, GL_FLOAT, GL_FALSE, sizeof(glmlv::Vertex3f3f2f), (const GLvoid*)offsetof(glmlv::Vertex3f3f2f, position));
-        glVertexAttribPointer(normalAttrLocation, 3, GL_FLOAT, GL_FALSE, sizeof(glmlv::Vertex3f3f2f), (const GLvoid*)offsetof(glmlv::Vertex3f3f2f, normal));
-        glVertexAttribPointer(texCoordsAttrLocation, 2, GL_FLOAT, GL_FALSE, sizeof(glmlv::Vertex3f3f2f), (const GLvoid*)offsetof(glmlv::Vertex3f3f2f, texCoords));
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0); // We can unbind the VBO because OpenGL has "written" in the VAO what VBO it needs to read when the VAO will be drawn
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo); // Binding the IBO to GL_ELEMENT_ARRAY_BUFFER while a VAO is bound "writes" it in the VAO for usage when the VAO will be drawn
-
-        glBindVertexArray(0);
-    };
