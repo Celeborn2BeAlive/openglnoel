@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include <glmlv/filesystem.hpp>
 #include <glmlv/GLFWHandle.hpp>
 #include <glmlv/GLProgram.hpp>
@@ -76,6 +78,8 @@ private:
 
     glm::vec3 m_CubeKd = glm::vec3(1, 0, 0);
     glm::vec3 m_SphereKd = glm::vec3(0, 1, 0);
+
+    std::map<std::string, GLint> m_attribs;
 
     void loadTinyGLTF(const glmlv::fs::path & gltfPath);
 };

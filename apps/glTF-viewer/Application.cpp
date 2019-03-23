@@ -150,6 +150,10 @@ Application::Application(int argc, char** argv):
     const GLint positionAttrLocation = 0;
     const GLint normalAttrLocation = 1;
     const GLint texCoordsAttrLocation = 2;
+    // Map gltf attributes name to an index value of vs
+    m_attribs["POSITION"] = positionAttrLocation;
+    m_attribs["NORMAL"] = normalAttrLocation;
+    m_attribs["TEXCOORD_0"] = texCoordsAttrLocation;
 
     glGenBuffers(1, &m_cubeVBO);
     glGenBuffers(1, &m_cubeIBO);
@@ -247,12 +251,13 @@ Application::Application(int argc, char** argv):
 
     m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 
-    /*if (argc < 2) {
-        printf("Needs input.gltf\n");
-        exit(1);
-    }*/
+
 
     // LOAD GLTF
+    if (argc < 2) {
+        printf("Needs input.gltf\n");
+        exit(1);
+    }
     const glmlv::fs::path gltfPath = m_AssetsRootPath / m_AppName / glmlv::fs::path{ argv[1] };
 
     loadTinyGLTF(gltfPath);
@@ -263,35 +268,15 @@ Application::Application(int argc, char** argv):
 void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
 {
     // 1 - LOAD
-
-    /*
-    // Load obj
-    std::vector<tinyobj::shape_t> shapes;
-    std::vector<tinyobj::material_t> materials;
-    tinyobj::attrib_t attribs;
-
-    std::string err;
-    bool ret = tinyobj::LoadObj(&attribs, &shapes, &materials, &err, objPath.string().c_str(), (mtlBaseDir.string() + "/").c_str());
-
-    if (!err.empty()) { // `err` may contain warning message.
-        std::cerr << err << std::endl;
-    }
-
-    if (!ret) {
-        throw std::runtime_error(err);
-    }
-    */
-
-    // Load gltf
     tinygltf::Model model;
-    tinygltf::TinyGLTF gltf_ctx;
+    tinygltf::TinyGLTF loader;
     std::string err;
     std::string warn;
 
     bool ret = false;
     std::cout << "Reading ASCII glTF" << std::endl;
     // assume ascii glTF.
-    ret = gltf_ctx.LoadASCIIFromFile(&model, &err, &warn, gltfPath.string());
+    ret = loader.LoadASCIIFromFile(&model, &err, &warn, gltfPath);
 
     // Catch errors
     if (!warn.empty()) {
@@ -306,118 +291,87 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
         printf("Failed to parse glTF\n");
     }
 
+    // 2 - BUFFERS (VAO / VBO / IBO)
+    std::vector<GLuint> buffers(model.buffers.size()); // un par tinygltf::Buffer
 
-    /*
-    data.shapeCount += shapes.size();
-
-    std::unordered_map<tinyobj::index_t, uint32_t, TinyObjLoaderIndexHash, TinyObjLoaderEqualTo> indexMap;
-
-    std::unordered_set<std::string> texturePaths;
-
-    const auto materialIdOffset = data.materials.size();
-    for (const auto & shape : shapes)
+    glGenBuffers(buffers.size(), buffers.data());
+    for (int i = 0; i < buffers.size(); ++i)
     {
-        const auto & mesh = shape.mesh;
-        for (const auto & idx : mesh.indices)
-        {
-            const auto it = indexMap.find(idx);
-            if (it == end(indexMap))
-            {
-                // Put the vertex in the vertex buffer and record a new index if not found
-                float vx = attribs.vertices[3 * idx.vertex_index + 0];
-                float vy = attribs.vertices[3 * idx.vertex_index + 1];
-                float vz = attribs.vertices[3 * idx.vertex_index + 2];
-                float nx = attribs.normals[3 * idx.normal_index + 0];
-                float ny = attribs.normals[3 * idx.normal_index + 1];
-                float nz = attribs.normals[3 * idx.normal_index + 2];
-                float tx = attribs.texcoords[2 * idx.texcoord_index + 0];
-                float ty = attribs.texcoords[2 * idx.texcoord_index + 1];
-
-                uint32_t newIndex = data.vertexBuffer.size();
-                data.vertexBuffer.emplace_back(glm::vec3(vx, vy, vz), glm::vec3(nx, ny, nz), glm::vec2(tx, ty));
-                data.bboxMin = glm::min(data.bboxMin, data.vertexBuffer.back().position);
-                data.bboxMax = glm::max(data.bboxMax, data.vertexBuffer.back().position);
-
-                indexMap[idx] = newIndex;
-                data.indexBuffer.emplace_back(newIndex);
-            }
-            else
-                data.indexBuffer.emplace_back((*it).second);
-        }
-        data.indexCountPerShape.emplace_back(mesh.indices.size());
-
-        const int32_t localMaterialID = mesh.material_ids.empty() ? -1 : mesh.material_ids[0];
-        const int32_t materialID = localMaterialID >= 0 ? materialIdOffset + localMaterialID : -1;
-
-        data.materialIDPerShape.emplace_back(materialID);
-        data.localToWorldMatrixPerShape.emplace_back(glm::mat4(1.f));
-
-        // Only load textures that are used
-        if (localMaterialID >= 0)
-        {
-            const auto & material = materials[localMaterialID];
-            texturePaths.emplace(material.ambient_texname);
-            texturePaths.emplace(material.diffuse_texname);
-            texturePaths.emplace(material.specular_texname);
-            texturePaths.emplace(material.specular_highlight_texname);
-        }
+        glBindBuffer(GL_ARRAY_BUFFER, buffers[i]);
+        glBufferStorage(GL_ARRAY_BUFFER, model.buffers[i].data.size(), model.buffers[i].data.data(), 0);
     }
 
-    std::unordered_map<std::string, int32_t> textureIdMap;
+    // 3 - VAO
+    std::vector<GLuint> vaos;
+    std::vector<tinygltf::Primitive> primitives;
+    // Pour chaque VAO on va aussi stocker les données de la primitive associé car on doit l'utiliser lors du rendu
 
-    if (loadTextures)
+    // Pour chaque mesh
+    for (size_t i = 0; i < model.meshes.size(); i++)
     {
-        const auto textureIdOffset = data.textures.size();
-        for (const auto & texturePath : texturePaths)
-        {
-            if (!texturePath.empty())
-            {
-                auto newTexturePath = texturePath;
-                std::replace(begin(newTexturePath), end(newTexturePath), '\\', '/');
-                const auto completePath = mtlBaseDir / newTexturePath;
-                if (fs::exists(completePath))
-                {
-                    std::clog << "Loading image " << completePath << std::endl;
-                    data.textures.emplace_back(readImage(completePath));
-                    data.textures.back().flipY();
+        const tinygltf::Mesh &mesh = model.meshes[i];
 
-                    const auto localTexId = textureIdMap.size();
-                    textureIdMap[texturePath] = textureIdOffset + localTexId;
+        // Pour chaque primitives du mesh
+        for (size_t primId = 0; primId < mesh.primitives.size(); primId++)				
+        {
+            const tinygltf::Primitive &primitive = mesh.primitives[primId];
+
+            GLuint vaoId;
+            glGenVertexArrays(1, &vaoId);
+            glBindVertexArray(vaoId);
+
+            // INDICES
+            tinygltf::Accessor &accessor = model.accessors[primitive.indices];
+            tinygltf::BufferView &bufferView = model.bufferViews[accessor.bufferView];
+            int &bufferIndex = bufferView.buffer;
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[bufferIndex]); // Ici on bind le buffer OpenGL qui a été rempli dans la premiere boucle
+
+            // ATTRIBUTS
+            // Pour chaque attributes de la primitive
+            std::map<std::string, int>::const_iterator it(primitive.attributes.begin());
+            std::map<std::string, int>::const_iterator itEnd(primitive.attributes.end());
+
+            for (; it != itEnd; it++)
+            {
+                assert(it->second >= 0);
+                accessor = model.accessors[it->second];
+                bufferView = model.bufferViews[accessor.bufferView];
+                bufferIndex = bufferView.buffer;
+                glBindBuffer(GL_ARRAY_BUFFER, buffers[bufferIndex]);
+                
+                // Get number of component
+                int size = 1;
+                if (accessor.type == TINYGLTF_TYPE_SCALAR) {
+                    size = 1;
+                } else if (accessor.type == TINYGLTF_TYPE_VEC2) {
+                    size = 2;
+                } else if (accessor.type == TINYGLTF_TYPE_VEC3) {
+                    size = 3;
+                } else if (accessor.type == TINYGLTF_TYPE_VEC4) {
+                    size = 4;
+                } else {
+                    assert(0);
                 }
-                else
+                
+                // it->first would be "POSITION", "NORMAL", "TEXCOORD_0", ...
+                if ((it->first.compare("POSITION") == 0) ||
+                    (it->first.compare("NORMAL") == 0) ||
+                    (it->first.compare("TEXCOORD_0") == 0))
                 {
-                    std::clog << "'Warning: image " << completePath << " not found" << std::endl;
+                    if (m_attribs[it->first] >= 0)
+                    {
+                        // Compute byteStride from Accessor + BufferView combination.
+                        int byteStride = bufferView.byteStride;
+                        assert(byteStride != -1);
+                        glEnableVertexAttribArray(m_attribs[it->first]);
+                        glVertexAttribPointer(m_attribs[it->first], size, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const void*) (bufferView.byteOffset + accessor.byteOffset));
+                    }
                 }
             }
+
+            // On rempli le vao et les primitives
+            vaos.push_back(vaoId);
+            primitives.push_back(primitive);
         }
     }
-
-    for (const auto & material : materials)
-    {
-        data.materials.emplace_back(); // Add new material
-        auto & newMaterial = data.materials.back();
-
-        newMaterial.Ka = glm::vec3(material.ambient[0], material.ambient[1], material.ambient[2]);
-        newMaterial.Kd = glm::vec3(material.diffuse[0], material.diffuse[1], material.diffuse[2]);
-        newMaterial.Ks = glm::vec3(material.specular[0], material.specular[1], material.specular[2]);
-        newMaterial.shininess = material.shininess;
-
-        if (!material.ambient_texname.empty()) {
-            const auto it = textureIdMap.find(material.ambient_texname);
-            newMaterial.KaTextureId = it != end(textureIdMap) ? (*it).second : -1;
-        }
-        if (!material.diffuse_texname.empty()) {
-            const auto it = textureIdMap.find(material.diffuse_texname);
-            newMaterial.KdTextureId = it != end(textureIdMap) ? (*it).second : -1;
-        }
-        if (!material.specular_texname.empty()) {
-            const auto it = textureIdMap.find(material.specular_texname);
-            newMaterial.KsTextureId = it != end(textureIdMap) ? (*it).second : -1;
-        }
-        if (!material.specular_highlight_texname.empty()) {
-            const auto it = textureIdMap.find(material.specular_highlight_texname);
-            newMaterial.shininessTextureId = it != end(textureIdMap) ? (*it).second : -1;
-        }
-    }
-    */
 }
