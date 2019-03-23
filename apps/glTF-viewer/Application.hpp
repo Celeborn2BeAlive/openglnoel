@@ -79,7 +79,14 @@ private:
     glm::vec3 m_CubeKd = glm::vec3(1, 0, 0);
     glm::vec3 m_SphereKd = glm::vec3(0, 1, 0);
 
+    // For GLTF
+    //tinygltf::Model m_model;
+
     std::map<std::string, GLint> m_attribs;
+    std::vector<GLuint> m_vaos;
+    //std::vector<tinygltf::Primitive> m_primitives;
 
     void loadTinyGLTF(const glmlv::fs::path & gltfPath);
+    void drawGLTF();
+    GLenum getMode(int mode);
 };
