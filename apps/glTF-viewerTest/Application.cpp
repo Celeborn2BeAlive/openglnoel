@@ -13,6 +13,9 @@
 #include <tiny_gltf.h>
 #endif
 
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
+
 tinygltf::Model m_model;
 std::vector<tinygltf::Primitive> m_primitives;
 std::vector<GLuint> m_buffers; // un par tinygltf::Buffer
@@ -21,6 +24,7 @@ int Application::run()
 {
 	float clearColor[3] = { 0.5, 0.8, 0.2 };
 	glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.f);
+
 
     // Loop until the user closes the windows
     for (auto iterationCount = 0u; !m_GLFWHandle.shouldClose(); ++iterationCount)
@@ -263,10 +267,10 @@ Application::Application(int argc, char** argv):
 
 
     // LOAD GLTF
-    if (argc < 2) {
+    /*if (argc < 2) {
         printf("Needs input.gltf\n");
         exit(1);
-    }
+    }*/
     const glmlv::fs::path gltfPath = m_AssetsRootPath / m_AppName / glmlv::fs::path{ argv[1] };
 
     loadTinyGLTF(gltfPath);
@@ -418,7 +422,8 @@ void Application::drawGLTF()
     {        
         const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
         glBindVertexArray(m_vaos[i]);
-        glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
+        glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType,
+			(const GLvoid*)indexAccessor.byteOffset);
     }
     glBindVertexArray(0);
 }
