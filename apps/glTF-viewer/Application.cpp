@@ -291,7 +291,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     bool ret = false;
     std::cout << "Reading ASCII glTF" << std::endl;
     // assume ascii glTF.
-    ret = gltf_ctx.LoadASCIIFromFile(&model, &err, &warn, gltfPath);
+    ret = gltf_ctx.LoadASCIIFromFile(&model, &err, &warn, gltfPath.string());
 
     // Catch errors
     if (!warn.empty()) {
