@@ -15,6 +15,7 @@
 
 tinygltf::Model m_model;
 std::vector<tinygltf::Primitive> m_primitives;
+std::vector<GLuint> m_buffers; // un par tinygltf::Buffer
 
 int Application::run()
 {
@@ -45,6 +46,7 @@ int Application::run()
         glUniform1i(m_uKdSamplerLocation, 0); // Set the uniform to 0 because we use texture unit 0
         glBindSampler(0, m_textureSampler); // Tell to OpenGL what sampler we want to use on this texture unit
         
+        /*
         {
             const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(-2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
 
@@ -63,7 +65,7 @@ int Application::run()
             glBindVertexArray(m_cubeVAO);
             glDrawElements(GL_TRIANGLES, m_cubeGeometry.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
         }
-        /*
+        
         {
             const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
 
@@ -162,6 +164,7 @@ Application::Application(int argc, char** argv):
     m_attribs["NORMAL"] = normalAttrLocation;
     m_attribs["TEXCOORD_0"] = texCoordsAttrLocation;
 
+/*
     glGenBuffers(1, &m_cubeVBO);
     glGenBuffers(1, &m_cubeIBO);
     glGenBuffers(1, &m_sphereVBO);
@@ -236,7 +239,7 @@ Application::Application(int argc, char** argv):
     glGenSamplers(1, &m_textureSampler);
     glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glSamplerParameteri(m_textureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+*/
     glEnable(GL_DEPTH_TEST);
 
     m_program = glmlv::compileProgram({ m_ShadersRootPath / m_AppName / "forward.vs.glsl", m_ShadersRootPath / m_AppName / "forward.fs.glsl" });
@@ -257,7 +260,6 @@ Application::Application(int argc, char** argv):
     m_uKdSamplerLocation = glGetUniformLocation(m_program.glId(), "uKdSampler");
 
     m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
-
 
 
     // LOAD GLTF
@@ -299,15 +301,37 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     }
 
     // 2 - BUFFERS (VBO / IBO)
-    std::vector<GLuint> buffers(m_model.buffers.size()); // un par tinygltf::Buffer
-
-    glGenBuffers(buffers.size(), buffers.data());
-    for (int i = 0; i < buffers.size(); ++i)
+    /*
+    for (size_t i = 0; i < m_model.bufferViews.size(); i++)
     {
-        glBindBuffer(GL_ARRAY_BUFFER, buffers[i]);
+        const tinygltf::BufferView &bufferView = m_model.bufferViews[i];
+        if (bufferView.target == 0)
+        {
+            std::cout << "WARN: bufferView.target is zero" << std::endl;
+            continue;  // Unsupported bufferView.
+        }
+
+        const tinygltf::Buffer &buffer = m_model.buffers[bufferView.buffer];
+        //GLuint bufferIndex; // can be vbo or ibo
+        glGenBuffers(1, &m_buffers[i]);
+        glBindBuffer(bufferView.target, m_buffers[i]);
+        std::cout << "buffer.size= " << buffer.data.size() << ", byteOffset = " << bufferView.byteOffset << std::endl;
+
+        glBufferData(bufferView.target, bufferView.byteLength, &buffer.data.at(0) + bufferView.byteOffset, GL_STATIC_DRAW);
+        //glBufferStorage(bufferView.target, bufferView.byteLength, &buffer.data.at(0) + bufferView.byteOffset, 0);
+        glBindBuffer(bufferView.target, 0);
+    }
+    */
+    
+    //std::vector<GLuint> buffers(m_model.buffers.size()); // un par tinygltf::Buffer
+    m_buffers.resize(m_model.buffers.size());
+    glGenBuffers(m_buffers.size(), m_buffers.data());
+    for (int i = 0; i < m_buffers.size(); ++i)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_buffers[i]);
         glBufferStorage(GL_ARRAY_BUFFER, m_model.buffers[i].data.size(), m_model.buffers[i].data.data(), 0);
     }
-
+    
     // 3 - VAOs & Primitives
     // Pour chaque VAO on va aussi stocker les données de la primitive associé car on doit l'utiliser lors du rendu
 
@@ -328,10 +352,11 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             glBindVertexArray(vaoId);
 
             // INDICES (IBO)
-            tinygltf::Accessor &accessor = m_model.accessors[primitive.indices];
-            tinygltf::BufferView &bufferView = m_model.bufferViews[accessor.bufferView];
+            tinygltf::Accessor &indexAccessor = m_model.accessors[primitive.indices];
+            tinygltf::BufferView &bufferView = m_model.bufferViews[indexAccessor.bufferView];
             int &bufferIndex = bufferView.buffer;
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[bufferIndex]); // Binding IBO
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffers[bufferIndex]); // Binding IBO
+            //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexAccessor.bufferView); // Binding IBO
 
             // ATTRIBUTS
             // Pour chaque attributes de la primitive
@@ -341,10 +366,11 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             for (; it != itEnd; it++)
             {
                 assert(it->second >= 0);
-                accessor = m_model.accessors[it->second];
+                tinygltf::Accessor &accessor = m_model.accessors[it->second];
                 bufferView = m_model.bufferViews[accessor.bufferView];
                 bufferIndex = bufferView.buffer;
-                glBindBuffer(GL_ARRAY_BUFFER, buffers[bufferIndex]);    // Binding VBO
+                glBindBuffer(GL_ARRAY_BUFFER, m_buffers[bufferIndex]);    // Binding VBO
+                //glBindBuffer(GL_ARRAY_BUFFER, accessor.bufferView);    // Binding VBO
                 
                 // Get number of component
                 int size = 1;
@@ -364,14 +390,14 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                 if ((it->first.compare("POSITION") == 0) ||
                     (it->first.compare("NORMAL") == 0) ||
                     (it->first.compare("TEXCOORD_0") == 0))
-                {
+                {                    
                     if (m_attribs[it->first] >= 0)
                     {
                         // Compute byteStride from Accessor + BufferView combination.
-                        int byteStride = bufferView.byteStride;
+                        int byteStride =  accessor.ByteStride(m_model.bufferViews[accessor.bufferView]);
                         assert(byteStride != -1);
                         glEnableVertexAttribArray(m_attribs[it->first]);
-                        glVertexAttribPointer(m_attribs[it->first], size, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const void*) (bufferView.byteOffset + accessor.byteOffset));
+                        glVertexAttribPointer(m_attribs[it->first], size, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const GLvoid*) (bufferView.byteOffset + accessor.byteOffset));
                     }
                 }
             }
@@ -391,8 +417,7 @@ void Application::drawGLTF()
     {        
         const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
         glBindVertexArray(m_vaos[i]);
-        //glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const void*) indexAccessor.byteOffset);
-        glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, GL_UNSIGNED_INT, (const void*) indexAccessor.byteOffset);
+        glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
     }
     glBindVertexArray(0);
 }
@@ -415,5 +440,3 @@ GLenum Application::getMode(int mode)
         assert(0);
         }
 }
-
-
