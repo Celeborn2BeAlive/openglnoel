@@ -5,6 +5,7 @@
 #include <glmlv/GLProgram.hpp>
 #include <glmlv/ViewController.hpp>
 #include <glmlv/simple_geometry.hpp>
+#include <glmlv/scene_loading.hpp>
 
 #include <glm/glm.hpp>
 
@@ -76,4 +77,6 @@ private:
 
     glm::vec3 m_CubeKd = glm::vec3(1, 0, 0);
     glm::vec3 m_SphereKd = glm::vec3(0, 1, 0);
+
+    void loadTinyGLTF(const glmlv::fs::path & gltfPath, glmlv::SceneData & data);
 };

@@ -252,17 +252,44 @@ Application::Application(int argc, char** argv):
         exit(1);
     }
 
-    // TODO --> MOVE THE CODE UNDER THIS COMMENT TO THE loadTinyGLTF function
+    // LOAD GLTF
 
-    // FROM GL TF Example
+    glmlv::SceneData sceneData;
+    const glmlv::fs::path gltfPath = m_AssetsRootPath / m_AppName / glmlv::fs::path{ argv[1] };
+
+    loadTinyGLTF(gltfPath, sceneData);
+}
+
+
+// Load an obj model with tinyGLTF
+void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath, glmlv::SceneData & data)
+{
+    // 1 - LOAD
+    
+    /*
+    // Load obj
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials;
+    tinyobj::attrib_t attribs;
+
+    std::string err;
+    bool ret = tinyobj::LoadObj(&attribs, &shapes, &materials, &err, objPath.string().c_str(), (mtlBaseDir.string() + "/").c_str());
+
+    if (!err.empty()) { // `err` may contain warning message.
+        std::cerr << err << std::endl;
+    }
+
+    if (!ret) {
+        throw std::runtime_error(err);
+    }
+    */
+
+    // Load gltf
     tinygltf::Model model;
     tinygltf::TinyGLTF gltf_ctx;
     std::string err;
     std::string warn;
-    //std::string input_filename(argv[1]);
-    const glmlv::fs::path gltfPath = m_AssetsRootPath / m_AppName / glmlv::fs::path{ argv[1] };
 
-    // Load .gltf
     bool ret = false;
     std::cout << "Reading ASCII glTF" << std::endl;
     // assume ascii glTF.
@@ -280,28 +307,9 @@ Application::Application(int argc, char** argv):
     if (!ret) {
         printf("Failed to parse glTF\n");
     }
-}
 
-/*
-// Load an obj model with tinyGLTF
-void loadTinyGLTF(const glmlv::fs::path & gltfPath, SceneData & data, bool loadTextures)
-{
-    // Load obj
-    std::vector<tinyobj::shape_t> shapes;
-    std::vector<tinyobj::material_t> materials;
-    tinyobj::attrib_t attribs;
 
-    std::string err;
-    bool ret = tinyobj::LoadObj(&attribs, &shapes, &materials, &err, objPath.string().c_str(), (mtlBaseDir.string() + "/").c_str());
-
-    if (!err.empty()) { // `err` may contain warning message.
-        std::cerr << err << std::endl;
-    }
-
-    if (!ret) {
-        throw std::runtime_error(err);
-    }
-
+    /*
     data.shapeCount += shapes.size();
 
     std::unordered_map<tinyobj::index_t, uint32_t, TinyObjLoaderIndexHash, TinyObjLoaderEqualTo> indexMap;
@@ -413,5 +421,5 @@ void loadTinyGLTF(const glmlv::fs::path & gltfPath, SceneData & data, bool loadT
             newMaterial.shininessTextureId = it != end(textureIdMap) ? (*it).second : -1;
         }
     }
+    */
 }
-*/
