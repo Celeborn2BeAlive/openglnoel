@@ -247,10 +247,10 @@ Application::Application(int argc, char** argv):
 
     m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 
-    if (argc < 2) {
+    /*if (argc < 2) {
         printf("Needs input.gltf\n");
         exit(1);
-    }
+    }*/
 
     // LOAD GLTF
     const glmlv::fs::path gltfPath = m_AssetsRootPath / m_AppName / glmlv::fs::path{ argv[1] };
