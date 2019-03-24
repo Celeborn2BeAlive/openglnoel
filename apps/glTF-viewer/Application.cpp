@@ -30,14 +30,14 @@ int Application::run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // WORLD MATRIX
-        const auto projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);
-        const auto viewMatrix = m_viewController.getViewMatrix();
+        m_projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);
+        m_viewMatrix = m_viewController.getViewMatrix();
 
         // LIGHT
-        glUniform3fv(m_uDirectionalLightDirLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(glm::normalize(m_DirLightDirection), 0))));
+        glUniform3fv(m_uDirectionalLightDirLocation, 1, glm::value_ptr(glm::vec3(m_viewMatrix * glm::vec4(glm::normalize(m_DirLightDirection), 0))));
         glUniform3fv(m_uDirectionalLightIntensityLocation, 1, glm::value_ptr(m_DirLightColor * m_DirLightIntensity));
 
-        glUniform3fv(m_uPointLightPositionLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(m_PointLightPosition, 1))));
+        glUniform3fv(m_uPointLightPositionLocation, 1, glm::value_ptr(glm::vec3(m_viewMatrix * glm::vec4(m_PointLightPosition, 1))));
         glUniform3fv(m_uPointLightIntensityLocation, 1, glm::value_ptr(m_PointLightColor * m_PointLightIntensity));
 
         // ACTIVE TEXTURE
@@ -47,24 +47,7 @@ int Application::run()
 
         // GLTF DRAWING
         {
-            // OBJECT MATRIX
-            const auto modelMatrix = glm::mat4(1);
-
-            const auto mvMatrix = viewMatrix * modelMatrix;
-            const auto mvpMatrix = projMatrix * mvMatrix;
-            const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
-
-            glUniformMatrix4fv(m_uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-            glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
-            glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
-
-            // DRAW GLTF
-            for (size_t i = 0; i < m_vaos.size(); ++i)
-            {        
-                const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
-                glBindVertexArray(m_vaos[i]);
-                glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
-            }
+            DrawModel(m_model);
         }
 
         // UNBIND
@@ -97,12 +80,6 @@ int Application::run()
                 ImGui::ColorEdit3("PointLightColor", glm::value_ptr(m_PointLightColor));
                 ImGui::DragFloat("PointLightIntensity", &m_PointLightIntensity, 0.1f, 0.f, 16000.f);
                 ImGui::InputFloat3("Position", glm::value_ptr(m_PointLightPosition));
-            }
-
-            if (ImGui::CollapsingHeader("Materials"))
-            {
-                ImGui::ColorEdit3("Cube Kd", glm::value_ptr(m_CubeKd));
-                ImGui::ColorEdit3("Sphere Kd", glm::value_ptr(m_SphereKd));
             }
 
             ImGui::End();
@@ -304,6 +281,8 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             glBindVertexArray(0);
         }
     }
+
+    DrawModel(m_model);
 }
 
 GLenum Application::getMode(int mode)
@@ -323,4 +302,92 @@ GLenum Application::getMode(int mode)
     } else {
         assert(0);
     }
+}
+
+// ------ GLTF DRAW --------
+
+
+void Application::DrawModel(tinygltf::Model &model) {
+  // If the glTF asset has at least one scene, and doesn't define a default one
+  // just show the first one we can find
+  assert(model.scenes.size() > 0);
+  int scene_to_display = model.defaultScene > -1 ? model.defaultScene : 0;
+  const tinygltf::Scene &scene = model.scenes[scene_to_display];
+  for (size_t i = 0; i < scene.nodes.size(); i++) 
+  {
+    DrawNode(model, model.nodes[scene.nodes[i]], glm::mat4(1));
+  }
+}
+
+
+// Hierarchically draw nodes
+void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, glm::mat4 modelMatrix) {
+
+    // PUSH MATRIX
+
+    if (node.matrix.size() == 16)
+    {
+        modelMatrix = glm::make_mat4(node.matrix.data());
+    }
+    else
+    {       
+        if (node.translation.size() == 3)
+        {
+            //modelMatrix = glm::translate(modelMatrix, glm::make_vec3(node.translation.data()));
+        }
+
+        if (node.rotation.size() == 4)
+        {
+            //modelMatrix = glm::rotate(modelMatrix, glm::make_mat4(node.rotation.data()));
+        }
+
+        if (node.scale.size() == 3)
+        {
+            //modelMatrix = glm::scale(modelMatrix, glm::make_vec3(node.scale.data()));
+        }
+    }
+    
+    if (node.mesh > -1)
+    {
+        assert(node.mesh < model.meshes.size());
+        DrawMesh(node.mesh, modelMatrix);
+    }
+
+    // Draw child nodes.
+    for (size_t i = 0; i < node.children.size(); i++)
+    {
+        assert(node.children[i] < model.nodes.size());
+        DrawNode(model, model.nodes[node.children[i]], modelMatrix);
+    }
+
+    // POP MATRIX
+}
+
+void Application::DrawMesh(int meshIndex, glm::mat4 modelMatrix)
+{
+    // OBJECT MATRIX
+    const auto mvMatrix = m_viewMatrix * modelMatrix;
+    const auto mvpMatrix = m_projMatrix * mvMatrix;
+    const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
+
+    glUniformMatrix4fv(m_uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+    glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
+    glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
+    // We should have the same amount of meshes & vaos & primitives
+    assert(meshIndex < m_vaos.size());
+
+    const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[meshIndex].indices];        
+    glBindVertexArray(m_vaos[meshIndex]);
+    glDrawElements(getMode(m_primitives[meshIndex].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
+
+    // DRAW GLTF MESHES
+    /*
+    for (size_t i = 0; i < m_vaos.size(); ++i)
+    {        
+        const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
+        glBindVertexArray(m_vaos[i]);
+        glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
+    }
+    */
 }
