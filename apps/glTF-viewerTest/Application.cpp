@@ -64,7 +64,7 @@ int Application::run()
 		glfwMakeContextCurrent(window);
 		*/
 
-		//camera
+		//intput for camera
 		glfwSetKeyCallback(m_GLFWHandle.window(), keyboardFunc);
 		glfwSetMouseButtonCallback(m_GLFWHandle.window(), clickFunc);
 		glfwSetCursorPosCallback(m_GLFWHandle.window(), motionFunc);
