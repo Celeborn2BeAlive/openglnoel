@@ -1,5 +1,4 @@
 #pragma once
-
 #include <map>
 
 #include <glmlv/filesystem.hpp>
@@ -9,6 +8,16 @@
 #include <glmlv/simple_geometry.hpp>
 
 #include <glm/glm.hpp>
+
+//include to use callback functions for camera controls
+#include <GLFW/glfw3.h>
+
+#include <tiny_gltf.h>
+
+
+const int m_nWindowWidth = 1280;
+const int m_nWindowHeight = 720;
+//GLFWwindow *window;
 
 class Application
 {
@@ -25,8 +34,6 @@ private:
         return glm::vec3(sinPhi * sinTheta, glm::cos(thetaRadians), cosPhi * sinTheta);
     }
 
-    const size_t m_nWindowWidth = 1280;
-    const size_t m_nWindowHeight = 720;
     glmlv::GLFWHandle m_GLFWHandle{ m_nWindowWidth, m_nWindowHeight, "Template" }; // Note: the handle must be declared before the creation of any object managing OpenGL resource (e.g. GLProgram, GLShader)
 
     const glmlv::fs::path m_AppPath;
@@ -80,13 +87,13 @@ private:
     glm::vec3 m_SphereKd = glm::vec3(0, 1, 0);
 
     // For GLTF
-    //tinygltf::Model m_model;
-
+    tinygltf::Model m_model;
     std::map<std::string, GLint> m_attribs;
     std::vector<GLuint> m_vaos;
-    //std::vector<tinygltf::Primitive> m_primitives;
+    std::vector<tinygltf::Primitive> m_primitives;
 
     void loadTinyGLTF(const glmlv::fs::path & gltfPath);
     void drawGLTF();
     GLenum getMode(int mode);
+
 };
