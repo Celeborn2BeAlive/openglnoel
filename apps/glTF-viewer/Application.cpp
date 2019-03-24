@@ -333,17 +333,20 @@ void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, g
     {       
         if (node.translation.size() == 3)
         {
-            //modelMatrix = glm::translate(modelMatrix, glm::make_vec3(node.translation.data()));
+            glm::vec3 translate = glm::make_vec3(node.translation.data());
+            modelMatrix = glm::translate(modelMatrix, translate);
         }
 
         if (node.rotation.size() == 4)
         {
-            //modelMatrix = glm::rotate(modelMatrix, glm::make_mat4(node.rotation.data()));
+            glm::vec3 rotate(node.rotation[0], node.rotation[1], node.rotation[2]);
+            modelMatrix = glm::rotate(modelMatrix, (float)node.rotation[3], rotate);
         }
 
         if (node.scale.size() == 3)
         {
-            //modelMatrix = glm::scale(modelMatrix, glm::make_vec3(node.scale.data()));
+            glm::vec3 scale = glm::make_vec3(node.scale.data());
+            modelMatrix = glm::scale(modelMatrix, scale);
         }
     }
     
