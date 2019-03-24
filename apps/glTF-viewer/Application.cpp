@@ -33,6 +33,7 @@ int Application::run()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
         const auto projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);
         const auto viewMatrix = m_viewController.getViewMatrix();
 
@@ -86,10 +87,28 @@ int Application::run()
         }
         */
 
+        //drawGLTF();
+
+        for (size_t i = 0; i < m_vaos.size(); ++i)
+        {        
+            const auto modelMatrix = glm::mat4(1);
+
+            const auto mvMatrix = viewMatrix * modelMatrix;
+            const auto mvpMatrix = projMatrix * mvMatrix;
+            const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
+
+            glUniformMatrix4fv(m_uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+            glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
+            glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
+            const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
+            glBindVertexArray(m_vaos[i]);
+            glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
+        }
+        glBindVertexArray(0);
+
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindSampler(0, 0); // Unbind the sampler
-
-        drawGLTF();
 
         // GUI code:
 		glmlv::imguiNewFrame();
@@ -155,6 +174,9 @@ Application::Application(int argc, char** argv):
 {
     ImGui::GetIO().IniFilename = m_ImGuiIniFilename.c_str(); // At exit, ImGUI will store its windows positions in this file
 
+    // 1 - LINK WITH SHADERS
+
+    // Attribute location
     const GLint positionAttrLocation = 0;
     const GLint normalAttrLocation = 1;
     const GLint texCoordsAttrLocation = 2;
@@ -164,91 +186,16 @@ Application::Application(int argc, char** argv):
     m_attribs["NORMAL"] = normalAttrLocation;
     m_attribs["TEXCOORD_0"] = texCoordsAttrLocation;
 
-/*
-    glGenBuffers(1, &m_cubeVBO);
-    glGenBuffers(1, &m_cubeIBO);
-    glGenBuffers(1, &m_sphereVBO);
-    glGenBuffers(1, &m_sphereIBO);
-
-    m_cubeGeometry = glmlv::makeCube();
-    m_sphereGeometry = glmlv::makeSphere(32);
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_cubeVBO);
-    glBufferStorage(GL_ARRAY_BUFFER, m_cubeGeometry.vertexBuffer.size() * sizeof(glmlv::Vertex3f3f2f), m_cubeGeometry.vertexBuffer.data(), 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_sphereVBO);
-    glBufferStorage(GL_ARRAY_BUFFER, m_sphereGeometry.vertexBuffer.size() * sizeof(glmlv::Vertex3f3f2f), m_sphereGeometry.vertexBuffer.data(), 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_cubeIBO);
-    glBufferStorage(GL_ARRAY_BUFFER, m_cubeGeometry.indexBuffer.size() * sizeof(uint32_t), m_cubeGeometry.indexBuffer.data(), 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_sphereIBO);
-    glBufferStorage(GL_ARRAY_BUFFER, m_sphereGeometry.indexBuffer.size() * sizeof(uint32_t), m_sphereGeometry.indexBuffer.data(), 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    // Lets use a lambda to factorize VAO initialization:
-    const auto initVAO = [positionAttrLocation, normalAttrLocation, texCoordsAttrLocation](GLuint& vao, GLuint vbo, GLuint ibo)
-    {
-        glGenVertexArrays(1, &vao);
-        glBindVertexArray(vao);
-
-        // We tell OpenGL what vertex attributes our VAO is describing:
-        glEnableVertexAttribArray(positionAttrLocation);
-        glEnableVertexAttribArray(normalAttrLocation);
-        glEnableVertexAttribArray(texCoordsAttrLocation);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vbo); // We bind the VBO because the next 3 calls will read what VBO is bound in order to know where the data is stored
-
-        glVertexAttribPointer(positionAttrLocation, 3, GL_FLOAT, GL_FALSE, sizeof(glmlv::Vertex3f3f2f), (const GLvoid*)offsetof(glmlv::Vertex3f3f2f, position));
-        glVertexAttribPointer(normalAttrLocation, 3, GL_FLOAT, GL_FALSE, sizeof(glmlv::Vertex3f3f2f), (const GLvoid*)offsetof(glmlv::Vertex3f3f2f, normal));
-        glVertexAttribPointer(texCoordsAttrLocation, 2, GL_FLOAT, GL_FALSE, sizeof(glmlv::Vertex3f3f2f), (const GLvoid*)offsetof(glmlv::Vertex3f3f2f, texCoords));
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0); // We can unbind the VBO because OpenGL has "written" in the VAO what VBO it needs to read when the VAO will be drawn
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo); // Binding the IBO to GL_ELEMENT_ARRAY_BUFFER while a VAO is bound "writes" it in the VAO for usage when the VAO will be drawn
-
-        glBindVertexArray(0);
-    };
-
-    initVAO(m_cubeVAO, m_cubeVBO, m_cubeIBO);
-    initVAO(m_sphereVAO, m_sphereVBO, m_sphereIBO);
-
-    glActiveTexture(GL_TEXTURE0); // We will work on GL_TEXTURE0 texture unit. Since the shader only use one texture at a time, we only need one texture unit
-    {
-        glmlv::Image2DRGBA image = glmlv::readImage(m_AssetsRootPath / m_AppName / "textures" / "cube.png");
-
-        glGenTextures(1, &m_cubeTextureKd);
-        glBindTexture(GL_TEXTURE_2D, m_cubeTextureKd);
-        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, image.width(), image.height());
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image.width(), image.height(), GL_RGBA, GL_UNSIGNED_BYTE, image.data());
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
-
-    {
-        glmlv::Image2DRGBA image = glmlv::readImage(m_AssetsRootPath / m_AppName / "textures" / "sphere.jpg");
-
-        glGenTextures(1, &m_sphereTextureKd);
-        glBindTexture(GL_TEXTURE_2D, m_sphereTextureKd);
-        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, image.width(), image.height());
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image.width(), image.height(), GL_RGBA, GL_UNSIGNED_BYTE, image.data());
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
-
-    // Note: no need to bind a sampler for modifying it: the sampler API is already direct_state_access
-    glGenSamplers(1, &m_textureSampler);
-    glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glSamplerParameteri(m_textureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-*/
     glEnable(GL_DEPTH_TEST);
 
+    // Compile Shaders
     m_program = glmlv::compileProgram({ m_ShadersRootPath / m_AppName / "forward.vs.glsl", m_ShadersRootPath / m_AppName / "forward.fs.glsl" });
     m_program.use();
 
+    // Get Uniforms
     m_uModelViewProjMatrixLocation = glGetUniformLocation(m_program.glId(), "uModelViewProjMatrix");
     m_uModelViewMatrixLocation = glGetUniformLocation(m_program.glId(), "uModelViewMatrix");
     m_uNormalMatrixLocation = glGetUniformLocation(m_program.glId(), "uNormalMatrix");
-
 
     m_uDirectionalLightDirLocation = glGetUniformLocation(m_program.glId(), "uDirectionalLightDir");
     m_uDirectionalLightIntensityLocation = glGetUniformLocation(m_program.glId(), "uDirectionalLightIntensity");
@@ -259,10 +206,10 @@ Application::Application(int argc, char** argv):
     m_uKdLocation = glGetUniformLocation(m_program.glId(), "uKd");
     m_uKdSamplerLocation = glGetUniformLocation(m_program.glId(), "uKdSampler");
 
+    // 2 - SET CAMERA POSTION
     m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 
-
-    // LOAD GLTF
+    // 3 - LOAD SCENE (.GLTF)
     if (argc < 2) {
         printf("Needs input.gltf\n");
         exit(1);
@@ -285,7 +232,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     bool ret = false;
     std::cout << "Reading ASCII glTF" << std::endl;
     // assume ascii glTF.
-	std::cout << gltfPath.string();
+	std::cout << gltfPath.string() << std::endl;
     ret = loader.LoadASCIIFromFile(&m_model, &err, &warn, gltfPath.string());
 
     // Catch errors
@@ -327,11 +274,15 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     //std::vector<GLuint> buffers(m_model.buffers.size()); // un par tinygltf::Buffer
     m_buffers.resize(m_model.buffers.size());
     glGenBuffers(m_buffers.size(), m_buffers.data());
-    for (int i = 0; i < m_buffers.size(); ++i)
+    for (size_t i = 0; i < m_buffers.size(); ++i)
     {
-        glBindBuffer(GL_ARRAY_BUFFER, m_buffers[i]);
-        glBufferStorage(GL_ARRAY_BUFFER, m_model.buffers[i].data.size(), m_model.buffers[i].data.data(), 0);
+        const tinygltf::BufferView &bufferView = m_model.bufferViews[i];
+        glBindBuffer(bufferView.target, m_buffers[i]);
+        glBufferStorage(bufferView.target, m_model.buffers[i].data.size(), m_model.buffers[i].data.data(), 0);
+        glBindBuffer(bufferView.target, 0);
     }
+
+    std::cout << "# of buffers : " << m_buffers.size() << std::endl;
     
     // 3 - VAOs & Primitives
     // Pour chaque VAO on va aussi stocker les données de la primitive associé car on doit l'utiliser lors du rendu
@@ -391,7 +342,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                 if ((it->first.compare("POSITION") == 0) ||
                     (it->first.compare("NORMAL") == 0) ||
                     (it->first.compare("TEXCOORD_0") == 0))
-                {                    
+                {
                     if (m_attribs[it->first] >= 0)
                     {
                         // Compute byteStride from Accessor + BufferView combination.
@@ -401,7 +352,29 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                         glVertexAttribPointer(m_attribs[it->first], size, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const GLvoid*) (bufferView.byteOffset + accessor.byteOffset));
                     }
                 }
+
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
             }
+
+            /*
+            tinygltf::Accessor &accessor = m_model.accessors[1]; // POSITION
+            bufferView = m_model.bufferViews[accessor.bufferView];
+            bufferIndex = bufferView.buffer;
+            glBindBuffer(GL_ARRAY_BUFFER, m_buffers[bufferIndex]);    // Binding VBO
+
+            int byteStride =  accessor.ByteStride(m_model.bufferViews[accessor.bufferView]);
+            glEnableVertexAttribArray(m_attribs["POSITION"]);
+            glVertexAttribPointer(m_attribs["POSITION"], 3, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const GLvoid*) (bufferView.byteOffset + accessor.byteOffset));
+
+            accessor = m_model.accessors[2]; // NORMAL
+            bufferView = m_model.bufferViews[accessor.bufferView];
+            bufferIndex = bufferView.buffer;
+            glBindBuffer(GL_ARRAY_BUFFER, m_buffers[bufferIndex]);    // Binding VBO
+
+            byteStride =  accessor.ByteStride(m_model.bufferViews[accessor.bufferView]);
+            glEnableVertexAttribArray(m_attribs["NORMAL"]);
+            glVertexAttribPointer(m_attribs["NORMAL"], 3, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const GLvoid*) (bufferView.byteOffset + accessor.byteOffset));
+            */
 
             // On rempli le vao et les primitives
             m_vaos.push_back(vaoId);
@@ -414,7 +387,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
 
 void Application::drawGLTF()
 {
-    for (int i = 0; i < m_vaos.size(); ++i)
+    for (size_t i = 0; i < m_vaos.size(); ++i)
     {        
         const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
         glBindVertexArray(m_vaos[i]);

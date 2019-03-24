@@ -81,7 +81,6 @@ private:
 
     // For GLTF
     //tinygltf::Model m_model;
-
     std::map<std::string, GLint> m_attribs;
     std::vector<GLuint> m_vaos;
     //std::vector<tinygltf::Primitive> m_primitives;
