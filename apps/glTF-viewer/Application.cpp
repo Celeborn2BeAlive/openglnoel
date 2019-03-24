@@ -13,10 +13,6 @@
 #include <tiny_gltf.h>
 #endif
 
-tinygltf::Model m_model;
-std::vector<tinygltf::Primitive> m_primitives;
-std::vector<GLuint> m_buffers; // un par tinygltf::Buffer
-
 int Application::run()
 {
 	float clearColor[3] = { 0.5, 0.8, 0.2 };
@@ -33,64 +29,25 @@ int Application::run()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+        // WORLD MATRIX
         const auto projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);
         const auto viewMatrix = m_viewController.getViewMatrix();
 
+        // LIGHT
         glUniform3fv(m_uDirectionalLightDirLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(glm::normalize(m_DirLightDirection), 0))));
         glUniform3fv(m_uDirectionalLightIntensityLocation, 1, glm::value_ptr(m_DirLightColor * m_DirLightIntensity));
 
         glUniform3fv(m_uPointLightPositionLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(m_PointLightPosition, 1))));
         glUniform3fv(m_uPointLightIntensityLocation, 1, glm::value_ptr(m_PointLightColor * m_PointLightIntensity));
 
+        // ACTIVE TEXTURE
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(m_uKdSamplerLocation, 0); // Set the uniform to 0 because we use texture unit 0
         glBindSampler(0, m_textureSampler); // Tell to OpenGL what sampler we want to use on this texture unit
-        
-        /*
+
+        // GLTF DRAWING
         {
-            const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(-2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
-
-            const auto mvMatrix = viewMatrix * modelMatrix;
-            const auto mvpMatrix = projMatrix * mvMatrix;
-            const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
-
-            glUniformMatrix4fv(m_uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-            glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
-            glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
-
-            glUniform3fv(m_uKdLocation, 1, glm::value_ptr(m_CubeKd));
-
-            glBindTexture(GL_TEXTURE_2D, m_cubeTextureKd);
-
-            glBindVertexArray(m_cubeVAO);
-            glDrawElements(GL_TRIANGLES, m_cubeGeometry.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
-        }
-        
-        {
-            const auto modelMatrix = glm::rotate(glm::translate(glm::mat4(1), glm::vec3(2, 0, 0)), 0.2f * float(seconds), glm::vec3(0, 1, 0));
-
-            const auto mvMatrix = viewMatrix * modelMatrix;
-            const auto mvpMatrix = projMatrix * mvMatrix;
-            const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
-
-            glUniformMatrix4fv(m_uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-            glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
-            glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
-
-            glUniform3fv(m_uKdLocation, 1, glm::value_ptr(m_SphereKd));
-
-            glBindTexture(GL_TEXTURE_2D, m_sphereTextureKd);
-
-            glBindVertexArray(m_sphereVAO);
-            glDrawElements(GL_TRIANGLES, m_sphereGeometry.indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
-        }
-        */
-
-        //drawGLTF();
-
-        for (size_t i = 0; i < m_vaos.size(); ++i)
-        {        
+            // OBJECT MATRIX
             const auto modelMatrix = glm::mat4(1);
 
             const auto mvMatrix = viewMatrix * modelMatrix;
@@ -101,12 +58,17 @@ int Application::run()
             glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
             glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
-            const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
-            glBindVertexArray(m_vaos[i]);
-            glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
+            // DRAW GLTF
+            for (size_t i = 0; i < m_vaos.size(); ++i)
+            {        
+                const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
+                glBindVertexArray(m_vaos[i]);
+                glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
+            }
         }
-        glBindVertexArray(0);
 
+        // UNBIND
+        glBindVertexArray(0);
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindSampler(0, 0); // Unbind the sampler
 
@@ -249,40 +211,19 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     }
 
     // 2 - BUFFERS (VBO / IBO)
-    /*
-    for (size_t i = 0; i < m_model.bufferViews.size(); i++)
-    {
-        const tinygltf::BufferView &bufferView = m_model.bufferViews[i];
-        if (bufferView.target == 0)
-        {
-            std::cout << "WARN: bufferView.target is zero" << std::endl;
-            continue;  // Unsupported bufferView.
-        }
-
-        const tinygltf::Buffer &buffer = m_model.buffers[bufferView.buffer];
-        //GLuint bufferIndex; // can be vbo or ibo
-        glGenBuffers(1, &m_buffers[i]);
-        glBindBuffer(bufferView.target, m_buffers[i]);
-        std::cout << "buffer.size= " << buffer.data.size() << ", byteOffset = " << bufferView.byteOffset << std::endl;
-
-        glBufferData(bufferView.target, bufferView.byteLength, &buffer.data.at(0) + bufferView.byteOffset, GL_STATIC_DRAW);
-        //glBufferStorage(bufferView.target, bufferView.byteLength, &buffer.data.at(0) + bufferView.byteOffset, 0);
-        glBindBuffer(bufferView.target, 0);
-    }
-    */
     
-    //std::vector<GLuint> buffers(m_model.buffers.size()); // un par tinygltf::Buffer
-    m_buffers.resize(m_model.buffers.size());
-    glGenBuffers(m_buffers.size(), m_buffers.data());
-    for (size_t i = 0; i < m_buffers.size(); ++i)
+    std::vector<GLuint> buffers(m_model.buffers.size()); // un par tinygltf::Buffer
+    //m_buffers.resize(m_model.buffers.size());
+    glGenBuffers(buffers.size(), buffers.data());
+    for (size_t i = 0; i < buffers.size(); ++i)
     {
         const tinygltf::BufferView &bufferView = m_model.bufferViews[i];
-        glBindBuffer(bufferView.target, m_buffers[i]);
+        glBindBuffer(bufferView.target, buffers[i]);
         glBufferStorage(bufferView.target, m_model.buffers[i].data.size(), m_model.buffers[i].data.data(), 0);
         glBindBuffer(bufferView.target, 0);
     }
 
-    std::cout << "# of buffers : " << m_buffers.size() << std::endl;
+    std::cout << "# of buffers : " << buffers.size() << std::endl;
     
     // 3 - VAOs & Primitives
     // Pour chaque VAO on va aussi stocker les données de la primitive associé car on doit l'utiliser lors du rendu
@@ -307,7 +248,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             tinygltf::Accessor &indexAccessor = m_model.accessors[primitive.indices];
             tinygltf::BufferView &bufferView = m_model.bufferViews[indexAccessor.bufferView];
             int &bufferIndex = bufferView.buffer;
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffers[bufferIndex]); // Binding IBO
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[bufferIndex]); // Binding IBO
             //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexAccessor.bufferView); // Binding IBO
 
             // ATTRIBUTS
@@ -321,7 +262,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                 tinygltf::Accessor &accessor = m_model.accessors[it->second];
                 bufferView = m_model.bufferViews[accessor.bufferView];
                 bufferIndex = bufferView.buffer;
-                glBindBuffer(GL_ARRAY_BUFFER, m_buffers[bufferIndex]);    // Binding VBO
+                glBindBuffer(GL_ARRAY_BUFFER, buffers[bufferIndex]);    // Binding VBO
                 //glBindBuffer(GL_ARRAY_BUFFER, accessor.bufferView);    // Binding VBO
                 
                 // Get number of component
@@ -356,26 +297,6 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
             }
 
-            /*
-            tinygltf::Accessor &accessor = m_model.accessors[1]; // POSITION
-            bufferView = m_model.bufferViews[accessor.bufferView];
-            bufferIndex = bufferView.buffer;
-            glBindBuffer(GL_ARRAY_BUFFER, m_buffers[bufferIndex]);    // Binding VBO
-
-            int byteStride =  accessor.ByteStride(m_model.bufferViews[accessor.bufferView]);
-            glEnableVertexAttribArray(m_attribs["POSITION"]);
-            glVertexAttribPointer(m_attribs["POSITION"], 3, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const GLvoid*) (bufferView.byteOffset + accessor.byteOffset));
-
-            accessor = m_model.accessors[2]; // NORMAL
-            bufferView = m_model.bufferViews[accessor.bufferView];
-            bufferIndex = bufferView.buffer;
-            glBindBuffer(GL_ARRAY_BUFFER, m_buffers[bufferIndex]);    // Binding VBO
-
-            byteStride =  accessor.ByteStride(m_model.bufferViews[accessor.bufferView]);
-            glEnableVertexAttribArray(m_attribs["NORMAL"]);
-            glVertexAttribPointer(m_attribs["NORMAL"], 3, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const GLvoid*) (bufferView.byteOffset + accessor.byteOffset));
-            */
-
             // On rempli le vao et les primitives
             m_vaos.push_back(vaoId);
             m_primitives.push_back(primitive);
@@ -385,32 +306,21 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     }
 }
 
-void Application::drawGLTF()
-{
-    for (size_t i = 0; i < m_vaos.size(); ++i)
-    {        
-        const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
-        glBindVertexArray(m_vaos[i]);
-        glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
-    }
-    glBindVertexArray(0);
-}
-
 GLenum Application::getMode(int mode)
 {
-        if (mode == TINYGLTF_MODE_TRIANGLES) {
+    if (mode == TINYGLTF_MODE_TRIANGLES) {
         return GL_TRIANGLES;
-        } else if (mode == TINYGLTF_MODE_TRIANGLE_STRIP) {
+    } else if (mode == TINYGLTF_MODE_TRIANGLE_STRIP) {
         return GL_TRIANGLE_STRIP;
-        } else if (mode == TINYGLTF_MODE_TRIANGLE_FAN) {
+    } else if (mode == TINYGLTF_MODE_TRIANGLE_FAN) {
         return GL_TRIANGLE_FAN;
-        } else if (mode == TINYGLTF_MODE_POINTS) {
+    } else if (mode == TINYGLTF_MODE_POINTS) {
         return GL_POINTS;
-        } else if (mode == TINYGLTF_MODE_LINE) {
+    } else if (mode == TINYGLTF_MODE_LINE) {
         return GL_LINES;
-        } else if (mode == TINYGLTF_MODE_LINE_LOOP) {
+    } else if (mode == TINYGLTF_MODE_LINE_LOOP) {
         return GL_LINE_LOOP;
-        } else {
+    } else {
         assert(0);
-        }
+    }
 }

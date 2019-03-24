@@ -10,6 +10,8 @@
 
 #include <glm/glm.hpp>
 
+#include <tiny_gltf.h>
+
 class Application
 {
 public:
@@ -80,10 +82,10 @@ private:
     glm::vec3 m_SphereKd = glm::vec3(0, 1, 0);
 
     // For GLTF
-    //tinygltf::Model m_model;
+    tinygltf::Model m_model;
     std::map<std::string, GLint> m_attribs;
     std::vector<GLuint> m_vaos;
-    //std::vector<tinygltf::Primitive> m_primitives;
+    std::vector<tinygltf::Primitive> m_primitives;
 
     void loadTinyGLTF(const glmlv::fs::path & gltfPath);
     void drawGLTF();
