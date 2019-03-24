@@ -50,9 +50,7 @@ int Application::run()
             DrawModel(m_model);
         }
 
-        // UNBIND
-        glBindVertexArray(0);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        // UNBIND        
         glBindSampler(0, 0); // Unbind the sampler
 
         // GUI code:
@@ -158,6 +156,7 @@ Application::Application(int argc, char** argv):
     loadTinyGLTF(gltfPath);
 }
 
+// ------ GLTF INITIALIZATION --------
 
 // Load an obj m_model with tinyGLTF
 void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
@@ -215,7 +214,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
         {
             const tinygltf::Primitive &primitive = mesh.primitives[primId];
 
-            // 3 BIS - CREATE VAO FOR EACH PRIMITIVE
+            // 3.1 - CREATE VAO FOR EACH PRIMITIVE
             // Generate VAO
             GLuint vaoId;
             glGenVertexArrays(1, &vaoId);
@@ -279,10 +278,64 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             m_primitives.push_back(primitive);
 
             glBindVertexArray(0);
+
+            // TEXTURES
+            m_diffuseTex.push_back(0);
+
+            if (primitive.material < 0) {
+					continue;
+            }
+
+            tinygltf::Material &mat = m_model.materials[primitive.material];            
+
+            if (mat.values.find("baseColorTexture") != mat.values.end())
+            {
+                const auto& parameter = mat.values["baseColorTexture"];
+
+                tinygltf::Texture &tex = m_model.textures[parameter.TextureIndex()];
+
+                if (tex.source > -1 && tex.source < m_model.images.size())
+                {
+                    tinygltf::Image &image = m_model.images[tex.source];
+
+                    glActiveTexture(GL_TEXTURE0);
+
+                    GLuint texId;
+                    glGenTextures(1, &texId);
+                    glBindTexture(GL_TEXTURE_2D, texId);
+
+                    // Ignore Texture.fomat.
+                    GLenum format = GL_RGBA;
+                    if (image.component == 3) {
+                        format = GL_RGB;
+                    }
+
+    /*
+                    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+                    glTexParameterf(tex.target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                    glTexParameterf(tex.target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+                    glTexImage2D(tex.target, 0, tex.internalFormat, image.width,
+                            image.height, 0, format, tex.type,
+                            &image.image.at(0));
+    */
+
+                    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, image.width, image.height);
+                    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image.width, image.height, GL_RGBA, GL_UNSIGNED_BYTE, &image.image.at(0));
+                    
+                    glBindTexture(GL_TEXTURE_2D, 0);
+                    
+                    m_diffuseTex.back() = texId;
+                }
+            }
         }
     }
 
-    DrawModel(m_model);
+    // SAMPLER
+    // Note: no need to bind a sampler for modifying it: the sampler API is already direct_state_access
+    glGenSamplers(1, &m_textureSampler);
+    glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glSamplerParameteri(m_textureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 GLenum Application::getMode(int mode)
@@ -319,11 +372,11 @@ void Application::DrawModel(tinygltf::Model &model) {
   }
 }
 
-
 // Hierarchically draw nodes
-void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, glm::mat4 modelMatrix) {
+void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, glm::mat4 currentMatrix) {
 
     // PUSH MATRIX
+    glm::mat4 modelMatrix = glm::mat4(1);
 
     if (node.matrix.size() == 16)
     {
@@ -349,6 +402,8 @@ void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, g
             modelMatrix = glm::scale(modelMatrix, scale);
         }
     }
+
+    modelMatrix = modelMatrix * currentMatrix;
     
     if (node.mesh > -1)
     {
@@ -377,12 +432,17 @@ void Application::DrawMesh(int meshIndex, glm::mat4 modelMatrix)
     glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
     glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
-    // We should have the same amount of meshes & vaos & primitives
-    assert(meshIndex < m_vaos.size());
+    // Diffuse color
+    glUniform3fv(m_uKdLocation, 1, glm::value_ptr(glm::vec3(1, 1, 1)));
+    glBindTexture(GL_TEXTURE_2D, m_diffuseTex[meshIndex]);
 
-    const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[meshIndex].indices];        
+    const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[meshIndex].indices];
+
     glBindVertexArray(m_vaos[meshIndex]);
     glDrawElements(getMode(m_primitives[meshIndex].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
+
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     // DRAW GLTF MESHES
     /*

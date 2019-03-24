@@ -71,8 +71,11 @@ private:
     // For GLTF
     tinygltf::Model m_model;
     std::map<std::string, GLint> m_attribs;
+
+    // TODO --> Maybe We can put all 3 into a structure because the same Index means the same element
     std::vector<GLuint> m_vaos;
     std::vector<tinygltf::Primitive> m_primitives;
+    std::vector<GLuint> m_diffuseTex;
 
     void loadTinyGLTF(const glmlv::fs::path & gltfPath);
     void drawGLTF();
