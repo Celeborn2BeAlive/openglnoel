@@ -5,7 +5,11 @@ title: Projet - Un viewer glTF
 
 L'objectif de ce projet est de réaliser en C++ un viewer de modèles au format glTF, similaire à celui de [Sketchfab](https://sketchfab.com/).
 
-> Je mettrais prochainement sur cette page des liens vers les modèles 3D sketchfab que j'utiliserais pour tester votre projet. De cette manière vous pourrez utiliser les même pour faire vos tests.
+Voici des liens vers des modèles glTF qui me serviront à tester votre application:
+- [Les samples officiels glTF du KhronosGroup](https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0)
+- [Une collection de modèles Sketchfab telechargeables](https://skfb.ly/6IPnQ)
+
+Je me suis un peu enflammé dans la collection, il y a beaucoup de modèles, pas la peine de tout essayer (et vous n'arriverez sans doute pas a reproduire le look exact).
 
 ## Contraintes
 
@@ -15,7 +19,7 @@ L'objectif de ce projet est de réaliser en C++ un viewer de modèles au format 
 - En monome ou binome (pas en trinome, pas en quatrome, pas en quicome, et pas à zero).
 - Date de rendu: **31 Mars 2019 minuit au plus tard**
 - Modalité de rendu: Vous m'enverrez un mail indiquant le numéro du commit correspondant à votre rendu de projet sur votre repository. Ce commit devra avoir été pushé avant l'heure  limite de rendu.
-- Vous joindrez au mail un rapport court (moins de deux pages) en pdf m'indiquant la liste des fonctionnalités implémentées, les difficultés rencontrées, et les eventuels problemes non résolu.
+- Vous joindrez au mail un rapport court (moins de deux pages) en pdf m'indiquant la liste des fonctionnalités implémentées, les difficultés rencontrées, et les eventuels problemes non résolu. **Dans le rapport indiquez moi aussi les modèles glTF que vous avez testé**.
 
 Conseil pour travailler en binome sur Git: vous pouvez vous faire des pull request entre differents fork.
 
