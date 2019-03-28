@@ -65,9 +65,9 @@ int Application::run()
 		*/
 
 		//intput for camera
-		glfwSetKeyCallback(m_GLFWHandle.window(), keyboardFunc);
-		glfwSetMouseButtonCallback(m_GLFWHandle.window(), clickFunc);
-		glfwSetCursorPosCallback(m_GLFWHandle.window(), motionFunc);
+		glfwSetKeyCallback(m_GLFWHandle.window(), Application::keyboardFunc);
+		glfwSetMouseButtonCallback(m_GLFWHandle.window(), Application::clickFunc);
+		glfwSetCursorPosCallback(m_GLFWHandle.window(), Application::motionFunc);
 
         // GLTF DRAWING
         {
@@ -350,8 +350,8 @@ GLenum Application::getMode(int mode)
 }
 
 
-void keyboardFunc(GLFWwindow *window, int key, int scancode, int action,
-	int mods) {
+void Application::keyboardFunc(GLFWwindow *window, int key, int scancode, int action, int mods)
+{
 	(void)scancode;
 	(void)mods;
 	if (action == GLFW_PRESS || action == GLFW_REPEAT) {
@@ -362,7 +362,7 @@ void keyboardFunc(GLFWwindow *window, int key, int scancode, int action,
 	}
 }
 
-void clickFunc(GLFWwindow *window, int button, int action, int mods) {
+void Application::clickFunc(GLFWwindow *window, int button, int action, int mods) {
 	double x, y;
 	glfwGetCursorPos(window, &x, &y);
 
@@ -408,7 +408,7 @@ void clickFunc(GLFWwindow *window, int button, int action, int mods) {
 	}
 }
 
-void motionFunc(GLFWwindow *window, double mouse_x, double mouse_y) {
+void Application::motionFunc(GLFWwindow *window, double mouse_x, double mouse_y) {
 	(void)window;
 	float rotScale = 1.0f;
 	float transScale = 2.0f;

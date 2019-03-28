@@ -1,4 +1,6 @@
 #pragma once
+#ifndef TRACKBALL_H
+#define TRACKBALL_H
 
 
 //Camera var
@@ -35,3 +37,6 @@ void build_rotmatrix(float m[4][4], const float q[4]);
  * Result on third param
  */
 void axis_to_quat(float a[3], float phi, float q[4]);
+
+
+#endif // TRACKBALL_H
