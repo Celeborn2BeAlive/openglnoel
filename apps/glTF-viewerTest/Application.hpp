@@ -99,4 +99,6 @@ private:
     static void keyboardFunc(GLFWwindow *window, int key, int scancode, int action, int mods);
     static void clickFunc(GLFWwindow *window, int button, int action, int mods);
     static void motionFunc(GLFWwindow *window, double mouse_x, double mouse_y);
+
+
 };

@@ -17,6 +17,16 @@
 #include <tiny_gltf.h>
 #endif
 
+
+	//Camera var
+double prevMouseX, prevMouseY;
+bool mouseLeftPressed;
+bool mouseMiddlePressed;
+bool mouseRightPressed;
+float curr_quat[4];
+float prev_quat[4];
+float eye[3], lookat[3], up[3];
+
 int Application::run()
 {
 	float clearColor[3] = { 0.5, 0.8, 0.2 };
@@ -35,7 +45,8 @@ int Application::run()
 
         // WORLD MATRIX
         const auto projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);
-        const auto viewMatrix = m_viewController.getViewMatrix();
+        //const auto viewMatrix = m_viewController.getViewMatrix();
+		const auto viewMatrix = m_viewController.getViewMatrix();
 
         // LIGHT
         glUniform3fv(m_uDirectionalLightDirLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(glm::normalize(m_DirLightDirection), 0))));

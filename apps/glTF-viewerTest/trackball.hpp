@@ -3,14 +3,7 @@
 #define TRACKBALL_H
 
 
-//Camera var
-double prevMouseX, prevMouseY;
-bool mouseLeftPressed;
-bool mouseMiddlePressed;
-bool mouseRightPressed;
-float curr_quat[4];
-float prev_quat[4];
-float eye[3], lookat[3], up[3];
+
 
 /*
  * result rotation from last x and y mouse positions
