@@ -55,8 +55,8 @@ private:
     GLint m_uKdLocation;
     GLint m_uKdSamplerLocation;
 
-    float m_DirLightPhiAngleDegrees = 90.f;
-    float m_DirLightThetaAngleDegrees = 45.f;
+    float m_DirLightPhiAngleDegrees = 330.f;
+    float m_DirLightThetaAngleDegrees = 150.f;
     glm::vec3 m_DirLightDirection = computeDirectionVector(glm::radians(m_DirLightPhiAngleDegrees), glm::radians(m_DirLightThetaAngleDegrees));
     glm::vec3 m_DirLightColor = glm::vec3(1, 1, 1);
     float m_DirLightIntensity = 1.f;
@@ -67,6 +67,7 @@ private:
     
     glm::mat4 m_projMatrix;
     glm::mat4 m_viewMatrix;
+    glm::mat4 quatToMatrix(glm::vec4 quaternion);
 
     // For GLTF
     tinygltf::Model m_model;

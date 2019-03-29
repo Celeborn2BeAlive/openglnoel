@@ -336,6 +336,8 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     glGenSamplers(1, &m_textureSampler);
     glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glSamplerParameteri(m_textureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    //std::cout << m_model.cameras.size() << std::endl;
 }
 
 GLenum Application::getMode(int mode)
@@ -392,8 +394,15 @@ void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, g
 
         if (node.rotation.size() == 4)
         {
-            glm::vec3 rotate(node.rotation[0], node.rotation[1], node.rotation[2]);
-            modelMatrix = glm::rotate(modelMatrix, (float)node.rotation[3], rotate);
+            //glm::mat4 rotMatrix = quatToMatrix(glm::make_vec4(node.rotation.data()));
+            //float angle = rotMatrix[15];
+            //glm::vec3 rotate(node.rotation[0], node.rotation[1], node.rotation[2]);
+            //modelMatrix = glm::rotate(modelMatrix, (float)node.rotation[3], rotate);
+            //std::cout << "BEFORE ROTATION" << std::endl;
+            //std::cout << modelMatrix << std::endl;
+            modelMatrix = quatToMatrix(glm::make_vec4(node.rotation.data())) * modelMatrix;
+            //std::cout << "AFTER ROTATION" << std::endl;
+            //std::cout << modelMatrix << std::endl;
         }
 
         if (node.scale.size() == 3)
@@ -453,4 +462,37 @@ void Application::DrawMesh(int meshIndex, glm::mat4 modelMatrix)
         glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
     }
     */
+}
+
+glm::mat4 Application::quatToMatrix(glm::vec4 quaternion)
+{
+      float sqw = quaternion.w * quaternion.w;
+      float sqx = quaternion.x * quaternion.x;
+      float sqy = quaternion.y * quaternion.y;
+      float sqz = quaternion.z * quaternion.z;
+
+      // invs (inverse square length) is only required if quaternion is not already normalised
+      float invs = 1 / (sqx + sqy + sqz + sqw);
+      float m00 = ( sqx - sqy - sqz + sqw)*invs ; // since sqw + sqx + sqy + sqz =1/invs*invs
+      float m11 = (-sqx + sqy - sqz + sqw)*invs ;
+      float m22 = (-sqx - sqy + sqz + sqw)*invs ;
+
+      float tmp1 = quaternion.x*quaternion.y;
+      float tmp2 = quaternion.z*quaternion.w;
+      float m10 = 2.0 * (tmp1 + tmp2)*invs ;
+      float m01 = 2.0 * (tmp1 - tmp2)*invs ;
+
+      tmp1 = quaternion.x*quaternion.z;
+      tmp2 = quaternion.y*quaternion.w;
+      float m20 = 2.0 * (tmp1 - tmp2)*invs ;
+      float m02 = 2.0 * (tmp1 + tmp2)*invs ;
+      tmp1 = quaternion.y*quaternion.z;
+      tmp2 = quaternion.x*quaternion.w;
+      float m21 = 2.0 * (tmp1 + tmp2)*invs ;
+      float m12 = 2.0 * (tmp1 - tmp2)*invs ;
+
+      return glm::mat4( m00, m01, m02, 0,
+                        m10, m11, m12, 0,
+                        m20, m21, m22, 0,
+                        0,   0,   0,   1 );
 }
