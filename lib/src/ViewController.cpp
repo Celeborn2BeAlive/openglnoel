@@ -116,7 +116,7 @@ bool ViewController::updateTrackball(float elapsedTime)
 
 	float lateralAngleDelta = 0.f;
 
-
+	//zoom
 	//glfwSetScrollCallback(m_pWindow, scrollCallback);
 
 	if (ScrollUp) {
@@ -161,16 +161,13 @@ bool ViewController::updateTrackball(float elapsedTime)
 		hasMoved = true;
 	}
 
+	//rotation
 	if (m_LeftButtonPressed) {
 		dvec2 cursorPosition;
 		glfwGetCursorPos(m_pWindow, &cursorPosition.x, &cursorPosition.y);
 		
 		dvec2 delta = cursorPosition - m_LastCursorPosition;
 		m_LastCursorPosition = cursorPosition;
-
-
-		printf("delta x = %d \n", delta.x);
-		printf("delta y = %d \n", delta.y);
 
 		if (delta.x || delta.y) {
 			newRcpViewMatrix = rotate(newRcpViewMatrix, -0.01f * float(delta.x), vec3(0, 1, 0));
@@ -184,6 +181,7 @@ bool ViewController::updateTrackball(float elapsedTime)
 		}
 
 	}
+	//drag
 	else if (m_MiddleButtonPressed) {
 
 		dvec2 cursorPosition;
@@ -192,8 +190,6 @@ bool ViewController::updateTrackball(float elapsedTime)
 
 		m_LastCursorPosition = cursorPosition;
 
-		
-		
 		//drag to move up down right left
 		if (delta.x >0) {
 			//move right
@@ -211,6 +207,15 @@ bool ViewController::updateTrackball(float elapsedTime)
 			localTranslationVector -= m_fSpeed * elapsedTime * upVector;
 		}
 		position += localTranslationVector;
+
+		if (delta.x || delta.y) {
+
+			hasMoved = true;
+		}
+
+		if (localTranslationVector != vec3(0.f)) {
+			hasMoved = true;
+		}
 
 	}
 
