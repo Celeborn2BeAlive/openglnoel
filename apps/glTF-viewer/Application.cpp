@@ -169,7 +169,8 @@ Application::Application(int argc, char** argv):
     loadTinyGLTF(gltfPath);
 
     // 3 - SET CAMERA POSTION
-    m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));    
+    //m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
+    m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), GetCenterOfModel(), glm::vec3(0, 1, 0)));    
 }
 
 // ------ GLTF INITIALIZATION --------
@@ -288,6 +289,13 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                         assert(byteStride != -1);
                         glEnableVertexAttribArray(m_attribs[it->first]);
                         glVertexAttribPointer(m_attribs[it->first], size, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const GLvoid*) (bufferView.byteOffset + accessor.byteOffset));
+
+
+                        if (it->first.compare("POSITION") == 0)
+                        {
+                            // 3.3 BIS - CENTER FOR CAMERA
+                            meshInfos.centers.push_back(GetCenterOfPrimitive(accessor.minValues, accessor.maxValues));
+                        }                        
                     }
                 }
 
@@ -543,4 +551,28 @@ glm::mat4 Application::quatToMatrix(glm::vec4 quaternion)
                         m10, m11, m12, 0,
                         m20, m21, m22, 0,
                         0,   0,   0,   1 );
+}
+
+// CAMERA CENTER
+
+glm::vec3 Application::GetCenterOfPrimitive(const std::vector<double>& min, const std::vector<double>& max)
+{
+    return glm::vec3(GetMiddle(min[0], max[0]), GetMiddle(min[1], max[1]), GetMiddle(min[2], max[2]));
+}
+
+glm::vec3 Application::GetCenterOfMesh(int meshIndex)
+{
+    return GetMiddle(m_meshInfos[meshIndex].centers);
+}
+
+glm::vec3 Application::GetCenterOfModel()
+{
+    std::vector<glm::vec3> centers;
+
+    for (int i = 0; i < m_meshInfos.size(); ++i)
+    {
+        centers.push_back(GetCenterOfMesh(i));
+    }
+
+    return GetMiddle(centers);
 }

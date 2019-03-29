@@ -79,6 +79,7 @@ private:
         std::vector<tinygltf::Primitive> primitives;
         std::vector<GLuint> texture;
         std::vector<glm::vec4> diffuseColor;
+        std::vector<glm::vec3> centers;
     } MeshInfos;
 
     std::vector<MeshInfos> m_meshInfos;
@@ -93,4 +94,25 @@ private:
     void DrawMesh();
 
     void AddTexture(tinygltf::Texture &tex, MeshInfos& meshInfos);
+
+    inline float GetMiddle(double min, double max) { return (max + min) / 2; };
+    inline glm::vec3 GetMiddle(std::vector<glm::vec3> centers) {
+        glm::vec3 center(0);
+        int i;
+        for (i = 0; i < centers.size(); ++i)
+        {
+            center += centers[i];
+        }
+        if (i > 0)
+        {
+            center.x /= i;
+            center.y /= i;
+            center.z /= i;
+        }
+        return center;
+    };
+
+    glm::vec3 GetCenterOfPrimitive(const std::vector<double>& min, const std::vector<double>& max);
+    glm::vec3 GetCenterOfMesh(int meshIndex);
+    glm::vec3 GetCenterOfModel();
 };
