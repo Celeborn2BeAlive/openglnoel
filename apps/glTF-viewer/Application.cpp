@@ -331,15 +331,11 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                         format = GL_RGB;
                     }
 
-    /*
+                    /*
                     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
                     glTexParameterf(tex.target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                     glTexParameterf(tex.target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-                    glTexImage2D(tex.target, 0, tex.internalFormat, image.width,
-                            image.height, 0, format, tex.type,
-                            &image.image.at(0));
-    */
+                    */
 
                     glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, image.width, image.height);
                     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image.width, image.height, GL_RGBA, GL_UNSIGNED_BYTE, &image.image.at(0));
@@ -355,11 +351,23 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
         m_meshInfos.push_back(meshInfos);
     }
 
-    // SAMPLER --> TODO
+    // SAMPLER --> TODO --> Handle multiple samplers
     // Note: no need to bind a sampler for modifying it: the sampler API is already direct_state_access
     glGenSamplers(1, &m_textureSampler);
-    glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glSamplerParameteri(m_textureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    if (m_model.samplers.size() > 0)
+    {
+        tinygltf::Sampler sampler = m_model.samplers[0];
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, sampler.minFilter);
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_MAG_FILTER, sampler.magFilter);
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_WRAP_S, sampler.wrapS);
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_WRAP_T, sampler.wrapT);
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_WRAP_R, sampler.wrapR);
+    }
+    else
+    {
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }    
 
     //std::cout << m_model.cameras.size() << std::endl;
 }
