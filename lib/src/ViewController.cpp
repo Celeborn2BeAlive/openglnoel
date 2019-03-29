@@ -2,6 +2,8 @@
 
 #include <glmlv/glfw.hpp>
 
+#include <stdio.h>
+
 using namespace glm;
 
 namespace glmlv 
@@ -114,32 +116,16 @@ bool ViewController::updateTrackball(float elapsedTime)
 
 	float lateralAngleDelta = 0.f;
 
-	//zoom
-	if (glfwGetKey(m_pWindow, GLFW_KEY_W)) {
+
+	//glfwSetScrollCallback(m_pWindow, scrollCallback);
+
+	if (ScrollUp) {
 		localTranslationVector += m_fSpeed * elapsedTime * frontVector;
 	}
-	//dezoom
-	if (glfwGetKey(m_pWindow, GLFW_KEY_S)) {
+	else if (ScrollDown) {
 		localTranslationVector -= m_fSpeed * elapsedTime * frontVector;
 	}
-	/*
-	//move right
-	if (glfwGetKey(m_pWindow, GLFW_KEY_A)) {
-		localTranslationVector += m_fSpeed * elapsedTime * leftVector;
-	}
-	//move left
-	if (glfwGetKey(m_pWindow, GLFW_KEY_D)) {
-		localTranslationVector -= m_fSpeed * elapsedTime * leftVector;
-	}
-	//move up
-	if (glfwGetKey(m_pWindow, GLFW_KEY_UP)) {
-		localTranslationVector += m_fSpeed * elapsedTime * upVector;
-	}
-	//move down
-	if (glfwGetKey(m_pWindow, GLFW_KEY_DOWN)) {
-		localTranslationVector -= m_fSpeed * elapsedTime * upVector;
-	}
-	*/
+	
 
 	//rotate right
 	if (glfwGetKey(m_pWindow, GLFW_KEY_Q)) {
@@ -178,9 +164,13 @@ bool ViewController::updateTrackball(float elapsedTime)
 	if (m_LeftButtonPressed) {
 		dvec2 cursorPosition;
 		glfwGetCursorPos(m_pWindow, &cursorPosition.x, &cursorPosition.y);
+		
 		dvec2 delta = cursorPosition - m_LastCursorPosition;
-
 		m_LastCursorPosition = cursorPosition;
+
+
+		printf("delta x = %d \n", delta.x);
+		printf("delta y = %d \n", delta.y);
 
 		if (delta.x || delta.y) {
 			newRcpViewMatrix = rotate(newRcpViewMatrix, -0.01f * float(delta.x), vec3(0, 1, 0));
@@ -202,6 +192,8 @@ bool ViewController::updateTrackball(float elapsedTime)
 
 		m_LastCursorPosition = cursorPosition;
 
+		
+		
 		//drag to move up down right left
 		if (delta.x >0) {
 			//move right
@@ -233,5 +225,15 @@ bool ViewController::updateTrackball(float elapsedTime)
 	return hasMoved;
 }
 
+/*
+static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+	ScrollUp = false;
+	scrollDown = false;
 
+	if (yoffset > 0)
+		scrollUp = true;
+	else
+		scrollDown = true;
+	}
+	*/
 }

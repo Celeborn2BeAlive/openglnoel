@@ -54,7 +54,8 @@ private:
     bool m_LeftButtonPressed = false;
 	bool m_MiddleButtonPressed = false;
     glm::dvec2 m_LastCursorPosition;
-
+	bool ScrollUp = false;
+	bool ScrollDown = false;
     glm::mat4 m_ViewMatrix = glm::mat4(1);
     glm::mat4 m_RcpViewMatrix = glm::mat4(1);
 };
