@@ -1,5 +1,4 @@
 #include "Application.hpp"
-#include "trackball.hpp"
 
 #include <iostream>
 
@@ -9,23 +8,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/io.hpp>
 
-//include to use callback functions for camera controls
-#include <GLFW/glfw3.h>
-
 #ifndef TINYGLTF_IMPLEMENTATION
 #define TINYGLTF_IMPLEMENTATION
 #include <tiny_gltf.h>
 #endif
-
-
-	//Camera var
-double prevMouseX, prevMouseY;
-bool mouseLeftPressed;
-bool mouseMiddlePressed;
-bool mouseRightPressed;
-float curr_quat[4];
-float prev_quat[4];
-float eye[3], lookat[3], up[3];
 
 int Application::run()
 {
@@ -44,14 +30,30 @@ int Application::run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // WORLD MATRIX
-        const auto projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);
-        const auto viewMatrix = m_viewController.getViewMatrix();
+        if (m_model.cameras.size() > 0)
+        {
+            tinygltf::Camera cam = m_model.cameras[0];
+            if (cam.type == "perspective")
+            {
+                m_projMatrix = glm::perspective(cam.perspective.yfov, cam.perspective.aspectRatio, cam.perspective.znear, cam.perspective.zfar);  
+            }
+            else if (cam.type == "orthographic")
+            {
+                m_projMatrix = glm::ortho(-cam.orthographic.xmag, cam.orthographic.xmag, -cam.orthographic.ymag, cam.orthographic.ymag, cam.orthographic.znear, cam.orthographic.zfar);
+            }
+        }
+        else
+        {
+            m_projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);            
+        }
+        
+        m_viewMatrix = m_viewController.getViewMatrix();
 
         // LIGHT
-        glUniform3fv(m_uDirectionalLightDirLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(glm::normalize(m_DirLightDirection), 0))));
+        glUniform3fv(m_uDirectionalLightDirLocation, 1, glm::value_ptr(glm::vec3(m_viewMatrix * glm::vec4(glm::normalize(m_DirLightDirection), 0))));
         glUniform3fv(m_uDirectionalLightIntensityLocation, 1, glm::value_ptr(m_DirLightColor * m_DirLightIntensity));
 
-        glUniform3fv(m_uPointLightPositionLocation, 1, glm::value_ptr(glm::vec3(viewMatrix * glm::vec4(m_PointLightPosition, 1))));
+        glUniform3fv(m_uPointLightPositionLocation, 1, glm::value_ptr(glm::vec3(m_viewMatrix * glm::vec4(m_PointLightPosition, 1))));
         glUniform3fv(m_uPointLightIntensityLocation, 1, glm::value_ptr(m_PointLightColor * m_PointLightIntensity));
 
         // ACTIVE TEXTURE
@@ -59,51 +61,12 @@ int Application::run()
         glUniform1i(m_uKdSamplerLocation, 0); // Set the uniform to 0 because we use texture unit 0
         glBindSampler(0, m_textureSampler); // Tell to OpenGL what sampler we want to use on this texture unit
 
-
-		/*
-		//window
-		window = glfwCreateWindow(m_nWindowWidth, m_nWindowHeight, "Best glTF viewer", NULL, NULL);
-		if (window == NULL) {
-			std::cerr << "Failed to open GLFW window. " << std::endl;
-			glfwTerminate();
-			return 1;
-		}
-
-		glfwGetWindowSize(window, &m_nWindowWidth, &m_nWindowHeight);
-
-		glfwMakeContextCurrent(window);
-		*/
-
-		//intput for camera
-		glfwSetKeyCallback(m_GLFWHandle.window(), Application::keyboardFunc);
-		glfwSetMouseButtonCallback(m_GLFWHandle.window(), Application::clickFunc);
-		glfwSetCursorPosCallback(m_GLFWHandle.window(), Application::motionFunc);
-
         // GLTF DRAWING
         {
-            // OBJECT MATRIX
-            const auto modelMatrix = glm::mat4(1);
-
-            const auto mvMatrix = viewMatrix * modelMatrix;
-            const auto mvpMatrix = projMatrix * mvMatrix;
-            const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
-
-            glUniformMatrix4fv(m_uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
-            glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
-            glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
-
-            // DRAW GLTF
-            for (size_t i = 0; i < m_vaos.size(); ++i)
-            {        
-                const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
-                glBindVertexArray(m_vaos[i]);
-                glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
-            }
+            DrawModel(m_model);
         }
 
-        // UNBIND
-        glBindVertexArray(0);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        // UNBIND        
         glBindSampler(0, 0); // Unbind the sampler
 
         // GUI code:
@@ -133,12 +96,6 @@ int Application::run()
                 ImGui::InputFloat3("Position", glm::value_ptr(m_PointLightPosition));
             }
 
-            if (ImGui::CollapsingHeader("Materials"))
-            {
-                ImGui::ColorEdit3("Cube Kd", glm::value_ptr(m_CubeKd));
-                ImGui::ColorEdit3("Sphere Kd", glm::value_ptr(m_SphereKd));
-            }
-
             ImGui::End();
         }
 
@@ -153,7 +110,7 @@ int Application::run()
         auto ellapsedTime = glfwGetTime() - seconds;
         auto guiHasFocus = ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard;
         if (!guiHasFocus) {
-            m_viewController.update(float(ellapsedTime));
+            m_viewController.updateTrackball(float(ellapsedTime));
         }
     }
 
@@ -202,11 +159,7 @@ Application::Application(int argc, char** argv):
     m_uKdLocation = glGetUniformLocation(m_program.glId(), "uKd");
     m_uKdSamplerLocation = glGetUniformLocation(m_program.glId(), "uKdSampler");
 
-    // 2 - SET CAMERA POSTION
-    m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
-
-	
-    // 3 - LOAD SCENE (.GLTF)
+    // 2 - LOAD SCENE (.GLTF)
     if (argc < 2) {
         printf("Needs input.gltf\n");
         exit(1);
@@ -214,8 +167,13 @@ Application::Application(int argc, char** argv):
     const glmlv::fs::path gltfPath = m_AssetsRootPath / m_AppName / glmlv::fs::path{ argv[1] };
 
     loadTinyGLTF(gltfPath);
+
+    // 3 - SET CAMERA POSTION
+    m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));    
+	//the params eye, center, up
 }
 
+// ------ GLTF INITIALIZATION --------
 
 // Load an obj m_model with tinyGLTF
 void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
@@ -259,6 +217,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     }
 
     std::cout << "# of buffers : " << buffers.size() << std::endl;
+    std::cout << "# of meshes : " << m_model.meshes.size() << std::endl;
     
     // 3 - VAOs & Primitives
     // Pour chaque VAO on va aussi stocker les données de la primitive associé car on doit l'utiliser lors du rendu
@@ -266,14 +225,18 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     // Pour chaque mesh
     for (size_t i = 0; i < m_model.meshes.size(); i++)
     {
+        // Store the mesh infos
+        MeshInfos meshInfos;
+
         const tinygltf::Mesh &mesh = m_model.meshes[i];
+        std::cout << "# of primitives : " << mesh.primitives.size() << std::endl;
 
         // Pour chaque primitives du mesh
         for (size_t primId = 0; primId < mesh.primitives.size(); primId++)				
         {
             const tinygltf::Primitive &primitive = mesh.primitives[primId];
 
-            // 3 BIS - CREATE VAO FOR EACH PRIMITIVE
+            // 3.1 - CREATE VAO FOR EACH PRIMITIVE
             // Generate VAO
             GLuint vaoId;
             glGenVertexArrays(1, &vaoId);
@@ -333,12 +296,73 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             }
 
             // On rempli le vao et les primitives
-            m_vaos.push_back(vaoId);
-            m_primitives.push_back(primitive);
+            meshInfos.vaos.push_back(vaoId);
+            meshInfos.primitives.push_back(primitive);
 
             glBindVertexArray(0);
+
+            // TEXTURES
+            meshInfos.diffuseTex.push_back(0);
+
+            if (primitive.material < 0) {
+					continue;
+            }
+
+            tinygltf::Material &mat = m_model.materials[primitive.material];            
+
+            if (mat.values.find("baseColorTexture") != mat.values.end())
+            {
+                const auto& parameter = mat.values["baseColorTexture"];
+
+                tinygltf::Texture &tex = m_model.textures[parameter.TextureIndex()];
+
+                if (tex.source > -1 && tex.source < m_model.images.size())
+                {
+                    tinygltf::Image &image = m_model.images[tex.source];
+
+                    glActiveTexture(GL_TEXTURE0);
+
+                    GLuint texId;
+                    glGenTextures(1, &texId);
+                    glBindTexture(GL_TEXTURE_2D, texId);
+
+                    // Ignore Texture.fomat.
+                    GLenum format = GL_RGBA;
+                    if (image.component == 3) {
+                        format = GL_RGB;
+                    }
+
+    /*
+                    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+                    glTexParameterf(tex.target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                    glTexParameterf(tex.target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+                    glTexImage2D(tex.target, 0, tex.internalFormat, image.width,
+                            image.height, 0, format, tex.type,
+                            &image.image.at(0));
+    */
+
+                    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, image.width, image.height);
+                    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image.width, image.height, GL_RGBA, GL_UNSIGNED_BYTE, &image.image.at(0));
+                    
+                    glBindTexture(GL_TEXTURE_2D, 0);
+                    
+                    meshInfos.diffuseTex.back() = texId;
+                }
+            }
         }
+
+        // VSCode signal an error here but there's no error
+        m_meshInfos.push_back(meshInfos);
     }
+
+    // SAMPLER --> TODO
+    // Note: no need to bind a sampler for modifying it: the sampler API is already direct_state_access
+    glGenSamplers(1, &m_textureSampler);
+    glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glSamplerParameteri(m_textureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    //std::cout << m_model.cameras.size() << std::endl;
 }
 
 GLenum Application::getMode(int mode)
@@ -360,106 +384,139 @@ GLenum Application::getMode(int mode)
     }
 }
 
+// ------ GLTF DRAW --------
 
-void Application::keyboardFunc(GLFWwindow *window, int key, int scancode, int action, int mods)
+
+void Application::DrawModel(tinygltf::Model &model) {
+  // If the glTF asset has at least one scene, and doesn't define a default one
+  // just show the first one we can find
+  assert(model.scenes.size() > 0);
+  int scene_to_display = model.defaultScene > -1 ? model.defaultScene : 0;
+  const tinygltf::Scene &scene = model.scenes[scene_to_display];
+  for (size_t i = 0; i < scene.nodes.size(); i++) 
+  {
+    DrawNode(model, model.nodes[scene.nodes[i]], glm::mat4(1));
+  }
+}
+
+// Hierarchically draw nodes
+void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, glm::mat4 currentMatrix) {
+
+    // PUSH MATRIX
+    glm::mat4 modelMatrix = glm::mat4(1);
+
+    // Use `matrix' attribute
+    if (node.matrix.size() == 16)
+    {
+        modelMatrix = glm::make_mat4(node.matrix.data());
+    }
+    // Use `translate', 'rotate' and 'scale' attributes
+    else
+    {       
+        if (node.translation.size() == 3)
+        {
+            glm::vec3 translate = glm::make_vec3(node.translation.data());
+            modelMatrix = glm::translate(modelMatrix, translate);
+        }
+
+        if (node.rotation.size() == 4)
+        {
+            //glm::mat4 rotMatrix = quatToMatrix(glm::make_vec4(node.rotation.data()));
+            //float angle = rotMatrix[15];
+            //glm::vec3 rotate(node.rotation[0], node.rotation[1], node.rotation[2]);
+            //modelMatrix = glm::rotate(modelMatrix, (float)node.rotation[3], rotate);
+            //std::cout << "BEFORE ROTATION" << std::endl;
+            //std::cout << modelMatrix << std::endl;
+            modelMatrix = quatToMatrix(glm::make_vec4(node.rotation.data())) * modelMatrix;
+            //std::cout << "AFTER ROTATION" << std::endl;
+            //std::cout << modelMatrix << std::endl;
+        }
+
+        if (node.scale.size() == 3)
+        {
+            glm::vec3 scale = glm::make_vec3(node.scale.data());
+            modelMatrix = glm::scale(modelMatrix, scale);
+        }
+    }
+
+    modelMatrix = modelMatrix * currentMatrix;
+    
+    if (node.mesh > -1)
+    {
+        assert(node.mesh < model.meshes.size());
+        DrawMesh(node.mesh, modelMatrix);
+    }
+
+    // Draw child nodes.
+    for (size_t i = 0; i < node.children.size(); i++)
+    {
+        assert(node.children[i] < model.nodes.size());
+        DrawNode(model, model.nodes[node.children[i]], modelMatrix);
+    }
+
+    // POP MATRIX
+}
+
+void Application::DrawMesh(int meshIndex, glm::mat4 modelMatrix)
 {
-	(void)scancode;
-	(void)mods;
-	if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-		// Close window
-		if (key == GLFW_KEY_Q || key == GLFW_KEY_ESCAPE) {
-			glfwSetWindowShouldClose(window, GL_TRUE);
-		}
-	}
+    // OBJECT MATRIX
+    const auto mvMatrix = m_viewMatrix * modelMatrix;
+    const auto mvpMatrix = m_projMatrix * mvMatrix;
+    const auto normalMatrix = glm::transpose(glm::inverse(mvMatrix));
+
+    glUniformMatrix4fv(m_uModelViewProjMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+    glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
+    glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
+
+    // DRAW EACH VAO / PRIMITIVES of this mesh
+    for (size_t i = 0; i < m_meshInfos[meshIndex].vaos.size(); ++i)
+    {        
+        // Color
+        glUniform3fv(m_uKdLocation, 1, glm::value_ptr(glm::vec3(1, 1, 1)));
+        glBindTexture(GL_TEXTURE_2D, m_meshInfos[meshIndex].diffuseTex[i]);
+
+        // Bind VAO
+        const tinygltf::Accessor &indexAccessor = m_model.accessors[m_meshInfos[meshIndex].primitives[i].indices];        
+        glBindVertexArray(m_meshInfos[meshIndex].vaos[i]);
+
+        // Draw
+        glDrawElements(getMode(m_meshInfos[meshIndex].primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
+        
+        // Unbind
+        glBindVertexArray(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
 }
 
-void Application::clickFunc(GLFWwindow *window, int button, int action, int mods) {
-	double x, y;
-	glfwGetCursorPos(window, &x, &y);
+glm::mat4 Application::quatToMatrix(glm::vec4 quaternion)
+{
+      float sqw = quaternion.w * quaternion.w;
+      float sqx = quaternion.x * quaternion.x;
+      float sqy = quaternion.y * quaternion.y;
+      float sqz = quaternion.z * quaternion.z;
 
-	bool shiftPressed = (mods & GLFW_MOD_SHIFT);
-	bool ctrlPressed = (mods & GLFW_MOD_CONTROL);
+      // invs (inverse square length) is only required if quaternion is not already normalised
+      float invs = 1 / (sqx + sqy + sqz + sqw);
+      float m00 = ( sqx - sqy - sqz + sqw)*invs ; // since sqw + sqx + sqy + sqz =1/invs*invs
+      float m11 = (-sqx + sqy - sqz + sqw)*invs ;
+      float m22 = (-sqx - sqy + sqz + sqw)*invs ;
 
-	if ((button == GLFW_MOUSE_BUTTON_LEFT) && (!shiftPressed) && (!ctrlPressed)) {
-		mouseLeftPressed = true;
-		mouseMiddlePressed = false;
-		mouseRightPressed = false;
-		if (action == GLFW_PRESS) {
-			int id = -1;
-			// int id = ui.Proc(x, y);
-			if (id < 0) {  // outside of UI
-				trackball(prev_quat, 0.0, 0.0, 0.0, 0.0);
-			}
-		}
-		else if (action == GLFW_RELEASE) {
-			mouseLeftPressed = false;
-		}
-	}
-	if ((button == GLFW_MOUSE_BUTTON_RIGHT) ||
-		((button == GLFW_MOUSE_BUTTON_LEFT) && ctrlPressed)) {
-		if (action == GLFW_PRESS) {
-			mouseRightPressed = true;
-			mouseLeftPressed = false;
-			mouseMiddlePressed = false;
-		}
-		else if (action == GLFW_RELEASE) {
-			mouseRightPressed = false;
-		}
-	}
-	if ((button == GLFW_MOUSE_BUTTON_MIDDLE) ||
-		((button == GLFW_MOUSE_BUTTON_LEFT) && shiftPressed)) {
-		if (action == GLFW_PRESS) {
-			mouseMiddlePressed = true;
-			mouseLeftPressed = false;
-			mouseRightPressed = false;
-		}
-		else if (action == GLFW_RELEASE) {
-			mouseMiddlePressed = false;
-		}
-	}
-}
+      float tmp1 = quaternion.x*quaternion.y;
+      float tmp2 = quaternion.z*quaternion.w;
+      float m10 = 2.0 * (tmp1 + tmp2)*invs ;
+      float m01 = 2.0 * (tmp1 - tmp2)*invs ;
 
-void Application::motionFunc(GLFWwindow *window, double mouse_x, double mouse_y) {
-	(void)window;
-	float rotScale = 1.0f;
-	float transScale = 2.0f;
+      tmp1 = quaternion.x*quaternion.z;
+      tmp2 = quaternion.y*quaternion.w;
+      float m20 = 2.0 * (tmp1 - tmp2)*invs ;
+      float m02 = 2.0 * (tmp1 + tmp2)*invs ;
+      tmp1 = quaternion.y*quaternion.z;
+      tmp2 = quaternion.x*quaternion.w;
+      float m21 = 2.0 * (tmp1 + tmp2)*invs ;
+      float m12 = 2.0 * (tmp1 - tmp2)*invs ;
 
-	if (mouseLeftPressed) {
-		trackball(prev_quat, rotScale * (2.0f * prevMouseX - m_nWindowWidth) / (float)m_nWindowWidth,
-			rotScale * (m_nWindowHeight - 2.0f * prevMouseY) / (float)m_nWindowHeight,
-			rotScale * (2.0f * mouse_x - m_nWindowWidth) / (float)m_nWindowWidth,
-			rotScale * (m_nWindowHeight - 2.0f * mouse_y) / (float)m_nWindowHeight);
-
-		add_quats(prev_quat, curr_quat, curr_quat);
-	}
-	else if (mouseMiddlePressed) {
-		eye[0] += -transScale * (mouse_x - prevMouseX) / (float)m_nWindowWidth;
-		lookat[0] += -transScale * (mouse_x - prevMouseX) / (float)m_nWindowWidth;
-		eye[1] += transScale * (mouse_y - prevMouseY) / (float)m_nWindowHeight;
-		lookat[1] += transScale * (mouse_y - prevMouseY) / (float)m_nWindowHeight;
-	}
-	else if (mouseRightPressed) {
-		eye[2] += transScale * (mouse_y - prevMouseY) / (float)m_nWindowHeight;
-		lookat[2] += transScale * (mouse_y - prevMouseY) / (float)m_nWindowHeight;
-	}
-
-	// Update mouse point
-	prevMouseX = mouse_x;
-	prevMouseY = mouse_y;
-}
-
-static void Init() {
-	trackball(curr_quat, 0, 0, 0, 0);
-
-	eye[0] = 0.0f;
-	eye[1] = 0.0f;
-	eye[2] = 0.3f;
-
-	lookat[0] = 0.0f;
-	lookat[1] = 0.0f;
-	lookat[2] = 0.0f;
-
-	up[0] = 0.0f;
-	up[1] = 1.0f;
-	up[2] = 0.0f;
+      return glm::mat4( m00, m01, m02, 0,
+                        m10, m11, m12, 0,
+                        m20, m21, m22, 0,
+                        0,   0,   0,   1 );
 }

@@ -52,6 +52,7 @@ private:
     GLFWwindow* m_pWindow = nullptr;
     float m_fSpeed = 0.f;
     bool m_LeftButtonPressed = false;
+	bool m_MiddleButtonPressed = false;
     glm::dvec2 m_LastCursorPosition;
 
     glm::mat4 m_ViewMatrix = glm::mat4(1);

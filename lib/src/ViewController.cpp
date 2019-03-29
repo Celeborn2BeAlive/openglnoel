@@ -122,6 +122,7 @@ bool ViewController::updateTrackball(float elapsedTime)
 	if (glfwGetKey(m_pWindow, GLFW_KEY_S)) {
 		localTranslationVector -= m_fSpeed * elapsedTime * frontVector;
 	}
+	/*
 	//move right
 	if (glfwGetKey(m_pWindow, GLFW_KEY_A)) {
 		localTranslationVector += m_fSpeed * elapsedTime * leftVector;
@@ -138,6 +139,7 @@ bool ViewController::updateTrackball(float elapsedTime)
 	if (glfwGetKey(m_pWindow, GLFW_KEY_DOWN)) {
 		localTranslationVector -= m_fSpeed * elapsedTime * upVector;
 	}
+	*/
 
 	//rotate right
 	if (glfwGetKey(m_pWindow, GLFW_KEY_Q)) {
@@ -148,18 +150,21 @@ bool ViewController::updateTrackball(float elapsedTime)
 		lateralAngleDelta -= 0.001f;
 	}
 	
-	position += localTranslationVector;
-
-	if (localTranslationVector != vec3(0.f)) {
-		hasMoved = true;
-	}
-
+	//left mouse button
 	if (glfwGetMouseButton(m_pWindow, GLFW_MOUSE_BUTTON_LEFT) && !m_LeftButtonPressed) {
 		m_LeftButtonPressed = true;
 		glfwGetCursorPos(m_pWindow, &m_LastCursorPosition.x, &m_LastCursorPosition.y);
 	}
 	else if (!glfwGetMouseButton(m_pWindow, GLFW_MOUSE_BUTTON_LEFT) && m_LeftButtonPressed) {
 		m_LeftButtonPressed = false;
+	}
+	//middle mouse button
+	if (glfwGetMouseButton(m_pWindow, GLFW_MOUSE_BUTTON_MIDDLE) && !m_MiddleButtonPressed) {
+		m_MiddleButtonPressed = true;
+		glfwGetCursorPos(m_pWindow, &m_LastCursorPosition.x, &m_LastCursorPosition.y);
+	}
+	else if (!glfwGetMouseButton(m_pWindow, GLFW_MOUSE_BUTTON_MIDDLE) && m_MiddleButtonPressed) {
+		m_MiddleButtonPressed = false;
 	}
 
 	auto newRcpViewMatrix = m_RcpViewMatrix;
@@ -183,6 +188,38 @@ bool ViewController::updateTrackball(float elapsedTime)
 
 			hasMoved = true;
 		}
+		
+		if (localTranslationVector != vec3(0.f)) {
+			hasMoved = true;
+		}
+
+	}
+	else if (m_MiddleButtonPressed) {
+
+		dvec2 cursorPosition;
+		glfwGetCursorPos(m_pWindow, &cursorPosition.x, &cursorPosition.y);
+		dvec2 delta = cursorPosition - m_LastCursorPosition;
+
+		m_LastCursorPosition = cursorPosition;
+
+		//drag to move up down right left
+		if (delta.x >0) {
+			//move right
+			localTranslationVector += m_fSpeed * elapsedTime * leftVector;
+		}
+		else if (delta.x < 0) {
+			localTranslationVector -= m_fSpeed * elapsedTime * leftVector;
+		}
+		else if (delta.y > 0) {
+			//move up
+			localTranslationVector += m_fSpeed * elapsedTime * upVector;
+		}
+		else if (delta.y < 0) {
+			//move down
+			localTranslationVector -= m_fSpeed * elapsedTime * upVector;
+		}
+		position += localTranslationVector;
+
 	}
 
 	frontVector = -vec3(newRcpViewMatrix[2]);
