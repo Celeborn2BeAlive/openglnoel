@@ -33,6 +33,7 @@ public:
     }
 
     bool update(float elapsedTime);
+	bool updateTrackball(float elapsedTime);
 
     void setViewMatrix(const glm::mat4& viewMatrix) {
         m_ViewMatrix = viewMatrix;
