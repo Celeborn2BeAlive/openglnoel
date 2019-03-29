@@ -34,6 +34,8 @@ public:
 
     bool update(float elapsedTime);
 	bool updateTrackball(float elapsedTime);
+	static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+
 
     void setViewMatrix(const glm::mat4& viewMatrix) {
         m_ViewMatrix = viewMatrix;
