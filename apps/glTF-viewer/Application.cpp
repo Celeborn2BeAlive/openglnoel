@@ -30,7 +30,23 @@ int Application::run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // WORLD MATRIX
-        m_projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);
+        if (m_model.cameras.size() > 0)
+        {
+            tinygltf::Camera cam = m_model.cameras[0];
+            if (cam.type == "perspective")
+            {
+                m_projMatrix = glm::perspective(cam.perspective.yfov, cam.perspective.aspectRatio, cam.perspective.znear, cam.perspective.zfar);  
+            }
+            else if (cam.type == "orthographic")
+            {
+                m_projMatrix = glm::ortho(-cam.orthographic.xmag, cam.orthographic.xmag, -cam.orthographic.ymag, cam.orthographic.ymag, cam.orthographic.znear, cam.orthographic.zfar);
+            }
+        }
+        else
+        {
+            m_projMatrix = glm::perspective(70.f, float(viewportSize.x) / viewportSize.y, 0.01f, 100.f);            
+        }
+        
         m_viewMatrix = m_viewController.getViewMatrix();
 
         // LIGHT
@@ -143,10 +159,7 @@ Application::Application(int argc, char** argv):
     m_uKdLocation = glGetUniformLocation(m_program.glId(), "uKd");
     m_uKdSamplerLocation = glGetUniformLocation(m_program.glId(), "uKdSampler");
 
-    // 2 - SET CAMERA POSTION
-    m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
-
-    // 3 - LOAD SCENE (.GLTF)
+    // 2 - LOAD SCENE (.GLTF)
     if (argc < 2) {
         printf("Needs input.gltf\n");
         exit(1);
@@ -154,6 +167,9 @@ Application::Application(int argc, char** argv):
     const glmlv::fs::path gltfPath = m_AssetsRootPath / m_AppName / glmlv::fs::path{ argv[1] };
 
     loadTinyGLTF(gltfPath);
+
+    // 3 - SET CAMERA POSTION
+    m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));    
 }
 
 // ------ GLTF INITIALIZATION --------
