@@ -200,6 +200,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     }
 
     std::cout << "# of buffers : " << buffers.size() << std::endl;
+    std::cout << "# of meshes : " << m_model.meshes.size() << std::endl;
     
     // 3 - VAOs & Primitives
     // Pour chaque VAO on va aussi stocker les données de la primitive associé car on doit l'utiliser lors du rendu
@@ -207,7 +208,11 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     // Pour chaque mesh
     for (size_t i = 0; i < m_model.meshes.size(); i++)
     {
+        // Store the mesh infos
+        MeshInfos meshInfos;
+
         const tinygltf::Mesh &mesh = m_model.meshes[i];
+        std::cout << "# of primitives : " << mesh.primitives.size() << std::endl;
 
         // Pour chaque primitives du mesh
         for (size_t primId = 0; primId < mesh.primitives.size(); primId++)				
@@ -274,13 +279,13 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             }
 
             // On rempli le vao et les primitives
-            m_vaos.push_back(vaoId);
-            m_primitives.push_back(primitive);
+            meshInfos.vaos.push_back(vaoId);
+            meshInfos.primitives.push_back(primitive);
 
             glBindVertexArray(0);
 
             // TEXTURES
-            m_diffuseTex.push_back(0);
+            meshInfos.diffuseTex.push_back(0);
 
             if (primitive.material < 0) {
 					continue;
@@ -325,13 +330,16 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                     
                     glBindTexture(GL_TEXTURE_2D, 0);
                     
-                    m_diffuseTex.back() = texId;
+                    meshInfos.diffuseTex.back() = texId;
                 }
             }
         }
+
+        // VSCode signal an error here but there's no error
+        m_meshInfos.push_back(meshInfos);
     }
 
-    // SAMPLER
+    // SAMPLER --> TODO
     // Note: no need to bind a sampler for modifying it: the sampler API is already direct_state_access
     glGenSamplers(1, &m_textureSampler);
     glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -380,10 +388,12 @@ void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, g
     // PUSH MATRIX
     glm::mat4 modelMatrix = glm::mat4(1);
 
+    // Use `matrix' attribute
     if (node.matrix.size() == 16)
     {
         modelMatrix = glm::make_mat4(node.matrix.data());
     }
+    // Use `translate', 'rotate' and 'scale' attributes
     else
     {       
         if (node.translation.size() == 3)
@@ -441,27 +451,24 @@ void Application::DrawMesh(int meshIndex, glm::mat4 modelMatrix)
     glUniformMatrix4fv(m_uModelViewMatrixLocation, 1, GL_FALSE, glm::value_ptr(mvMatrix));
     glUniformMatrix4fv(m_uNormalMatrixLocation, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
-    // Diffuse color
-    glUniform3fv(m_uKdLocation, 1, glm::value_ptr(glm::vec3(1, 1, 1)));
-    glBindTexture(GL_TEXTURE_2D, m_diffuseTex[meshIndex]);
-
-    const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[meshIndex].indices];
-
-    glBindVertexArray(m_vaos[meshIndex]);
-    glDrawElements(getMode(m_primitives[meshIndex].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
-
-    glBindVertexArray(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    // DRAW GLTF MESHES
-    /*
-    for (size_t i = 0; i < m_vaos.size(); ++i)
+    // DRAW EACH VAO / PRIMITIVES of this mesh
+    for (size_t i = 0; i < m_meshInfos[meshIndex].vaos.size(); ++i)
     {        
-        const tinygltf::Accessor &indexAccessor = m_model.accessors[m_primitives[i].indices];        
-        glBindVertexArray(m_vaos[i]);
-        glDrawElements(getMode(m_primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
+        // Color
+        glUniform3fv(m_uKdLocation, 1, glm::value_ptr(glm::vec3(1, 1, 1)));
+        glBindTexture(GL_TEXTURE_2D, m_meshInfos[meshIndex].diffuseTex[i]);
+
+        // Bind VAO
+        const tinygltf::Accessor &indexAccessor = m_model.accessors[m_meshInfos[meshIndex].primitives[i].indices];        
+        glBindVertexArray(m_meshInfos[meshIndex].vaos[i]);
+
+        // Draw
+        glDrawElements(getMode(m_meshInfos[meshIndex].primitives[i].mode), indexAccessor.count, indexAccessor.componentType, (const GLvoid*) indexAccessor.byteOffset);
+        
+        // Unbind
+        glBindVertexArray(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
-    */
 }
 
 glm::mat4 Application::quatToMatrix(glm::vec4 quaternion)

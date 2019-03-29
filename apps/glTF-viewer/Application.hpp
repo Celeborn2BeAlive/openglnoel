@@ -74,9 +74,13 @@ private:
     std::map<std::string, GLint> m_attribs;
 
     // TODO --> Maybe We can put all 3 into a structure because the same Index means the same element
-    std::vector<GLuint> m_vaos;
-    std::vector<tinygltf::Primitive> m_primitives;
-    std::vector<GLuint> m_diffuseTex;
+    typedef struct {
+        std::vector<GLuint> vaos;
+        std::vector<tinygltf::Primitive> primitives;
+        std::vector<GLuint> diffuseTex;
+    } MeshInfos;
+
+    std::vector<MeshInfos> m_meshInfos;
 
     void loadTinyGLTF(const glmlv::fs::path & gltfPath);
     void drawGLTF();
@@ -85,4 +89,5 @@ private:
     void DrawModel(tinygltf::Model &model);
     void DrawNode(tinygltf::Model &model, const tinygltf::Node &node, glm::mat4 currentMatrix);
     void DrawMesh(int meshIndex, glm::mat4 modelMatrix);
+    void DrawMesh();
 };
