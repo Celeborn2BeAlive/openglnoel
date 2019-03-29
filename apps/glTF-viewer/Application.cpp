@@ -241,14 +241,14 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             glGenVertexArrays(1, &vaoId);
             glBindVertexArray(vaoId);
 
-            // INDICES (IBO)
+            // 3.2 - INDICES (IBO)
             tinygltf::Accessor &indexAccessor = m_model.accessors[primitive.indices];
             tinygltf::BufferView &bufferView = m_model.bufferViews[indexAccessor.bufferView];
             int &bufferIndex = bufferView.buffer;
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[bufferIndex]); // Binding IBO
             //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexAccessor.bufferView); // Binding IBO
 
-            // ATTRIBUTS
+            // 3.3 - ATTRIBUTS
             // Pour chaque attributes de la primitive
             std::map<std::string, int>::const_iterator it(primitive.attributes.begin());
             std::map<std::string, int>::const_iterator itEnd(primitive.attributes.end());
@@ -300,54 +300,44 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
 
             glBindVertexArray(0);
 
-            // TEXTURES
-            meshInfos.diffuseTex.push_back(0);
+            // 3.4 - TEXTURES
+            meshInfos.diffuseColor.push_back(glm::vec4(1));
+            meshInfos.texture.push_back(0);            
 
             if (primitive.material < 0) {
 					continue;
             }
 
-            tinygltf::Material &mat = m_model.materials[primitive.material];            
+            tinygltf::Material &mat = m_model.materials[primitive.material];   
 
+            // Base Color Factor
+            if (mat.values.find("baseColorFactor") != mat.values.end())
+            {
+                const auto& parameter = mat.values["baseColorFactor"];
+
+                tinygltf::ColorValue color = parameter.ColorFactor();
+
+                meshInfos.diffuseColor.back() = glm::make_vec4(color.data());
+            }         
+
+            // Base Color Texture
             if (mat.values.find("baseColorTexture") != mat.values.end())
             {
                 const auto& parameter = mat.values["baseColorTexture"];
 
                 tinygltf::Texture &tex = m_model.textures[parameter.TextureIndex()];
 
-                if (tex.source > -1 && tex.source < m_model.images.size())
-                {
-                    tinygltf::Image &image = m_model.images[tex.source];
+                AddTexture(tex, meshInfos);
+            }     
+            // Emissive Texture
+            else if (mat.additionalValues.find("emissiveTexture") != mat.additionalValues.end())
+            {
+                const auto& parameter = mat.additionalValues["emissiveTexture"];
 
-                    glActiveTexture(GL_TEXTURE0);
+                tinygltf::Texture &tex = m_model.textures[parameter.TextureIndex()];
 
-                    GLuint texId;
-                    glGenTextures(1, &texId);
-                    glBindTexture(GL_TEXTURE_2D, texId);
-
-                    // Ignore Texture.fomat.
-                    GLenum format = GL_RGBA;
-                    if (image.component == 3) {
-                        format = GL_RGB;
-                    }
-
-    /*
-                    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-                    glTexParameterf(tex.target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                    glTexParameterf(tex.target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-                    glTexImage2D(tex.target, 0, tex.internalFormat, image.width,
-                            image.height, 0, format, tex.type,
-                            &image.image.at(0));
-    */
-
-                    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, image.width, image.height);
-                    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image.width, image.height, GL_RGBA, GL_UNSIGNED_BYTE, &image.image.at(0));
-                    
-                    glBindTexture(GL_TEXTURE_2D, 0);
-                    
-                    meshInfos.diffuseTex.back() = texId;
-                }
+                // TODO --> Find why the model is still black (we find the right image though)
+                AddTexture(tex, meshInfos);
             }
         }
 
@@ -355,13 +345,22 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
         m_meshInfos.push_back(meshInfos);
     }
 
-    // SAMPLER --> TODO
-    // Note: no need to bind a sampler for modifying it: the sampler API is already direct_state_access
+    // SAMPLER --> TODO --> Handle multiple samplers
     glGenSamplers(1, &m_textureSampler);
-    glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glSamplerParameteri(m_textureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    //std::cout << m_model.cameras.size() << std::endl;
+    if (m_model.samplers.size() > 0)
+    {
+        tinygltf::Sampler sampler = m_model.samplers[0];
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, sampler.minFilter);
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_MAG_FILTER, sampler.magFilter);
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_WRAP_S, sampler.wrapS);
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_WRAP_T, sampler.wrapT);
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_WRAP_R, sampler.wrapR);
+    }
+    else
+    {
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glSamplerParameteri(m_textureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
 }
 
 GLenum Application::getMode(int mode)
@@ -383,6 +382,38 @@ GLenum Application::getMode(int mode)
     }
 }
 
+void Application::AddTexture(tinygltf::Texture &tex, MeshInfos& meshInfos)
+{
+    if (tex.source > -1 && tex.source < m_model.images.size())
+    {
+        tinygltf::Image &image = m_model.images[tex.source];
+
+        glActiveTexture(GL_TEXTURE0);
+
+        GLuint texId;
+        glGenTextures(1, &texId);
+        glBindTexture(GL_TEXTURE_2D, texId);
+
+        // Ignore Texture.fomat.
+        GLenum format = GL_RGBA;
+        if (image.component == 3) {
+            format = GL_RGB;
+        }
+        
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        
+
+        glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGB32F, image.width, image.height);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image.width, image.height, GL_RGBA, GL_UNSIGNED_BYTE, &image.image.at(0));
+        
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        meshInfos.texture.back() = texId;
+    }
+}
+
 // ------ GLTF DRAW --------
 
 
@@ -392,6 +423,7 @@ void Application::DrawModel(tinygltf::Model &model) {
   assert(model.scenes.size() > 0);
   int scene_to_display = model.defaultScene > -1 ? model.defaultScene : 0;
   const tinygltf::Scene &scene = model.scenes[scene_to_display];
+  
   for (size_t i = 0; i < scene.nodes.size(); i++) 
   {
     DrawNode(model, model.nodes[scene.nodes[i]], glm::mat4(1));
@@ -420,15 +452,7 @@ void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, g
 
         if (node.rotation.size() == 4)
         {
-            //glm::mat4 rotMatrix = quatToMatrix(glm::make_vec4(node.rotation.data()));
-            //float angle = rotMatrix[15];
-            //glm::vec3 rotate(node.rotation[0], node.rotation[1], node.rotation[2]);
-            //modelMatrix = glm::rotate(modelMatrix, (float)node.rotation[3], rotate);
-            //std::cout << "BEFORE ROTATION" << std::endl;
-            //std::cout << modelMatrix << std::endl;
             modelMatrix = quatToMatrix(glm::make_vec4(node.rotation.data())) * modelMatrix;
-            //std::cout << "AFTER ROTATION" << std::endl;
-            //std::cout << modelMatrix << std::endl;
         }
 
         if (node.scale.size() == 3)
@@ -471,8 +495,9 @@ void Application::DrawMesh(int meshIndex, glm::mat4 modelMatrix)
     for (size_t i = 0; i < m_meshInfos[meshIndex].vaos.size(); ++i)
     {        
         // Color
-        glUniform3fv(m_uKdLocation, 1, glm::value_ptr(glm::vec3(1, 1, 1)));
-        glBindTexture(GL_TEXTURE_2D, m_meshInfos[meshIndex].diffuseTex[i]);
+        glm::vec3 diffuseColor(m_meshInfos[meshIndex].diffuseColor[i].x, m_meshInfos[meshIndex].diffuseColor[i].y, m_meshInfos[meshIndex].diffuseColor[i].z);
+        glUniform3fv(m_uKdLocation, 1, glm::value_ptr(diffuseColor));
+        glBindTexture(GL_TEXTURE_2D, m_meshInfos[meshIndex].texture[i]);
 
         // Bind VAO
         const tinygltf::Accessor &indexAccessor = m_model.accessors[m_meshInfos[meshIndex].primitives[i].indices];        

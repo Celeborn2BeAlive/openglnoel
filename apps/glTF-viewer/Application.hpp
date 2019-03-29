@@ -77,7 +77,8 @@ private:
     typedef struct {
         std::vector<GLuint> vaos;
         std::vector<tinygltf::Primitive> primitives;
-        std::vector<GLuint> diffuseTex;
+        std::vector<GLuint> texture;
+        std::vector<glm::vec4> diffuseColor;
     } MeshInfos;
 
     std::vector<MeshInfos> m_meshInfos;
@@ -90,4 +91,6 @@ private:
     void DrawNode(tinygltf::Model &model, const tinygltf::Node &node, glm::mat4 currentMatrix);
     void DrawMesh(int meshIndex, glm::mat4 modelMatrix);
     void DrawMesh();
+
+    void AddTexture(tinygltf::Texture &tex, MeshInfos& meshInfos);
 };
