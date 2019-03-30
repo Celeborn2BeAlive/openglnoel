@@ -11,9 +11,11 @@ typedef struct ScrollEvent
 	double y;
 } ScrollEvent;
 
+
+
+
 namespace glmlv 
 {
-
 class ViewController 
 {
 public:
@@ -56,6 +58,13 @@ public:
         return m_RcpViewMatrix;
     }
 
+	static double scrollY;
+	static double getscrollY() {
+		return scrollY;
+	}
+	double setScrollY(double offset) {
+		scrollY = offset;
+	}
 
 private:
     GLFWwindow* m_pWindow = nullptr;
@@ -67,7 +76,7 @@ private:
 	bool ScrollDown = false;
     glm::mat4 m_ViewMatrix = glm::mat4(1);
     glm::mat4 m_RcpViewMatrix = glm::mat4(1);
-	//static ScrollEvent* event;
+	//ScrollEvent* ViewController::event;
 };
 
 }

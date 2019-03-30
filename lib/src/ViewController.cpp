@@ -7,11 +7,9 @@
 using namespace glm;
 
 
-
-
 namespace glmlv 
 {
-
+	double ViewController::scrollY = 0;
 bool ViewController::update(float elapsedTime) 
 {
 
@@ -122,12 +120,12 @@ bool ViewController::updateTrackball(float elapsedTime)
 	//zoom
 	glfwSetScrollCallback(m_pWindow, scrollCallback);
 	
-	/*if (event->y > 0) {
+	if (scrollY > 0) {
 		localTranslationVector += m_fSpeed * elapsedTime * frontVector;
 	}
 	else{
 		localTranslationVector -= m_fSpeed * elapsedTime * frontVector;
-	}*/
+	}
 	
 	//rotate right
 	if (glfwGetKey(m_pWindow, GLFW_KEY_Q)) {
@@ -235,8 +233,10 @@ bool ViewController::updateTrackball(float elapsedTime)
 
 void ViewController::scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
 
-	//event->x = xoffset;
-	//event->y = yoffset;
+	//ViewController::event->x = xoffset;
+	scrollY = yoffset;
+	//setScrollY(yoffset);
+	//ViewController::event->y = yoffset;
 }
 
 }
