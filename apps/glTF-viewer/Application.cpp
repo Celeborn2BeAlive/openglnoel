@@ -15,7 +15,7 @@
 
 int Application::run()
 {
-	float clearColor[3] = { 0.5, 0.8, 0.2 };
+	float clearColor[3] = { 0.5, 0.1, 0.1 };
 	glClearColor(clearColor[0], clearColor[1], clearColor[2], 1.f);
 
     // Loop until the user closes the windows
@@ -53,8 +53,8 @@ int Application::run()
         glUniform3fv(m_uDirectionalLightDirLocation, 1, glm::value_ptr(glm::vec3(m_viewMatrix * glm::vec4(glm::normalize(m_DirLightDirection), 0))));
         glUniform3fv(m_uDirectionalLightIntensityLocation, 1, glm::value_ptr(m_DirLightColor * m_DirLightIntensity));
 
-        glUniform3fv(m_uPointLightPositionLocation, 1, glm::value_ptr(glm::vec3(m_viewMatrix * glm::vec4(m_PointLightPosition, 1))));
-        glUniform3fv(m_uPointLightIntensityLocation, 1, glm::value_ptr(m_PointLightColor * m_PointLightIntensity));
+        //glUniform3fv(m_uPointLightPositionLocation, 1, glm::value_ptr(glm::vec3(m_viewMatrix * glm::vec4(m_PointLightPosition, 1))));
+        //glUniform3fv(m_uPointLightIntensityLocation, 1, glm::value_ptr(m_PointLightColor * m_PointLightIntensity));
 
         // ACTIVE TEXTURE
         glActiveTexture(GL_TEXTURE0);
@@ -87,13 +87,6 @@ int Application::run()
                     ImGui::DragFloat("Theta Angle", &m_DirLightThetaAngleDegrees, 1.0f, 0.0f, 180.f)) {
                     m_DirLightDirection = computeDirectionVector(glm::radians(m_DirLightPhiAngleDegrees), glm::radians(m_DirLightThetaAngleDegrees));
                 }
-            }
-
-            if (ImGui::CollapsingHeader("Point Light"))
-            {
-                ImGui::ColorEdit3("PointLightColor", glm::value_ptr(m_PointLightColor));
-                ImGui::DragFloat("PointLightIntensity", &m_PointLightIntensity, 0.1f, 0.f, 16000.f);
-                ImGui::InputFloat3("Position", glm::value_ptr(m_PointLightPosition));
             }
 
             ImGui::End();
@@ -176,7 +169,8 @@ Application::Application(int argc, char** argv):
     glm::vec3 center1 = GetCenterOfModel();
     std::cout << "Center Method 1 : " << center1 << std::endl;
     
-    glm::vec3 center2 = GetCenterOfBoundingBox(CreateBoundingBox());
+    BoundingBox boundingBox = CreateBoundingBox();
+    glm::vec3 center2 = GetCenterOfBoundingBox(boundingBox);
     std::cout << "Center Method 2 : " << center2 << std::endl;
 
     if (argc == 3)
@@ -190,8 +184,17 @@ Application::Application(int argc, char** argv):
             center = center2;
         }
     }
+    glm::vec3 modelDimension = boundingBox.max - boundingBox.min;
+    std::cout << "Model dimensions : " << modelDimension << std::endl;
 
-    float zDistance = 5.0f;
+    // TODO --> Find a real formula in order to have a nice zDistance to look at the model at a right distance
+    // If the model has a width of 2, then we will be -5 distance behind center
+    // Formula found just by testing some values
+    //float zDistance = 4.5 + 4 * ((modelDimension.x >= modelDimension.y) ? modelDimension.x/15 : modelDimension.y/15);
+    float zDistance = 5.0f;    
+    std::cout << "zDistance : " << zDistance << std::endl;
+
+    // TODO --> Find the real Vector Up of the model and the real Vector Forward
     m_viewController.setViewMatrix(glm::lookAt(glm::vec3(center.x, center.y, center.z + zDistance), center, glm::vec3(0, 1, 0)));    
 }
 
