@@ -5,6 +5,12 @@
 
 struct GLFWwindow;
 
+typedef struct ScrollEvent
+{
+	double x;
+	double y;
+} ScrollEvent;
+
 namespace glmlv 
 {
 
@@ -50,6 +56,7 @@ public:
         return m_RcpViewMatrix;
     }
 
+
 private:
     GLFWwindow* m_pWindow = nullptr;
     float m_fSpeed = 0.f;
@@ -60,6 +67,7 @@ private:
 	bool ScrollDown = false;
     glm::mat4 m_ViewMatrix = glm::mat4(1);
     glm::mat4 m_RcpViewMatrix = glm::mat4(1);
+	//static ScrollEvent* event;
 };
 
 }
