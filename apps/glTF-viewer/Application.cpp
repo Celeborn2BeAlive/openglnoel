@@ -275,7 +275,6 @@ Application::Application(int argc, char** argv):
     glBindVertexArray(0);
 
 
-
     // 3 - SET CAMERA POSTION
     //m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 
@@ -290,11 +289,11 @@ Application::Application(int argc, char** argv):
 
     if (argc == 3)
     {
-        if(!strcmp(argv[2], "1"))
+        if(!strcmp(argv[2], "c1"))
         {
             center = center1;
         }
-        else if (!strcmp(argv[2], "2"))
+        else if (!strcmp(argv[2], "c2"))
         {
             center = center2;
         }
