@@ -1,7 +1,7 @@
 #include "Application.hpp"
 
 #include <iostream>
-
+#include <cmath> 
 #include <glmlv/Image2DRGBA.hpp>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -325,7 +325,11 @@ Application::Application(int argc, char** argv):
     // If the model has a width of 2, then we will be -5 distance behind center
     // Formula found just by testing some values
     //float zDistance = 4.5 + 4 * ((modelDimension.x >= modelDimension.y) ? modelDimension.x/15 : modelDimension.y/15);
-    float zDistance = 5.0f;    
+    //float zDistance = 5.0f;    
+	
+	float vfov = 182 * (3.14 / 180);
+	float zDistance = m_nWindowHeight / (2 * std::tan(vfov / 2));
+	
     std::cout << "zDistance : " << zDistance << std::endl;
 
     // TODO --> Find the real Vector Up of the model and the real Vector Forward
