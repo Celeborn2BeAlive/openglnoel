@@ -432,10 +432,13 @@ void Application::DrawModel(tinygltf::Model &model) {
   int scene_to_display = model.defaultScene > -1 ? model.defaultScene : 0;
   const tinygltf::Scene &scene = model.scenes[scene_to_display];
   
-  for (size_t i = 0; i < scene.nodes.size(); i++) 
-  {
-    DrawNode(model, model.nodes[scene.nodes[i]], glm::mat4(1));
+  if (scene.nodes.size() != 0) {
+	  for (size_t i = 0; i < scene.nodes.size(); i++)
+	  {
+		  DrawNode(model, model.nodes[scene.nodes[i]], glm::mat4(1));
+	  }
   }
+
 }
 
 // Hierarchically draw nodes
