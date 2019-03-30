@@ -133,10 +133,15 @@ private:
 
     // TODO --> Maybe We can put all 3 into a structure because the same Index means the same element
     typedef struct {
+        // Vertex
         std::vector<GLuint> vaos;
         std::vector<tinygltf::Primitive> primitives;
-        std::vector<GLuint> texture;
+        // Material
+        std::vector<GLuint> diffuseTexture;
         std::vector<glm::vec4> diffuseColor;
+        std::vector<GLuint> emissiveTexture;
+        std::vector<glm::vec3> emissiveColor;
+        // Position
         std::vector<glm::vec3> centers;
         std::vector<glm::vec3> min;
         std::vector<glm::vec3> max;
@@ -153,7 +158,7 @@ private:
     void DrawMesh(int meshIndex, glm::mat4 modelMatrix);
     void DrawMesh();
 
-    void AddTexture(tinygltf::Texture &tex, MeshInfos& meshInfos);
+    void AddTexture(tinygltf::Texture &tex, MeshInfos& meshInfos, bool diffuse, bool emissive);
 
     template<typename T>
     inline float GetMiddle(T min, T max) { return (max + min) / 2; };
