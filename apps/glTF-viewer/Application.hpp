@@ -19,6 +19,8 @@ public:
 
     int run();
 private:
+    void initShadersData();
+
     static glm::vec3 computeDirectionVector(float phiRadians, float thetaRadians)
     {
         const auto cosPhi = glm::cos(phiRadians);
@@ -29,7 +31,7 @@ private:
 
     const size_t m_nWindowWidth = 1280;
     const size_t m_nWindowHeight = 720;
-    glmlv::GLFWHandle m_GLFWHandle{ m_nWindowWidth, m_nWindowHeight, "Template" }; // Note: the handle must be declared before the creation of any object managing OpenGL resource (e.g. GLProgram, GLShader)
+    glmlv::GLFWHandle m_GLFWHandle{ m_nWindowWidth, m_nWindowHeight, "GLTF-Viewer" }; // Note: the handle must be declared before the creation of any object managing OpenGL resource (e.g. GLProgram, GLShader)
 
     const glmlv::fs::path m_AppPath;
     const std::string m_AppName;
@@ -37,39 +39,95 @@ private:
     const glmlv::fs::path m_ShadersRootPath;
     const glmlv::fs::path m_AssetsRootPath;
 
-    GLuint m_textureSampler = 0; // Only one sampler object since we will use the sample sampling parameters for the two textures
-
     glmlv::GLProgram m_program;
 
+    // ====== CAMERA ======== //
+
     glmlv::ViewController m_viewController{ m_GLFWHandle.window(), 3.f };
-    GLint m_uModelViewProjMatrixLocation;
-    GLint m_uModelViewMatrixLocation;
-    GLint m_uNormalMatrixLocation;
 
-    GLint m_uDirectionalLightDirLocation;
-    GLint m_uDirectionalLightIntensityLocation;
+    glm::mat4 m_projMatrix;
+    glm::mat4 m_viewMatrix;
+    glm::mat4 quatToMatrix(glm::vec4 quaternion);
 
-    GLint m_uPointLightPositionLocation;
-    GLint m_uPointLightIntensityLocation;
+    // ======= LIGHTS ========= //
 
-    GLint m_uKdLocation;
-    GLint m_uKdSamplerLocation;
-
+    // DIRECTIONAL LIGHT
     float m_DirLightPhiAngleDegrees = 330.f;
     float m_DirLightThetaAngleDegrees = 150.f;
     glm::vec3 m_DirLightDirection = computeDirectionVector(glm::radians(m_DirLightPhiAngleDegrees), glm::radians(m_DirLightThetaAngleDegrees));
     glm::vec3 m_DirLightColor = glm::vec3(1, 1, 1);
     float m_DirLightIntensity = 1.f;
 
+    // POINT LIGHT
     glm::vec3 m_PointLightPosition = glm::vec3(0, 1, 0);
     glm::vec3 m_PointLightColor = glm::vec3(1, 1, 1);
     float m_PointLightIntensity = 5.f;
-    
-    glm::mat4 m_projMatrix;
-    glm::mat4 m_viewMatrix;
-    glm::mat4 quatToMatrix(glm::vec4 quaternion);
 
-    // For GLTF
+
+    // ========= DEFERRED RENDERING ============ //
+
+    // Triangle covering the whole screen, for the shading pass:
+    GLuint m_TriangleVBO = 0;
+    GLuint m_TriangleVAO = 0;
+
+    // GBuffer:
+    enum GBufferTextureType
+    {
+        GPosition = 0,
+        GNormal,
+        GAmbient,
+        GDiffuse,
+        GGlossyShininess,
+        GDepth,
+        GBufferTextureCount
+    };
+
+    const char * m_GBufferTexNames[GBufferTextureCount + 1] = { "position", "normal", "ambient", "diffuse", "glossyShininess", "depth", "beauty" }; // Tricks, since we cant blit depth, we use its value to draw the result of the shading pass
+    const GLenum m_GBufferTextureFormat[GBufferTextureCount] = { GL_RGB32F, GL_RGB32F, GL_RGB32F, GL_RGB32F, GL_RGBA32F, GL_DEPTH_COMPONENT32F };
+    GLuint m_GBufferTextures[GBufferTextureCount];
+    GLuint m_GBufferFBO; // Framebuffer object
+
+    GBufferTextureType m_CurrentlyDisplayed = GBufferTextureCount; // Default to beauty
+
+    GLuint m_textureSampler = 0; // Only one sampler object since we will use the sample sampling parameters for the two textures
+
+    // GLSL programs
+    glmlv::GLProgram m_geometryPassProgram;
+    glmlv::GLProgram m_shadingPassProgram;
+    glmlv::GLProgram m_displayDepthProgram;
+    glmlv::GLProgram m_displayPositionProgram;
+
+    // Geometry pass uniforms
+    GLint m_uModelViewProjMatrixLocation;
+    GLint m_uModelViewMatrixLocation;
+    GLint m_uNormalMatrixLocation;
+    GLint m_uKaLocation;
+    GLint m_uKdLocation;
+    GLint m_uKsLocation;
+    GLint m_uShininessLocation;
+    GLint m_uKaSamplerLocation;
+    GLint m_uKdSamplerLocation;
+    GLint m_uKsSamplerLocation;
+    GLint m_uShininessSamplerLocation;
+
+    // Shading pass uniforms
+    GLint m_uGBufferSamplerLocations[GDepth];
+    GLint m_uDirectionalLightDirLocation;
+    GLint m_uDirectionalLightIntensityLocation;
+    GLint m_uPointLightPositionLocation;
+    GLint m_uPointLightIntensityLocation;
+
+    // Display depth pass uniforms
+    GLint m_uGDepthSamplerLocation;
+
+    // Display position pass uniforms
+    GLint m_uGPositionSamplerLocation;
+    GLint m_uSceneSizeLocation;
+
+
+
+    // ================ FOR GLTF ================ //
+
     tinygltf::Model m_model;
     std::map<std::string, GLint> m_attribs;
 
