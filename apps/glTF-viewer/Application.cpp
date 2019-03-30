@@ -179,17 +179,20 @@ Application::Application(int argc, char** argv):
     glm::vec3 center2 = GetCenterOfBoundingBox(CreateBoundingBox());
     std::cout << "Center Method 2 : " << center2 << std::endl;
 
-    if(!strcmp(argv[2], "1"))
+    if (argc == 3)
     {
-        std::cout << "yeaaeaey" << std::endl;
-        center = center1;
-    }
-    else if (!strcmp(argv[2], "2"))
-    {
-        center = center2;
+        if(!strcmp(argv[2], "1"))
+        {
+            center = center1;
+        }
+        else if (!strcmp(argv[2], "2"))
+        {
+            center = center2;
+        }
     }
 
-    m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), center, glm::vec3(0, 1, 0)));    
+    float zDistance = 5.0f;
+    m_viewController.setViewMatrix(glm::lookAt(glm::vec3(center.x, center.y, center.z + zDistance), center, glm::vec3(0, 1, 0)));    
 }
 
 // ------ GLTF INITIALIZATION --------
