@@ -51,18 +51,19 @@ int Application::run()
             glViewport(0, 0, m_nWindowWidth, m_nWindowHeight);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            glBindSampler(0, m_textureSampler);
+            for (GLuint i : {0, 1})
+                glBindSampler(i, m_textureSampler);
 
-            glUniform1i(m_uKdSamplerLocation, 0); // Set the uniform to 0 because we use texture unit 0
-
-            // ACTIVE TEXTURE
-            glActiveTexture(GL_TEXTURE0);
+            // Set texture unit of each sampler
+            glUniform1i(m_uKaSamplerLocation, 0);
+            glUniform1i(m_uKdSamplerLocation, 1);
 
             // GLTF DRAWING
             DrawModel(m_model);
 
             // UNBIND
-            glBindSampler(0, m_textureSampler);                
+            for (GLuint i : {0, 1})
+                glBindSampler(0, m_textureSampler);                
             
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         }
@@ -202,7 +203,7 @@ Application::Application(int argc, char** argv):
 {
     ImGui::GetIO().IniFilename = m_ImGuiIniFilename.c_str(); // At exit, ImGUI will store its windows positions in this file
 
-    // 1 - LINK WITH SHADERS
+    // 0 - LINK WITH SHADERS
 
     // Attribute location
     const GLint positionAttrLocation = 0;
@@ -214,26 +215,6 @@ Application::Application(int argc, char** argv):
     m_attribs["NORMAL"] = normalAttrLocation;
     m_attribs["TEXCOORD_0"] = texCoordsAttrLocation;
 
-    // Compile Shaders
-    /*
-    m_program = glmlv::compileProgram({ m_ShadersRootPath / m_AppName / "forward.vs.glsl", m_ShadersRootPath / m_AppName / "forward.fs.glsl" });
-    m_program.use();
-
-    // Get Uniforms
-    m_uModelViewProjMatrixLocation = glGetUniformLocation(m_program.glId(), "uModelViewProjMatrix");
-    m_uModelViewMatrixLocation = glGetUniformLocation(m_program.glId(), "uModelViewMatrix");
-    m_uNormalMatrixLocation = glGetUniformLocation(m_program.glId(), "uNormalMatrix");
-
-    m_uDirectionalLightDirLocation = glGetUniformLocation(m_program.glId(), "uDirectionalLightDir");
-    m_uDirectionalLightIntensityLocation = glGetUniformLocation(m_program.glId(), "uDirectionalLightIntensity");
-
-    m_uPointLightPositionLocation = glGetUniformLocation(m_program.glId(), "uPointLightPosition");
-    m_uPointLightIntensityLocation = glGetUniformLocation(m_program.glId(), "uPointLightIntensity");
-
-    m_uKdLocation = glGetUniformLocation(m_program.glId(), "uKd");
-    m_uKdSamplerLocation = glGetUniformLocation(m_program.glId(), "uKdSampler");
-    */
-
     // 1 - LOAD SCENE (.GLTF)
     if (argc < 2) {
         printf("Needs input.gltf\n");
@@ -243,7 +224,7 @@ Application::Application(int argc, char** argv):
 
     loadTinyGLTF(gltfPath);
 
-    // 3 - CREATE SHADER PROGRAMS
+    // 2 - CREATE SHADER PROGRAMS
     initShadersData();
 
     glEnable(GL_DEPTH_TEST);
@@ -294,7 +275,6 @@ Application::Application(int argc, char** argv):
     glBindVertexArray(0);
 
 
-
     // 3 - SET CAMERA POSTION
     //m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
 
@@ -309,11 +289,11 @@ Application::Application(int argc, char** argv):
 
     if (argc == 3)
     {
-        if(!strcmp(argv[2], "1"))
+        if(!strcmp(argv[2], "c1"))
         {
             center = center1;
         }
-        else if (!strcmp(argv[2], "2"))
+        else if (!strcmp(argv[2], "c2"))
         {
             center = center2;
         }
@@ -334,8 +314,7 @@ Application::Application(int argc, char** argv):
 
     // TODO --> Find the real Vector Up of the model and the real Vector Forward
     m_viewController.setViewMatrix(glm::lookAt(glm::vec3(center.x, center.y, center.z + zDistance), center, glm::vec3(0, 1, 0)));
-    
-    //m_viewController.setSpeed(m_SceneSizeLength * 0.1f); // Let's travel 10% of the scene per second
+    m_viewController.setSpeed(modelDimension.x * 0.5f); // Let's travel 10% of the scene per second
 }
 
 // ------ GLTF INITIALIZATION --------
@@ -371,7 +350,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     // 2 - BUFFERS (VBO / IBO)
     
     std::vector<GLuint> buffers(m_model.buffers.size()); // un par tinygltf::Buffer
-    //m_buffers.resize(m_model.buffers.size());
+    
     glGenBuffers(buffers.size(), buffers.data());
     for (size_t i = 0; i < buffers.size(); ++i)
     {
@@ -412,8 +391,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             tinygltf::BufferView &bufferView = m_model.bufferViews[indexAccessor.bufferView];
             int &bufferIndex = bufferView.buffer;
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[bufferIndex]); // Binding IBO
-            //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexAccessor.bufferView); // Binding IBO
-
+            
             // 3.3 - ATTRIBUTS
             // Pour chaque attributes de la primitive
             std::map<std::string, int>::const_iterator it(primitive.attributes.begin());
@@ -426,7 +404,6 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                 bufferView = m_model.bufferViews[accessor.bufferView];
                 bufferIndex = bufferView.buffer;
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[bufferIndex]);    // Binding VBO
-                //glBindBuffer(GL_ARRAY_BUFFER, accessor.bufferView);    // Binding VBO
                 
                 // Get number of component
                 int size = 1;
@@ -440,32 +417,27 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                     size = 4;
                 } else {
                     assert(0);
-                }
+                }                
                 
                 // it->first would be "POSITION", "NORMAL", "TEXCOORD_0", ...
-                if ((it->first.compare("POSITION") == 0) ||
-                    (it->first.compare("NORMAL") == 0) ||
-                    (it->first.compare("TEXCOORD_0") == 0))
+                if (m_attribs.count(it->first) > 0)
                 {
-                    if (m_attribs[it->first] >= 0)
+                    // Compute byteStride from Accessor + BufferView combination.
+                    int byteStride =  accessor.ByteStride(m_model.bufferViews[accessor.bufferView]);
+                    assert(byteStride != -1);
+                    glEnableVertexAttribArray(m_attribs[it->first]);
+                    glVertexAttribPointer(m_attribs[it->first], size /*accessor.type*/, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const GLvoid*) (bufferView.byteOffset + accessor.byteOffset));
+
+                    // If it's the position attribute
+                    if (it->first.compare("POSITION") == 0)
                     {
-                        // Compute byteStride from Accessor + BufferView combination.
-                        int byteStride =  accessor.ByteStride(m_model.bufferViews[accessor.bufferView]);
-                        assert(byteStride != -1);
-                        glEnableVertexAttribArray(m_attribs[it->first]);
-                        glVertexAttribPointer(m_attribs[it->first], size, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const GLvoid*) (bufferView.byteOffset + accessor.byteOffset));
-
-
-                        if (it->first.compare("POSITION") == 0)
-                        {
-                            // 3.3 BIS - CENTER FOR CAMERA
-                            // For Method 1
-                            meshInfos.centers.push_back(GetCenterOfPrimitive(accessor.minValues, accessor.maxValues));
-                            // For Method 2
-                            meshInfos.min.push_back(glm::make_vec3(accessor.minValues.data()));
-                            meshInfos.max.push_back(glm::make_vec3(accessor.maxValues.data()));
-                        }                        
-                    }
+                        // 3.3 BIS - CENTER FOR CAMERA
+                        // For Method 1
+                        meshInfos.centers.push_back(GetCenterOfPrimitive(accessor.minValues, accessor.maxValues));
+                        // For Method 2
+                        meshInfos.min.push_back(glm::make_vec3(accessor.minValues.data()));
+                        meshInfos.max.push_back(glm::make_vec3(accessor.maxValues.data()));
+                    }                        
                 }
 
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -479,7 +451,9 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
 
             // 3.4 - TEXTURES
             meshInfos.diffuseColor.push_back(glm::vec4(1));
-            meshInfos.texture.push_back(0);            
+            meshInfos.diffuseTexture.push_back(0);
+            meshInfos.emissiveColor.push_back(glm::vec4(0));
+            meshInfos.emissiveTexture.push_back(0);           
 
             if (primitive.material < 0) {
 					continue;
@@ -487,7 +461,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
 
             tinygltf::Material &mat = m_model.materials[primitive.material];   
 
-            // Base Color Factor
+            // Diffuse Color Factor
             if (mat.values.find("baseColorFactor") != mat.values.end())
             {
                 const auto& parameter = mat.values["baseColorFactor"];
@@ -497,24 +471,33 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                 meshInfos.diffuseColor.back() = glm::make_vec4(color.data());
             }         
 
-            // Base Color Texture
+            // Diffuse Color Texture
             if (mat.values.find("baseColorTexture") != mat.values.end())
             {
                 const auto& parameter = mat.values["baseColorTexture"];
 
                 tinygltf::Texture &tex = m_model.textures[parameter.TextureIndex()];
 
-                AddTexture(tex, meshInfos);
-            }     
+                AddTexture(tex, meshInfos, true, false);
+            }
+            // Emissive Color
+            if (mat.additionalValues.find("emissiveFactor") != mat.additionalValues.end())
+            {
+                const auto& parameter = mat.additionalValues["emissiveFactor"];
+
+                tinygltf::ColorValue color = parameter.ColorFactor();
+
+                meshInfos.emissiveColor.back() = glm::make_vec3(color.data());
+            }  
             // Emissive Texture
-            else if (mat.additionalValues.find("emissiveTexture") != mat.additionalValues.end())
+            if (mat.additionalValues.find("emissiveTexture") != mat.additionalValues.end())
             {
                 const auto& parameter = mat.additionalValues["emissiveTexture"];
 
                 tinygltf::Texture &tex = m_model.textures[parameter.TextureIndex()];
 
                 // TODO --> Find why the model is still black (we find the right image though)
-                AddTexture(tex, meshInfos);
+                AddTexture(tex, meshInfos, false, true);
             }
         }
 
@@ -559,13 +542,21 @@ GLenum Application::getMode(int mode)
     }
 }
 
-void Application::AddTexture(tinygltf::Texture &tex, MeshInfos& meshInfos)
+void Application::AddTexture(tinygltf::Texture &tex, MeshInfos& meshInfos, bool diffuse, bool emissive)
 {
     if (tex.source > -1 && tex.source < m_model.images.size())
     {
         tinygltf::Image &image = m_model.images[tex.source];
 
-        glActiveTexture(GL_TEXTURE0);
+        if (emissive)
+        {
+            glActiveTexture(GL_TEXTURE0);
+        }
+        else if (diffuse)
+        {
+            glActiveTexture(GL_TEXTURE1);
+        }
+        
 
         GLuint texId;
         glGenTextures(1, &texId);
@@ -587,7 +578,14 @@ void Application::AddTexture(tinygltf::Texture &tex, MeshInfos& meshInfos)
         
         glBindTexture(GL_TEXTURE_2D, 0);
         
-        meshInfos.texture.back() = texId;
+        if (emissive)
+        {
+            meshInfos.emissiveTexture.back() = texId;
+        }
+        else if (diffuse)
+        {
+            meshInfos.diffuseTexture.back() = texId;
+        }    
     }
 }
 
@@ -614,7 +612,7 @@ void Application::DrawModel(tinygltf::Model &model) {
 void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, glm::mat4 currentMatrix) {
 
     // PUSH MATRIX
-    glm::mat4 modelMatrix = glm::mat4(1);
+    glm::mat4 modelMatrix = currentMatrix;
 
     // Use `matrix' attribute
     if (node.matrix.size() == 16)
@@ -622,24 +620,25 @@ void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, g
         modelMatrix = glm::make_mat4(node.matrix.data());
     }
     // Use `translate', 'rotate' and 'scale' attributes
+    // L = T * R * S --> First Scale, then Rotate, then Translate
     else
     {       
-        if (node.translation.size() == 3)
+        if (node.scale.size() == 3)
         {
-            glm::vec3 translate = glm::make_vec3(node.translation.data());
-            modelMatrix = glm::translate(modelMatrix, translate);
-        }
+            glm::vec3 scale = glm::make_vec3(node.scale.data());
+            modelMatrix = glm::scale(modelMatrix, scale);
+        }          
 
         if (node.rotation.size() == 4)
         {
             modelMatrix = quatToMatrix(glm::make_vec4(node.rotation.data())) * modelMatrix;
         }
-
-        if (node.scale.size() == 3)
+          
+        if (node.translation.size() == 3)
         {
-            glm::vec3 scale = glm::make_vec3(node.scale.data());
-            modelMatrix = glm::scale(modelMatrix, scale);
-        }
+            glm::vec3 translate = glm::make_vec3(node.translation.data());
+            modelMatrix = glm::translate(modelMatrix, translate);
+        }   
     }
 
     modelMatrix = modelMatrix * currentMatrix;
@@ -674,10 +673,16 @@ void Application::DrawMesh(int meshIndex, glm::mat4 modelMatrix)
     // DRAW EACH VAO / PRIMITIVES of this mesh
     for (size_t i = 0; i < m_meshInfos[meshIndex].vaos.size(); ++i)
     {        
-        // Color
+        // Emissive
+        glUniform3fv(m_uKaLocation, 1, glm::value_ptr(m_meshInfos[meshIndex].emissiveColor[i]));
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, m_meshInfos[meshIndex].emissiveTexture[i]);
+        
+        // Diffuse
         glm::vec3 diffuseColor(m_meshInfos[meshIndex].diffuseColor[i].x, m_meshInfos[meshIndex].diffuseColor[i].y, m_meshInfos[meshIndex].diffuseColor[i].z);
-        glUniform3fv(m_uKdLocation, 1, glm::value_ptr(diffuseColor));
-        glBindTexture(GL_TEXTURE_2D, m_meshInfos[meshIndex].texture[i]);
+        glUniform3fv(m_uKdLocation, 1, glm::value_ptr(diffuseColor));        
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, m_meshInfos[meshIndex].diffuseTexture[i]);
 
         // Bind VAO
         const tinygltf::Accessor &indexAccessor = m_model.accessors[m_meshInfos[meshIndex].primitives[i].indices];        
