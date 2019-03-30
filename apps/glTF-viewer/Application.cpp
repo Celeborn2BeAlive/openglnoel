@@ -347,7 +347,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
     // 2 - BUFFERS (VBO / IBO)
     
     std::vector<GLuint> buffers(m_model.buffers.size()); // un par tinygltf::Buffer
-    //m_buffers.resize(m_model.buffers.size());
+    
     glGenBuffers(buffers.size(), buffers.data());
     for (size_t i = 0; i < buffers.size(); ++i)
     {
@@ -388,8 +388,7 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
             tinygltf::BufferView &bufferView = m_model.bufferViews[indexAccessor.bufferView];
             int &bufferIndex = bufferView.buffer;
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[bufferIndex]); // Binding IBO
-            //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexAccessor.bufferView); // Binding IBO
-
+            
             // 3.3 - ATTRIBUTS
             // Pour chaque attributes de la primitive
             std::map<std::string, int>::const_iterator it(primitive.attributes.begin());
@@ -402,7 +401,6 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                 bufferView = m_model.bufferViews[accessor.bufferView];
                 bufferIndex = bufferView.buffer;
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[bufferIndex]);    // Binding VBO
-                //glBindBuffer(GL_ARRAY_BUFFER, accessor.bufferView);    // Binding VBO
                 
                 // Get number of component
                 int size = 1;
@@ -416,32 +414,27 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                     size = 4;
                 } else {
                     assert(0);
-                }
+                }                
                 
                 // it->first would be "POSITION", "NORMAL", "TEXCOORD_0", ...
-                if ((it->first.compare("POSITION") == 0) ||
-                    (it->first.compare("NORMAL") == 0) ||
-                    (it->first.compare("TEXCOORD_0") == 0))
+                if (m_attribs.count(it->first) > 0)
                 {
-                    if (m_attribs[it->first] >= 0)
+                    // Compute byteStride from Accessor + BufferView combination.
+                    int byteStride =  accessor.ByteStride(m_model.bufferViews[accessor.bufferView]);
+                    assert(byteStride != -1);
+                    glEnableVertexAttribArray(m_attribs[it->first]);
+                    glVertexAttribPointer(m_attribs[it->first], size /*accessor.type*/, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const GLvoid*) (bufferView.byteOffset + accessor.byteOffset));
+
+                    // If it's the position attribute
+                    if (it->first.compare("POSITION") == 0)
                     {
-                        // Compute byteStride from Accessor + BufferView combination.
-                        int byteStride =  accessor.ByteStride(m_model.bufferViews[accessor.bufferView]);
-                        assert(byteStride != -1);
-                        glEnableVertexAttribArray(m_attribs[it->first]);
-                        glVertexAttribPointer(m_attribs[it->first], size, accessor.componentType, accessor.normalized ? GL_TRUE : GL_FALSE, byteStride, (const GLvoid*) (bufferView.byteOffset + accessor.byteOffset));
-
-
-                        if (it->first.compare("POSITION") == 0)
-                        {
-                            // 3.3 BIS - CENTER FOR CAMERA
-                            // For Method 1
-                            meshInfos.centers.push_back(GetCenterOfPrimitive(accessor.minValues, accessor.maxValues));
-                            // For Method 2
-                            meshInfos.min.push_back(glm::make_vec3(accessor.minValues.data()));
-                            meshInfos.max.push_back(glm::make_vec3(accessor.maxValues.data()));
-                        }                        
-                    }
+                        // 3.3 BIS - CENTER FOR CAMERA
+                        // For Method 1
+                        meshInfos.centers.push_back(GetCenterOfPrimitive(accessor.minValues, accessor.maxValues));
+                        // For Method 2
+                        meshInfos.min.push_back(glm::make_vec3(accessor.minValues.data()));
+                        meshInfos.max.push_back(glm::make_vec3(accessor.maxValues.data()));
+                    }                        
                 }
 
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -616,7 +609,7 @@ void Application::DrawModel(tinygltf::Model &model) {
 void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, glm::mat4 currentMatrix) {
 
     // PUSH MATRIX
-    glm::mat4 modelMatrix = glm::mat4(1);
+    glm::mat4 modelMatrix = currentMatrix;
 
     // Use `matrix' attribute
     if (node.matrix.size() == 16)
@@ -624,24 +617,25 @@ void Application::DrawNode(tinygltf::Model &model, const tinygltf::Node &node, g
         modelMatrix = glm::make_mat4(node.matrix.data());
     }
     // Use `translate', 'rotate' and 'scale' attributes
+    // L = T * R * S --> First Scale, then Rotate, then Translate
     else
     {       
-        if (node.translation.size() == 3)
+        if (node.scale.size() == 3)
         {
-            glm::vec3 translate = glm::make_vec3(node.translation.data());
-            modelMatrix = glm::translate(modelMatrix, translate);
-        }
+            glm::vec3 scale = glm::make_vec3(node.scale.data());
+            modelMatrix = glm::scale(modelMatrix, scale);
+        }          
 
         if (node.rotation.size() == 4)
         {
             modelMatrix = quatToMatrix(glm::make_vec4(node.rotation.data())) * modelMatrix;
         }
-
-        if (node.scale.size() == 3)
+          
+        if (node.translation.size() == 3)
         {
-            glm::vec3 scale = glm::make_vec3(node.scale.data());
-            modelMatrix = glm::scale(modelMatrix, scale);
-        }
+            glm::vec3 translate = glm::make_vec3(node.translation.data());
+            modelMatrix = glm::translate(modelMatrix, translate);
+        }   
     }
 
     modelMatrix = modelMatrix * currentMatrix;
@@ -676,9 +670,8 @@ void Application::DrawMesh(int meshIndex, glm::mat4 modelMatrix)
     // DRAW EACH VAO / PRIMITIVES of this mesh
     for (size_t i = 0; i < m_meshInfos[meshIndex].vaos.size(); ++i)
     {        
-        // Emissive        
-        glm::vec3 emissiveColor(m_meshInfos[meshIndex].emissiveColor[i].x, m_meshInfos[meshIndex].emissiveColor[i].y, m_meshInfos[meshIndex].emissiveColor[i].z);
-        glUniform3fv(m_uKaLocation, 1, glm::value_ptr(emissiveColor));
+        // Emissive
+        glUniform3fv(m_uKaLocation, 1, glm::value_ptr(m_meshInfos[meshIndex].emissiveColor[i]));
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m_meshInfos[meshIndex].emissiveTexture[i]);
         
