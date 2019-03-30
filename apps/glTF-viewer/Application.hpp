@@ -80,6 +80,8 @@ private:
         std::vector<GLuint> texture;
         std::vector<glm::vec4> diffuseColor;
         std::vector<glm::vec3> centers;
+        std::vector<glm::vec3> min;
+        std::vector<glm::vec3> max;
     } MeshInfos;
 
     std::vector<MeshInfos> m_meshInfos;
@@ -95,7 +97,8 @@ private:
 
     void AddTexture(tinygltf::Texture &tex, MeshInfos& meshInfos);
 
-    inline float GetMiddle(double min, double max) { return (max + min) / 2; };
+    template<typename T>
+    inline float GetMiddle(T min, T max) { return (max + min) / 2; };
     inline glm::vec3 GetMiddle(std::vector<glm::vec3> centers) {
         glm::vec3 center(0);
         int i;
@@ -112,7 +115,25 @@ private:
         return center;
     };
 
+    // METHOD 1 to get center of model :
+    // 1 - Get center of a primitive 
+    // 2 - Get center of all primitives of a mesh
+    // 3 - Get center of all meshes of the model
     glm::vec3 GetCenterOfPrimitive(const std::vector<double>& min, const std::vector<double>& max);
     glm::vec3 GetCenterOfMesh(int meshIndex);
     glm::vec3 GetCenterOfModel();
+
+    // METHOD 2 to get center of model :
+    // 1 - Store min & max values for each primitives
+    // 2 - Create a bounding box by keeping the min & max values of the model
+    // 3 - Get center of that bounding box
+    typedef struct {
+        glm::vec3 min;
+        glm::vec3 max;
+
+        void Init() { min = glm::vec3(0); max = glm::vec3(0);};
+    } BoundingBox;
+
+    BoundingBox CreateBoundingBox();
+    glm::vec3 GetCenterOfBoundingBox(const BoundingBox& boundingBox);
 };

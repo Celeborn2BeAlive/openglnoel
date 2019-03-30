@@ -170,7 +170,29 @@ Application::Application(int argc, char** argv):
 
     // 3 - SET CAMERA POSTION
     //m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)));
-    m_viewController.setViewMatrix(glm::lookAt(glm::vec3(0, 0, 5), GetCenterOfModel(), glm::vec3(0, 1, 0)));    
+
+    glm::vec3 center(0);
+
+    glm::vec3 center1 = GetCenterOfModel();
+    std::cout << "Center Method 1 : " << center1 << std::endl;
+    
+    glm::vec3 center2 = GetCenterOfBoundingBox(CreateBoundingBox());
+    std::cout << "Center Method 2 : " << center2 << std::endl;
+
+    if (argc == 3)
+    {
+        if(!strcmp(argv[2], "1"))
+        {
+            center = center1;
+        }
+        else if (!strcmp(argv[2], "2"))
+        {
+            center = center2;
+        }
+    }
+
+    float zDistance = 5.0f;
+    m_viewController.setViewMatrix(glm::lookAt(glm::vec3(center.x, center.y, center.z + zDistance), center, glm::vec3(0, 1, 0)));    
 }
 
 // ------ GLTF INITIALIZATION --------
@@ -294,7 +316,11 @@ void Application::loadTinyGLTF(const glmlv::fs::path & gltfPath)
                         if (it->first.compare("POSITION") == 0)
                         {
                             // 3.3 BIS - CENTER FOR CAMERA
+                            // For Method 1
                             meshInfos.centers.push_back(GetCenterOfPrimitive(accessor.minValues, accessor.maxValues));
+                            // For Method 2
+                            meshInfos.min.push_back(glm::make_vec3(accessor.minValues.data()));
+                            meshInfos.max.push_back(glm::make_vec3(accessor.maxValues.data()));
                         }                        
                     }
                 }
@@ -558,6 +584,7 @@ glm::mat4 Application::quatToMatrix(glm::vec4 quaternion)
 
 // CAMERA CENTER
 
+// METHOD 1
 glm::vec3 Application::GetCenterOfPrimitive(const std::vector<double>& min, const std::vector<double>& max)
 {
     return glm::vec3(GetMiddle(min[0], max[0]), GetMiddle(min[1], max[1]), GetMiddle(min[2], max[2]));
@@ -578,4 +605,59 @@ glm::vec3 Application::GetCenterOfModel()
     }
 
     return GetMiddle(centers);
+}
+
+// METHOD 2
+
+Application::BoundingBox Application::CreateBoundingBox()
+{
+    BoundingBox boundingBox;
+    boundingBox.Init();
+
+    for (auto meshInfos : m_meshInfos)
+    {
+        for (int i = 0; i < meshInfos.max.size(); ++i)
+        {
+            // Get the max coordinates of model
+            if (meshInfos.max[i].x > boundingBox.max.x)
+            {
+                boundingBox.max.x = meshInfos.max[i].x;
+            }
+            if (meshInfos.max[i].y > boundingBox.max.y)
+            {
+                boundingBox.max.y = meshInfos.max[i].y;
+            }
+            if (meshInfos.max[i].z > boundingBox.max.z)
+            {
+                boundingBox.max.z = meshInfos.max[i].z;
+            }
+
+            // Get the min coordinates of model
+            if (meshInfos.min[i].x < boundingBox.min.x)
+            {
+                boundingBox.min.x = meshInfos.min[i].x;
+            }
+            if (meshInfos.min[i].y < boundingBox.min.y)
+            {
+                boundingBox.min.y = meshInfos.min[i].y;
+            }
+            if (meshInfos.min[i].z < boundingBox.min.z)
+            {
+                boundingBox.min.z = meshInfos.min[i].z;
+            }
+        }
+    }
+
+    return boundingBox;
+}
+
+glm::vec3 Application::GetCenterOfBoundingBox(const BoundingBox& boundingBox)
+{
+    glm::vec3 center;
+
+    center.x = GetMiddle(boundingBox.min.x, boundingBox.max.x);
+    center.y = GetMiddle(boundingBox.min.y, boundingBox.max.y);
+    center.z = GetMiddle(boundingBox.min.z, boundingBox.max.z);
+
+    return center;
 }
