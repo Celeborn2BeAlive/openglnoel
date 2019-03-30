@@ -70,6 +70,7 @@ private:
     GLFWwindow* m_pWindow = nullptr;
     float m_fSpeed = 0.f;
     bool m_LeftButtonPressed = false;
+	bool m_RightButtonPressed = false;
 	bool m_MiddleButtonPressed = false;
     glm::dvec2 m_LastCursorPosition;
 	bool ScrollUp = false;

@@ -120,12 +120,12 @@ bool ViewController::updateTrackball(float elapsedTime)
 	//zoom
 	glfwSetScrollCallback(m_pWindow, scrollCallback);
 	
-	if (scrollY > 0) {
+	/*if (scrollY > 0) {
 		localTranslationVector += m_fSpeed * elapsedTime * frontVector;
 	}
 	else{
 		localTranslationVector -= m_fSpeed * elapsedTime * frontVector;
-	}
+	}*/
 	
 	//rotate right
 	if (glfwGetKey(m_pWindow, GLFW_KEY_Q)) {
@@ -143,6 +143,15 @@ bool ViewController::updateTrackball(float elapsedTime)
 	}
 	else if (!glfwGetMouseButton(m_pWindow, GLFW_MOUSE_BUTTON_LEFT) && m_LeftButtonPressed) {
 		m_LeftButtonPressed = false;
+	}
+
+	//Right mouse button
+	if (glfwGetMouseButton(m_pWindow, GLFW_MOUSE_BUTTON_RIGHT) && !m_RightButtonPressed) {
+		m_RightButtonPressed = true;
+		glfwGetCursorPos(m_pWindow, &m_LastCursorPosition.x, &m_LastCursorPosition.y);
+	}
+	else if (!glfwGetMouseButton(m_pWindow, GLFW_MOUSE_BUTTON_RIGHT) && m_RightButtonPressed) {
+		m_RightButtonPressed = false;
 	}
 	//middle mouse button
 	if (glfwGetMouseButton(m_pWindow, GLFW_MOUSE_BUTTON_MIDDLE) && !m_MiddleButtonPressed) {
@@ -182,7 +191,7 @@ bool ViewController::updateTrackball(float elapsedTime)
 
 	}
 	//drag
-	else if (m_MiddleButtonPressed) {
+	else if (m_MiddleButtonPressed || m_RightButtonPressed) {
 
 		dvec2 cursorPosition;
 		glfwGetCursorPos(m_pWindow, &cursorPosition.x, &cursorPosition.y);
