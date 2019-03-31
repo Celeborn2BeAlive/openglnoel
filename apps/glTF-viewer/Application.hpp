@@ -103,6 +103,23 @@ private:
     GLuint m_GBufferTextures[GBufferTextureCount];
     GLuint m_GBufferFBO; // Framebuffer object
 
+	enum DisplayType
+	{
+		Display_Beauty,
+		Display_GPosition,
+		Display_GNormal,
+		Display_GAmbient,
+		Display_GDiffuse,
+		Display_GGlossyShininess,
+		Display_GDepth,
+		Display_DirectionalLightDepthMap,
+		Display_Count
+	};
+
+
+	const char * m_DisplayNames[Display_Count] = { "beauty", "position", "normal", "ambient", "diffuse", "glossyShininess", "depth", "directionalLightDepth" };
+	//int32_t m_CurrentlyDisplayed = Display_Beauty;
+
     GBufferTextureType m_CurrentlyDisplayed = GBufferTextureCount; // Default to beauty
 
     GLuint m_textureSampler = 0; // Only one sampler object since we will use the sample sampling parameters for the two textures
@@ -145,7 +162,7 @@ private:
     GLint m_uGPositionSamplerLocation;
     GLint m_uSceneSizeLocation;
 
-	// ================ FOR Shadow mapping ================ //
+	// ================ SHADOW MAPPING ================ //
 
 
 	// Shadow mapping data

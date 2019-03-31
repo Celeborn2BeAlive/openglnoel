@@ -120,6 +120,7 @@ int Application::run()
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_GBufferFBO);
 
             glViewport(0, 0, m_nWindowWidth, m_nWindowHeight);
+			
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             for (GLuint i : {0, 1})
@@ -171,6 +172,11 @@ int Application::run()
                     glUniform1i(m_uGBufferSamplerLocations[i], i);
                 }
 
+				glActiveTexture(GL_TEXTURE0 + GDepth);
+				glBindTexture(GL_TEXTURE_2D, m_directionalSMTexture);
+				glBindSampler(GDepth, m_directionalSMSampler);
+				glUniform1i(m_uDirLightShadowMap, GDepth);
+
                 glBindVertexArray(m_TriangleVAO);
                 glDrawArrays(GL_TRIANGLES, 0, 3);
                 glBindVertexArray(0);
@@ -209,15 +215,28 @@ int Application::run()
             glDrawArrays(GL_TRIANGLES, 0, 3);
             glBindVertexArray(0);
         }
+		else if (m_CurrentlyDisplayed == Display_DirectionalLightDepthMap)
+		{
+			m_displayDepthProgram.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, m_directionalSMTexture);
+
+			glUniform1i(m_uGDepthSamplerLocation, 0);
+
+			glBindVertexArray(m_TriangleVAO);
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+			glBindVertexArray(0);
+		}
         else    // NORMAL / AMBIENT / GS
         {
             // GBuffer display
             glBindFramebuffer(GL_READ_FRAMEBUFFER, m_GBufferFBO);
-            glReadBuffer(GL_COLOR_ATTACHMENT0 + m_CurrentlyDisplayed);
-            glBlitFramebuffer(0, 0, m_nWindowWidth, m_nWindowHeight,
-                0, 0, m_nWindowWidth, m_nWindowHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+			glReadBuffer(GL_COLOR_ATTACHMENT0 + m_CurrentlyDisplayed);
+			glBlitFramebuffer(0, 0, m_nWindowWidth, m_nWindowHeight,
+				0, 0, m_nWindowWidth, m_nWindowHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
 
-            glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+			glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
         }
         
 
