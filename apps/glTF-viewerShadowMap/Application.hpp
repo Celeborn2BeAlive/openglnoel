@@ -65,8 +65,8 @@ private:
     // ======= LIGHTS ========= //
 
     // DIRECTIONAL LIGHT
-    float m_DirLightPhiAngleDegrees = 330.f;
-    float m_DirLightThetaAngleDegrees = 150.f;
+    float m_DirLightPhiAngleDegrees = 140.f;
+    float m_DirLightThetaAngleDegrees = 70.f;
     glm::vec3 m_DirLightDirection = computeDirectionVector(glm::radians(m_DirLightPhiAngleDegrees), glm::radians(m_DirLightThetaAngleDegrees));
     glm::vec3 m_DirLightColor = glm::vec3(1, 1, 1);
     float m_DirLightIntensity = 1.f;
