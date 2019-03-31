@@ -100,12 +100,15 @@ int Application::run()
 
 				glUniformMatrix4fv(m_uDirLightViewProjMatrix, 1, GL_FALSE, glm::value_ptr(dirLightProjMatrix * dirLightViewMatrix));
 
-				glBindVertexArray(m_TriangleVAO);
+				//glBindVertexArray(m_TriangleVAO);
 
 				// We draw each shape by specifying how much indices it carries, and with an offset in the global index buffer
 				//for (const auto shape : m_shapes) {
 					//glDrawElements(GL_TRIANGLES, shape.indexCount, GL_UNSIGNED_INT, (const GLvoid*)(shape.indexOffset * sizeof(GLuint)));
 				//}
+
+				DrawModel(m_model);
+
 
 				glBindVertexArray(0);
 
