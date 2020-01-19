@@ -117,5 +117,34 @@
             "gold-06-course-08-framebuffer-objects",
             "gold-06-course-09-shaders"
         ]
+    },
+    "glTF Viewer Tutorial": {
+        "Introduction and SDK": [
+            "gltf-viewer-01-intro"
+        ],
+        "Loading a glTF Model": [
+            "gltf-viewer-WIP"
+        ],
+        "Displaying the Geometry": [
+            "gltf-viewer-WIP"
+        ],
+        "Controlling the Camera": [
+            "gltf-viewer-WIP"
+        ],
+        "Directional Lighting": [
+            "gltf-viewer-WIP"
+        ],
+        "Physically Based Materials": [
+            "gltf-viewer-WIP"
+        ],
+        "Shadow Mapping": [
+            "gltf-viewer-WIP"
+        ],
+        "Deferred Rendering": [
+            "gltf-viewer-WIP"
+        ],
+        "Post Processing": [
+            "gltf-viewer-WIP"
+        ]
     }
 }

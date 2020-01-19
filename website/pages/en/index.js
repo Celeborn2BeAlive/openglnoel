@@ -157,7 +157,7 @@ class Index extends React.Component {
                         // image: `${baseUrl}img/logo.png`,
                         imageAlign: 'top',
                         title: 'Gold Level',
-                    },
+                    }
                 ]}
             </Block>
         );
