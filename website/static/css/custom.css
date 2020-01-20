@@ -30,7 +30,7 @@
 }
 
 .badge.todo:after {
-    content: 'A faire';
+    content: 'Todo';
 }
 
 .badge.warning {
@@ -38,7 +38,7 @@
 }
 
 .badge.warning:after {
-    content: 'Attention';
+    content: 'Warning';
 }
 
 .badge.doc {
@@ -46,5 +46,5 @@
 }
 
 .badge.doc:after {
-    content: 'Documentation';
+    content: 'Doc';
 }
