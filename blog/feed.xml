@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
     <channel>
-        <title>OpenGL[&quot;noël&quot;] Blog</title>
+        <title>OpenGL["noël"] Blog</title>
         <link>https://celeborn2bealive.github.io/openglnoel/blog</link>
-        <description>The best place to stay up-to-date with the latest OpenGL[&quot;noël&quot;] news and events.</description>
+        <description>The best place to stay up-to-date with the latest OpenGL["noël"] news and events.</description>
         <lastBuildDate>Fri, 11 Jan 2019 06:00:00 GMT</lastBuildDate>
-        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
-        <generator>Feed for Node.js</generator>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
         <image>
-            <title>OpenGL[&quot;noël&quot;] Blog</title>
+            <title>OpenGL["noël"] Blog</title>
             <url>https://celeborn2bealive.github.io/openglnoel/img/logo.png</url>
             <link>https://celeborn2bealive.github.io/openglnoel/blog</link>
         </image>
-        <copyright>Copyright © 2019 Laurent NOEL</copyright>
+        <copyright>Copyright © 2020 Laurent NOEL</copyright>
         <item>
             <title><![CDATA[Fin du portage des TDs]]></title>
             <link>https://celeborn2bealive.github.io/openglnoel/blog/2019/01/11/fin-portage-anciens-td.html</link>

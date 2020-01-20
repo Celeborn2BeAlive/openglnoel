@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://celeborn2bealive.github.io/openglnoel/blog</id>
-    <title>OpenGL[&quot;noël&quot;] Blog</title>
-    <updated>2019-01-11T06:00:00Z</updated>
-    <generator>Feed for Node.js</generator>
+    <title>OpenGL["noël"] Blog</title>
+    <updated>2019-01-11T06:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://celeborn2bealive.github.io/openglnoel/blog"/>
-    <subtitle>The best place to stay up-to-date with the latest OpenGL[&quot;noël&quot;] news and events.</subtitle>
+    <subtitle>The best place to stay up-to-date with the latest OpenGL["noël"] news and events.</subtitle>
     <logo>https://celeborn2bealive.github.io/openglnoel/img/logo.png</logo>
-    <rights>Copyright © 2019 Laurent NOEL</rights>
+    <rights>Copyright © 2020 Laurent NOEL</rights>
     <entry>
         <title type="html"><![CDATA[Fin du portage des TDs]]></title>
         <id>https://celeborn2bealive.github.io/openglnoel/blog/2019/01/11/fin-portage-anciens-td.html</id>
-        <link href="https://celeborn2bealive.github.io/openglnoel/blog/2019/01/11/fin-portage-anciens-td.html">
-        </link>
-        <updated>2019-01-11T06:00:00Z</updated>
+        <link href="https://celeborn2bealive.github.io/openglnoel/blog/2019/01/11/fin-portage-anciens-td.html"/>
+        <updated>2019-01-11T06:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>J'ai terminé de porter les TDs Imac 2 et Imac 3 / Master 2:</p>
 <ul>
 <li>Imac 2 dans Bronze Level</li>
@@ -41,15 +40,15 @@
 ]]></summary>
         <author>
             <name>Laurent NOËL</name>
+            <email/>
             <uri>http://laurentnoel.fr</uri>
         </author>
     </entry>
     <entry>
         <title type="html"><![CDATA[Hello World !]]></title>
         <id>https://celeborn2bealive.github.io/openglnoel/blog/2019/01/06/hello-world.html</id>
-        <link href="https://celeborn2bealive.github.io/openglnoel/blog/2019/01/06/hello-world.html">
-        </link>
-        <updated>2019-01-06T06:00:00Z</updated>
+        <link href="https://celeborn2bealive.github.io/openglnoel/blog/2019/01/06/hello-world.html"/>
+        <updated>2019-01-06T06:00:00.000Z</updated>
         <summary type="html"><![CDATA[<p>Bienvenu sur le blog de ce site, destiné au TDs d'OpenGL moderne que je donne à l'<a href="http://www.u-pem.fr/">Université Paris Est Marne-la-Vallée</a>. Plus spécifiquement, ces TDs sont donnés aux étudiants de l'<a href="https://www.ingenieur-imac.fr/">Ecole d'ingénieurs Imac</a> et aux étudiants du <a href="http://www.u-pem.fr/formations/loffre-de-formations/masters/domaine-sciences-technologies-sante/mention-informatique/master-sciences-de-limage/">Master Sciences de l'Image</a>.</p>
 <p>Il y a deux modules de TDs que je prévois de regrouper sur ce site:</p>
 <ul>
@@ -61,6 +60,7 @@
 ]]></summary>
         <author>
             <name>Laurent NOËL</name>
+            <email/>
             <uri>http://laurentnoel.fr</uri>
         </author>
     </entry>
