@@ -1,0 +1,124 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Introduction · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Welcome to this tutorial ! Our goal is to learn OpenGL by building a complete project: a glTF Viewer."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Introduction · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/"/><meta property="og:description" content="Welcome to this tutorial ! Our goal is to learn OpenGL by building a complete project: a glTF Viewer."/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/openglnoel/js/scrollSpy.js"></script><link rel="stylesheet" href="/openglnoel/css/main.css"/><script src="/openglnoel/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/openglnoel/"><img class="logo" src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]"/><h2 class="headerTitleWithLogo">OpenGL[&quot;noël&quot;]</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/openglnoel/docs/intro-sdk-01-philogl-01-introduction" target="_self">Intro et SDK</a></li><li class=""><a href="/openglnoel/docs/bronze-02-hello-triangle-01-code-de-base" target="_self">Bronze</a></li><li class=""><a href="/openglnoel/docs/silver-01-3d-theorie-01-introduction" target="_self">Silver</a></li><li class=""><a href="/openglnoel/docs/gold-01-intro-sdk-01-introduction" target="_self">Gold</a></li><li class="siteNavGroupActive siteNavItemActive"><a href="/openglnoel/docs/gltf-viewer-01-intro-01-intro" target="_self">glTF Viewer Tutorial</a></li><li class=""><a href="/openglnoel/blog/" target="_self">Blog</a></li><li class=""><a href="http://docs.gl" target="_self">OpenGL Documentation</a></li><li class=""><a href="https://www.khronos.org/opengl/wiki/" target="_self">OpenGL Wiki</a></li><li class=""><a href="https://github.com/celeborn2bealive/openglnoel" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Introduction and SDK</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction and SDK</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/openglnoel/docs/gltf-viewer-01-intro-01-intro">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-01-intro-02-sdk">Software Development Kit</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Loading a glTF Model</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-02-gltf-01-roadmap">Roadmap</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Displaying the Geometry</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-03-geometry-01-initialization">Initialization</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Post Processing</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-WIP">Work in Progress</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Introduction</h1></header><article><div><span><p>Welcome to this tutorial ! Our goal is to learn OpenGL by building a complete project: a glTF Viewer.</p>
+<h2><a class="anchor" aria-hidden="true" id="why-a-viewer-"></a><a href="#why-a-viewer-" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Why a viewer ?</h2>
+<p>Coding a 3D viewer to learn OpenGL has several advantages:</p>
+<ul>
+<li>Not too hard, not too easy</li>
+<li>Focus on 3D rendering</li>
+<li>The knowledge acquired is likely to be useful in the future if you work in 3D programing</li>
+<li>Easy to extend with new rendering techniques, lot of customization is possible</li>
+<li>Can become your 3D hub to try new things, build prototypes, etc.</li>
+<li>More fun than drawing cubes and spheres, right ?</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="what-is-gltf-"></a><a href="#what-is-gltf-" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>What is glTF ?</h2>
+<p>glTF is a file format specified by the Khronos Group, which is also responsible for the specification of OpenGL.</p>
+<p>Here is a direct citation from the repository <a href="https://github.com/KhronosGroup/glTF">https://github.com/KhronosGroup/glTF</a> where the specification is hosted:</p>
+<blockquote>
+<p>glTF (GL Transmission Format) is a royalty-free specification for the efficient transmission and loading of 3D scenes and models by applications. glTF minimizes both the size of 3D assets, and the runtime processing needed to unpack and use those assets. glTF defines an extensible, common publishing format for 3D content tools and services that streamlines authoring workflows and enables interoperable use of content across the industry.</p>
+</blockquote>
+<p>Our goal is to code a viewer for these type of files, using OpenGL and C++.</p>
+<h2><a class="anchor" aria-hidden="true" id="why-gltf-"></a><a href="#why-gltf-" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Why glTF ?</h2>
+<p>There is many 3D file format out there and most often people starts with the OBJ file format. But nowadays I think glTF is a better starting point for loading 3D model. Indeed:</p>
+<ul>
+<li>It has a good specification</li>
+<li>It can be extended in a way that is formalized by the specification</li>
+<li>It has by default a modern material model that is often used in real-time rendering softwares (games or applications)</li>
+<li>It has been built with OpenGL in mind: the data layout closely follows how the data is stored with OpenGL and how rendering is done</li>
+<li>Khronos provides a repository with many sample models to test our application: <a href="https://github.com/KhronosGroup/glTF-Sample-Models">https://github.com/KhronosGroup/glTF-Sample-Models</a></li>
+<li>There is also a web sample viewer to view in 3D the sample models: <a href="https://github.khronos.org/glTF-Sample-Viewer/">https://github.khronos.org/glTF-Sample-Viewer/</a>. Its source code is available so we can compare our code to its if we don't have expected results.</li>
+<li>Sketchfab (<a href="https://sketchfab.com/">https://sketchfab.com/</a>), a platform to share 3D models, propose auto-conversion to glTF for all its models. Many models are free so it gives us a large library of 3D models to play with our viewer.</li>
+<li>It has an official Blender importer and exporter <a href="https://github.com/KhronosGroup/glTF-Blender-IO">https://github.com/KhronosGroup/glTF-Blender-IO</a> which can be great to create your own assets for free.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="prerequistes"></a><a href="#prerequistes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Prerequistes</h2>
+<p>For now this tutorial assume you already have the following basic knowledge:</p>
+<ul>
+<li><strong>OpenGL 3+</strong> You should know what are buffer objects, vertex array objects, textures, shaders. The tutorial will explain how to create and manipulate this objects but will not dive into details about them. However I'll link wiki or documentation pages related to these concepts.</li>
+<li><strong>C++</strong> You should be familiar with basic C++ syntax and semantics, know how to write a function or a class, etc. I'll introduce more advanced concepts as needed. If you think something is not clear don't hesite to contact me and I'll update the tutorial to provide more details.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="what-are-we-going-to-learn-"></a><a href="#what-are-we-going-to-learn-" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>What are we going to learn ?</h2>
+<p>This tutorial covers many aspects of OpenGL and C++ development, but also code versionning and collaboration with Git, CMake and test driven development. Here is a coarse list of concepts we will cover:</p>
+<ul>
+<li>Forking, cloning and collaborating on git repositories</li>
+<li>Compiling a C++ project using CMake</li>
+<li>Create a graphical application</li>
+<li>Understand and manipulate glTF format</li>
+<li>Use OpenGL to render a 3D scene described by a glTF file</li>
+<li>Advanced camera control</li>
+<li>Advanced material representation</li>
+<li>Shadow Mapping algorithm</li>
+<li>Deferred Rendering</li>
+<li>Post Processing with OpenGL</li>
+<li>Use a test driven development architecture to test our project at each iteration</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="test-driven-development-tdd"></a><a href="#test-driven-development-tdd" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Test driven development (TDD)</h2>
+<p>One special feature I wanted for this tutorial is test driven development. More specifically, we will use <strong>Non Regression Unit tests</strong> (NRU tests) to ensure our application compute correct images at each step of the development process.</p>
+<p>For that we will use the amazing repository containing glTF samples: <a href="https://github.com/KhronosGroup/glTF-Sample-Models">https://github.com/KhronosGroup/glTF-Sample-Models</a>. Some of these samples are meant to test specific features of the format.</p>
+<p>I will provide you reference images for each sample at each step of the tutorial, and you will be able to use an automatic procedure provided with the SDK to test your application on each glTF sample. We will code the application such that it can output the rendered image in a file, which will be compared to the reference image by the test procedure. With that you will be able to know quickly if your application does the correct thing.</p>
+<p>We will also output logs to text files and compare them to reference logs. Using this will permit us to follow what the program is doing and where it does not do what it should do.</p>
+<p>In our case I provide reference images, but in reality the set of reference images is built iteratively as the software is developped. Once a feature is considered to be stable and well tested, several reference images showing that feature are generated on tests scenes. If one day the code is modified and the feature is broken, developpers are notified by the automatic test procedure and they can debug it.</p>
+<p>TDD is generally considered a good practice. It can be boring and hard to setup, but once its done it provides a good security level and offers a good feeling of safety when we change our code.</p>
+<h2><a class="anchor" aria-hidden="true" id="operating-system"></a><a href="#operating-system" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Operating System</h2>
+<p>This tutorial has been written for Linux and Windows. I mainly code on Windows, so there may be mistakes for Linux. If you spot one, contact me.</p>
+<p>On Linux I use gcc, and on Windows I use Visual Studio Community 2019 (more specifically, I use Visual Studio Code for code edition and only the compiler of Visual Studio Community 2019).</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-next button" href="/openglnoel/docs/gltf-viewer-01-intro-02-sdk"><span>Software Development Kit</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#why-a-viewer-">Why a viewer ?</a></li><li><a href="#what-is-gltf-">What is glTF ?</a></li><li><a href="#why-gltf-">Why glTF ?</a></li><li><a href="#prerequistes">Prerequistes</a></li><li><a href="#what-are-we-going-to-learn-">What are we going to learn ?</a></li><li><a href="#test-driven-development-tdd">Test driven development (TDD)</a></li><li><a href="#operating-system">Operating System</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2020 Laurent NOEL</section></footer></div></body></html>

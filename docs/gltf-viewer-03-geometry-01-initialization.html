@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Initialization · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="WIP."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Initialization · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/"/><meta property="og:description" content="WIP."/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/openglnoel/js/scrollSpy.js"></script><link rel="stylesheet" href="/openglnoel/css/main.css"/><script src="/openglnoel/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/openglnoel/"><img class="logo" src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]"/><h2 class="headerTitleWithLogo">OpenGL[&quot;noël&quot;]</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/openglnoel/docs/intro-sdk-01-philogl-01-introduction" target="_self">Intro et SDK</a></li><li class=""><a href="/openglnoel/docs/bronze-02-hello-triangle-01-code-de-base" target="_self">Bronze</a></li><li class=""><a href="/openglnoel/docs/silver-01-3d-theorie-01-introduction" target="_self">Silver</a></li><li class=""><a href="/openglnoel/docs/gold-01-intro-sdk-01-introduction" target="_self">Gold</a></li><li class="siteNavGroupActive"><a href="/openglnoel/docs/gltf-viewer-01-intro-01-intro" target="_self">glTF Viewer Tutorial</a></li><li class=""><a href="/openglnoel/blog/" target="_self">Blog</a></li><li class=""><a href="http://docs.gl" target="_self">OpenGL Documentation</a></li><li class=""><a href="https://www.khronos.org/opengl/wiki/" target="_self">OpenGL Wiki</a></li><li class=""><a href="https://github.com/celeborn2bealive/openglnoel" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Displaying the Geometry</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction and SDK</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-01-intro-01-intro">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-01-intro-02-sdk">Software Development Kit</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Loading a glTF Model</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-02-gltf-01-roadmap">Roadmap</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Displaying the Geometry</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/openglnoel/docs/gltf-viewer-03-geometry-01-initialization">Initialization</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Post Processing</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-WIP">Work in Progress</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Initialization</h1></header><article><div><span><p>WIP.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/gltf-viewer-02-gltf-01-roadmap"><span class="arrow-prev">← </span><span>Roadmap</span></a><a class="docs-next button" href="/openglnoel/docs/gltf-viewer-WIP"><span>Work in Progress</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2020 Laurent NOEL</section></footer></div></body></html>

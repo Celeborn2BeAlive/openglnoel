@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Software Development Kit · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="I&#x27;ve created a starting project on Github. It contains a basic skeleton for the application, third party libraries and some tools for building the project and run the tests."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Software Development Kit · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/"/><meta property="og:description" content="I&#x27;ve created a starting project on Github. It contains a basic skeleton for the application, third party libraries and some tools for building the project and run the tests."/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/openglnoel/js/scrollSpy.js"></script><link rel="stylesheet" href="/openglnoel/css/main.css"/><script src="/openglnoel/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/openglnoel/"><img class="logo" src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]"/><h2 class="headerTitleWithLogo">OpenGL[&quot;noël&quot;]</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/openglnoel/docs/intro-sdk-01-philogl-01-introduction" target="_self">Intro et SDK</a></li><li class=""><a href="/openglnoel/docs/bronze-02-hello-triangle-01-code-de-base" target="_self">Bronze</a></li><li class=""><a href="/openglnoel/docs/silver-01-3d-theorie-01-introduction" target="_self">Silver</a></li><li class=""><a href="/openglnoel/docs/gold-01-intro-sdk-01-introduction" target="_self">Gold</a></li><li class="siteNavGroupActive"><a href="/openglnoel/docs/gltf-viewer-01-intro-01-intro" target="_self">glTF Viewer Tutorial</a></li><li class=""><a href="/openglnoel/blog/" target="_self">Blog</a></li><li class=""><a href="http://docs.gl" target="_self">OpenGL Documentation</a></li><li class=""><a href="https://www.khronos.org/opengl/wiki/" target="_self">OpenGL Wiki</a></li><li class=""><a href="https://github.com/celeborn2bealive/openglnoel" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Introduction and SDK</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction and SDK</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-01-intro-01-intro">Introduction</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/openglnoel/docs/gltf-viewer-01-intro-02-sdk">Software Development Kit</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Loading a glTF Model</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-02-gltf-01-roadmap">Roadmap</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Displaying the Geometry</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-03-geometry-01-initialization">Initialization</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Post Processing</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-WIP">Work in Progress</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Software Development Kit</h1></header><article><div><span><p>I've created a starting project on Github. It contains a basic skeleton for the application, third party libraries and some tools for building the project and run the tests.</p>
+<h2><a class="anchor" aria-hidden="true" id="quick-introduction-to-git"></a><a href="#quick-introduction-to-git" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Quick introduction to Git</h2>
+<p>Git is a software to handle versioning and collaboration on a repository. Most often it is used for source code, but it can be used to keep an history of modifications on any kind of text files.</p>
+<p>Using such tool is almost mandatory for software development: it gives us security, history of changes and easy collaboration.</p>
+<p>For this tutorial we will use Github, but other providers exist such as <a href="https://bitbucket.org/">https://bitbucket.org/</a> and <a href="https://gitlab.com/">https://gitlab.com/</a> (this last one is open source, I'm planning on migrating most of my projects to it).</p>
+<h2><a class="anchor" aria-hidden="true" id="creating-a-github-account"></a><a href="#creating-a-github-account" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Creating a Github account</h2>
+<p>If you don't have one already, create a Github account on the website <a href="https://github.com/">https://github.com/</a> and log in to your account.</p>
+<h2><a class="anchor" aria-hidden="true" id="forking-the-repository"></a><a href="#forking-the-repository" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Forking the repository</h2>
+<p>Fork the following repository: URL. It can be done with the &quot;Fork&quot; button, top-right on the page.</p>
+<p>Forking means that you create a copy of the repository on your own account. Github keeps track of fork relationships between repository.</p>
+<p>With this copy, you will have the opportunity to do whatever modifications you want and push them online for backup or collaboration with other people.</p>
+<p>Another advantage is that you will be able to easily merge my modifications if I need to change the code for whatever reason.</p>
+<h2><a class="anchor" aria-hidden="true" id="installing-git"></a><a href="#installing-git" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installing Git</h2>
+<p>If git is not already installed on your system, install it.</p>
+<p>On Linux, use your system package manager (apt for Ubuntu, pacman for Archlinux, etc).</p>
+<p>On Windows, you can install Git for Windows at this URL: <a href="https://git-scm.com/download/win">https://git-scm.com/download/win</a>. It will install Git on your system but also a bash terminal emulator that will allow you to use the same commands as for Linux.</p>
+<h2><a class="anchor" aria-hidden="true" id="setup-the-folder-hierarchy"></a><a href="#setup-the-folder-hierarchy" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setup the folder hierarchy</h2>
+<p>The folder hierarchy for the project at the end will be:</p>
+<ul>
+<li>PROJECT_ROOT
+<ul>
+<li>gltf-viewer-git</li>
+<li>build-gltf-viewer</li>
+<li>glTF-Sample-Models (optional, see below)</li>
+<li>gltf-viewer-test-scenes</li>
+<li>gltf-viewer-test-references</li>
+<li>gltf-viewer-test-results</li>
+</ul></li>
+</ul>
+<p>You can replace PROJECT_ROOT with the name of your choice (gltf-viewer would be a good name I think, but sometimes you have to make your own choices).</p>
+<p>The children folders will be:</p>
+<ul>
+<li><em>gltf-viewer-git</em> The code repository, which is a local clone of the fork you made on Github</li>
+<li><em>build-gltf-viewer</em> The build folder, it will contain the binaries compiled from the source code</li>
+<li><em>glTF-Sample-Models</em> This one is optional. It should be a clone of the repository <a href="https://github.com/KhronosGroup/glTF-Sample-Models">https://github.com/KhronosGroup/glTF-Sample-Models</a> but only if you have enough disk space on your computer.</li>
+<li><em>gltf-viewer-test-scenes</em> This folder should be a clone of the repository URL. It contains a subset of the scenes from glTF-Samples-Models, only to perform NRU tests.</li>
+<li><em>gltf-viewer-test-references</em> This folder should be a clone of the repository URL. It contains reference images and logs for the scenes stored in gltf-viewer-test-scenes and glTF-Sample-Models, at each checkpoint of this tutorial.</li>
+<li><em>gltf-viewer-test-results</em> This folder will contain results from tests. You don't need to create this one manually, the test scripts will do.</li>
+</ul>
+<p>These folder names are quite important here because the test scripts I wrote depend on it. If you were creating this project from scratch all by yourself, you could use the names you want.</p>
+<p>Start by creating the basic structure (replace PATH/TO/PROJECT_ROOT with a valid path and the name you want to give to the root folder):</p>
+<pre><code class="hljs css language-bash">mkdir -p PATH/TO/PROJECT_ROOT
+<span class="hljs-built_in">cd</span> PATH/TO/PROJECT_ROOT
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="cloning-your-fork-and-other-repositories"></a><a href="#cloning-your-fork-and-other-repositories" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cloning your fork and other repositories</h2>
+<p>We use the <code>git clone URL LOCATION</code> command to clone a repository. The URL can be a http link to a web repository or the path to a folder that is already a git repository. LOCATION is optional, if specified the repository is cloned in the corresponding folder. Otherwise it's cloned in a folder with the same name as the repositoru.</p>
+<pre><code class="hljs css language-bash">git <span class="hljs-built_in">clone</span> URL_TO_YOUR_FORK gltf-viewer-git
+git <span class="hljs-built_in">clone</span> URL_TO_TEST_SCENES gltf-viewer-test-scenes
+git <span class="hljs-built_in">clone</span> URL_TO_REF_IMAGES gltf-viewer-test-references
+</code></pre>
+<p>And if you have enough disk space:</p>
+<pre><code class="hljs css language-bash">git <span class="hljs-built_in">clone</span> https://github.com/KhronosGroup/glTF-Sample-Models
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="building-the-project"></a><a href="#building-the-project" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Building the project</h2>
+<p>At this point we should be able to build the project with CMake. CMake is a tool that is used to generate build files. This is useful for multi-platform projects to avoid dealing with different build system (Makefile, Visual Studio solutions, etc.).</p>
+<p>A CMake project can easily be spotted if you see a CMakeLists.txt file at the root of the project. This is the file that should be written to tell CMake how to build the project (what files to compile, what executables/libraries to build, etc).</p>
+<p>Most of C/C++ projects are now written with a CMakeLists.txt file. It has became the main build solution of the C++ ecosystem, so it is important to know how to use it.</p>
+<h3><a class="anchor" aria-hidden="true" id="install-cmake"></a><a href="#install-cmake" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install CMake</h3>
+<p>If you don't have CMake on your system, you need to install it.</p>
+<p>On Linux, use your system package manager (apt for Ubuntu, pacman for Archlinux, etc).</p>
+<p>On Windows, you can download the installer CMake at this URL: <a href="https://cmake.org/download/">https://cmake.org/download/</a>. During the installation procedure, check the box that asks if you want to put CMake in your PATH variable. You will need to restart your terminal for this change to take effect.</p>
+<h3><a class="anchor" aria-hidden="true" id="use-cmake"></a><a href="#use-cmake" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Use CMake</h3>
+<p>When using CMake, we have 2 steps:</p>
+<ol>
+<li>Configure the project with cmake - It generates the build solution (Makefiles for gcc, Visual Studio project for VS, etc) in a build folder</li>
+<li>Compile the project with the native tool</li>
+</ol>
+<p>Lets do that:</p>
+<h4><a class="anchor" aria-hidden="true" id="configure-the-project"></a><a href="#configure-the-project" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configure the project</h4>
+<pre><code class="hljs css language-bash"><span class="hljs-built_in">cd</span> PATH/TO/PROJECT_ROOT <span class="hljs-comment"># Ensure that we are at the project root</span>
+mkdir build-gltf-viewer <span class="hljs-comment"># Create the build folder</span>
+<span class="hljs-built_in">cd</span> build-gltf-viewer <span class="hljs-comment"># We need to be in the build folder before running CMake</span>
+cmake ../gltf-viewer-git <span class="hljs-comment"># We call cmake with the source folder as argument</span>
+</code></pre>
+<p>You should see the CMake output telling you what it is doing.</p>
+<h4><a class="anchor" aria-hidden="true" id="compile-the-project"></a><a href="#compile-the-project" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Compile the project</h4>
+<p>Once configuration is done we need to compile the project:</p>
+<pre><code class="hljs css language-bash">cmake --build . -j <span class="hljs-comment"># We use "." to point the current working directory, which is the build directory. -j is to build with all cores.</span>
+</code></pre>
+<p>If you read CMake tutorials online, they may ask you to use make instead:</p>
+<pre><code class="hljs css language-bash">make -j
+</code></pre>
+<p>This also work, but only on Linux (or Windows with some compilers, but not Visual Studio). Using <code>cmake --build</code> instead has several advantages:</p>
+<ul>
+<li>Works on all platform, with any build solution (gcc, clang, visual studio, etc.)</li>
+<li>Re-configure the build solution (first step) if CMakeLists.txt files have changed.</li>
+<li>Can be used to build a different build configuration or target. Here are a few examples:</li>
+</ul>
+<pre><code class="hljs css language-bash">cmake --build . --target gltf-viewer --config Release -j <span class="hljs-comment"># Only build target gltf-viewer in Release mode (more efficient)</span>
+cmake --build . --target toto --config Debug -j <span class="hljs-comment"># Only build target toto in Debug mode (less efficient, but allows to debug more easily. it is the default config when you don't specify anything)</span>
+cmake --build . --target install <span class="hljs-comment"># Only build the 'install' target. It is a special target that install the compiled files at a specific location, but it must be correctly defined in the CMakeLists.txt</span>
+</code></pre>
+<p>For now you don't need to bother with all these commands, only use <code>cmake --build . -j</code> and things should work correctly. See below if you want to know more about CMake.</p>
+<h2><a class="anchor" aria-hidden="true" id="run-the-executable"></a><a href="#run-the-executable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run the executable</h2>
+<p>Now that it is compiled, you should be able to run:</p>
+<pre><code class="hljs css language-bash">./bin/gltf-viewer info
+</code></pre>
+<p>which should display some information about your OpenGL version.</p>
+<p>On windows you might need to add Debug folder in the path (or Release if you build in Release config):</p>
+<pre><code class="hljs css language-bash">./bin/Debug/gltf-viewer info
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="going-further"></a><a href="#going-further" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Going further</h2>
+<h3><a class="anchor" aria-hidden="true" id="git"></a><a href="#git" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Git</h3>
+<p>You can find more information about Git here <a href="https://git-scm.com/">https://git-scm.com/</a> and thousands of tutorials online. I strongly advise you to learn how to do basic tasks on git from the command line such as:</p>
+<ul>
+<li>create a new repository</li>
+<li>cloning a repository</li>
+<li>attach a local repository to an online repository</li>
+<li>create branches, switch branches</li>
+<li>commit changes on a branch</li>
+<li>pushing and pulling changes</li>
+<li>merge branches</li>
+<li>use pull requests to send modifications from one repository to another</li>
+</ul>
+<p>It is also possible to use graphical editors for Git, such as VS Code (with good extensions such as GitLens and Git Graph), Fork or Sublime Merge, but knowing how to do them on the command line is always good.</p>
+<h3><a class="anchor" aria-hidden="true" id="cmake"></a><a href="#cmake" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CMake</h3>
+<p>CMake can be a bit hard to learn &quot;correctly&quot; because it has evolved a lot in a few years. There is the old way of doing things, and the new way. When you search for tutorial, try to search for &quot;modern cmake&quot; instead of just &quot;cmake&quot;. In the meantime, you can use the following resources that are recent:</p>
+<ul>
+<li>Oh No! More Modern CMake - Deniz Bahadir - Meeting C++ 2019 <a href="https://www.youtube.com/watch?v=y9kSr5enrSk">https://www.youtube.com/watch?v=y9kSr5enrSk</a></li>
+<li><a href="https://cliutils.gitlab.io/modern-cmake/">https://cliutils.gitlab.io/modern-cmake/</a> (Official book)</li>
+</ul>
+<p>Note that the Meeting C++ conference seems to feature a new talk each year about CMake, so you have no excuse to be up to date (ok I admit I didn't saw the last one, so my CMake code may be crap, I'll fix it later ^^').</p>
+<p>Also keep an eye on the CMake version you are using. If it is your system you should have installed the last one. Otherwise you need to check the version with <code>cmake --version</code> and only use CMake commands that are allowed for your version (or ask the system administrator to update the version).</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/gltf-viewer-01-intro-01-intro"><span class="arrow-prev">← </span><span>Introduction</span></a><a class="docs-next button" href="/openglnoel/docs/gltf-viewer-02-gltf-01-roadmap"><span>Roadmap</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#quick-introduction-to-git">Quick introduction to Git</a></li><li><a href="#creating-a-github-account">Creating a Github account</a></li><li><a href="#forking-the-repository">Forking the repository</a></li><li><a href="#installing-git">Installing Git</a></li><li><a href="#setup-the-folder-hierarchy">Setup the folder hierarchy</a></li><li><a href="#cloning-your-fork-and-other-repositories">Cloning your fork and other repositories</a></li><li><a href="#building-the-project">Building the project</a><ul class="toc-headings"><li><a href="#install-cmake">Install CMake</a></li><li><a href="#use-cmake">Use CMake</a></li></ul></li><li><a href="#run-the-executable">Run the executable</a></li><li><a href="#going-further">Going further</a><ul class="toc-headings"><li><a href="#git">Git</a></li><li><a href="#cmake">CMake</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2020 Laurent NOEL</section></footer></div></body></html>
