@@ -120,13 +120,14 @@
     },
     "glTF Viewer Tutorial": {
         "Introduction and SDK": [
-            "gltf-viewer-01-intro"
+            "gltf-viewer-01-intro-01-intro",
+            "gltf-viewer-01-intro-02-sdk"
         ],
         "Loading a glTF Model": [
-            "gltf-viewer-WIP"
+            "gltf-viewer-02-gltf-01-roadmap"
         ],
         "Displaying the Geometry": [
-            "gltf-viewer-WIP"
+            "gltf-viewer-03-geometry-01-initialization"
         ],
         "Controlling the Camera": [
             "gltf-viewer-WIP"

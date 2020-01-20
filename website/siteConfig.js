@@ -42,7 +42,7 @@ const siteConfig = {
     { doc: 'bronze-02-hello-triangle-01-code-de-base', label: 'Bronze' },
     { doc: 'silver-01-3d-theorie-01-introduction', label: 'Silver' },
     { doc: 'gold-01-intro-sdk-01-introduction', label: 'Gold' },
-    { doc: 'gltf-viewer-01-intro', label: 'glTF Viewer Tutorial' },
+    { doc: 'gltf-viewer-01-intro-01-intro', label: 'glTF Viewer Tutorial' },
     { blog: true, label: 'Blog' },
     { href: 'http://docs.gl', label: 'OpenGL Documentation' },
     { href: 'https://www.khronos.org/opengl/wiki/', label: 'OpenGL Wiki' },

@@ -60,16 +60,16 @@ Les coordonnées d'un tel triangle peuvent etres les suivantes: (-1, -1), (3, -1
 Dessinez le sur papier pour vous en convaincre.
 Dans le cas d'un triangle, pas besoin d'IBO, on peut directement appeler *glDrawArrays*.
 
-| Sans DSA                             | DSA |
-| ------------------------------------ | ----------- |
-| glGenBuffers                         | glCreateBuffers |
-| glGenVertexArrays                    | glCreateVertexArrays |
-| glBindBuffer(GL_ARRAY_BUFFER, vboID) |
-| glBufferStorage                      | glNamedBufferStorage |
-|                                      | glVertexArrayVertexBuffer |
-|                                      | glVertexArrayAttribBinding |
-| glEnableVertexAttribArray            | glEnableVertexArrayAttrib |
-| glVertexAttribPointer                | glVertexArrayAttribFormat |
+| Sans DSA                                     | DSA                        |
+| -------------------------------------------- | -------------------------- |
+| glGenBuffers                                 | glCreateBuffers            |
+| glGenVertexArrays                            | glCreateVertexArrays       |
+| glBindBuffer(GL_ARRAY_BUFFER, vboID)         |                            |
+| glBufferStorage                              | glNamedBufferStorage       |
+|                                              | glVertexArrayVertexBuffer  |
+|                                              | glVertexArrayAttribBinding |
+| glEnableVertexAttribArray                    | glEnableVertexArrayAttrib  |
+| glVertexAttribPointer                        | glVertexArrayAttribFormat  |
 | glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboID) | glVertexArrayElementBuffer |
 
 ## Au Rendu
