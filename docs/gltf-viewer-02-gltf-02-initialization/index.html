@@ -68,6 +68,9 @@
 </ul>
 <p>Our goal for this part of the tutorial is to implement things related to glTF data. We'll come back later on the previous points. Put your code before what is already in the function.</p>
 <h2><a class="anchor" aria-hidden="true" id="loading-the-gltf-file"></a><a href="#loading-the-gltf-file" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Loading the glTF file</h2>
+<blockquote>
+<p>The part to replace in this section is <code>// TODO Loading the glTF file</code> with a call to the method that you must implement.</p>
+</blockquote>
 <p>The path to the glTF file is stored in the member variable <code>m_gltfFilePath</code>.</p>
 <p>A glTF file is just a json file with references to binary files to store geometry data and images to store textures.</p>
 <p>The tinygltf library is included in the project and can parse the json for us, as well as loading data from referenced file.</p>
@@ -75,6 +78,13 @@
 <p>For that, use the readme of the tinygltf repository <a href="https://github.com/syoyo/tinygltf">https://github.com/syoyo/tinygltf</a></p>
 <p><span class="todo badge"></span> In the run() method, define a <code>tinygltf::Model</code> instance and call your method on it.</p>
 <p>Another place to look at for tinygltf documentation is simply the file &quot;tiny_gltf.h&quot; stored in third-party/tinygltf/.</p>
+<p><span class="todo badge"></span> Check compilation, run, commit and push your code.</p>
+<hr>
+<p>Solution (two commits):</p>
+<ul>
+<li><a href="https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/4e703149aa559e2df1857e66a06784c1ce2fa310">https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/4e703149aa559e2df1857e66a06784c1ce2fa310</a></li>
+<li><a href="https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/499663004ccb2a7b0acb8aeab67749558b7c1141">https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/499663004ccb2a7b0acb8aeab67749558b7c1141</a></li>
+</ul>
 <h2><a class="anchor" aria-hidden="true" id="understanding-gltf-data"></a><a href="#understanding-gltf-data" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Understanding glTF data</h2>
 <p>The glTF format is precisely defined on its dedicated repository: <a href="https://github.com/KhronosGroup/glTF">https://github.com/KhronosGroup/glTF</a></p>
 <p>No other resource is needed to understand and use the format.</p>
@@ -251,15 +261,27 @@ glBindVertexArray(<span class="hljs-number">0</span>);
 </ul>
 <p>This tells us how to build our OpenGL Data from the glTF Data. It can be a bit complicated to implement because we need to keep track of many vector indices (there is many indirections). That is why we need to use good explicit names for our indices, and not just &quot;i&quot; or &quot;j&quot;. If you don't, you will become crazy.</p>
 <h2><a class="anchor" aria-hidden="true" id="creation-of-buffer-objects"></a><a href="#creation-of-buffer-objects" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Creation of Buffer Objects</h2>
+<blockquote>
+<p>The part to replace in this section is <code>// TODO Loading the glTF file</code> with a call to the method that you must implement.</p>
+</blockquote>
 <p>We start with the easy one: converting glTF buffers to OpenGL buffer objects. This is easy because we have a direct mapping glTF Buffer &lt;-&gt; OpenGL Buffer Object. What we need to do:</p>
 <ul>
 <li>Create a vector of GLuint with the correct size (<code>model.buffers.size()</code>) and use <code>glGenBuffers</code> to create buffer objects.</li>
 <li>In a loop, fill each buffer object with the data using <code>glBindBuffer</code> and <code>glBufferStorage</code>. The data should be obtained from <code>model.buffers[bufferIdx].data</code>.</li>
 <li>Don't forget to unbind the buffer object from GL_ARRAY_BUFFER after the loop</li>
 </ul>
-<p>This code will look like the Buffer Object example code I gave.</p>
+<p>This code will look like the Buffer Object example code from before.</p>
 <p><span class="todo badge"></span> Implement a method <code>std::vector&lt;GLuint&gt; ViewerApplication::createBufferObjects( const tinygltf::Model &amp;model)</code> that compute the vector of buffer objects from a model and returns it. Call this functions in <code>run()</code> after loading the glTF.</p>
+<p><span class="todo badge"></span> Check compilation, run, commit and push your code.</p>
+<hr>
+<p>Solution (warning: also the solution of the next exercice, I messed up my commits)</p>
+<ul>
+<li><a href="https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/3bdd469d474d037900acf8fcaac5d429bbc037f2">https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/3bdd469d474d037900acf8fcaac5d429bbc037f2</a></li>
+</ul>
 <h2><a class="anchor" aria-hidden="true" id="creation-of-vertex-array-objects"></a><a href="#creation-of-vertex-array-objects" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Creation of Vertex Array Objects</h2>
+<blockquote>
+<p>The part to replace in this section is <code>// TODO Creation of Vertex Array Objects</code> with a call to the method that you must implement.</p>
+</blockquote>
 <p>Now the hard part. Honestly, once you succeed to implement this part and understand it, you should understand glTF (and more generally: indirections).</p>
 <p><span class="todo badge"></span> Start by adding en empty method <code>std::vector&lt;GLuint&gt; ViewerApplication::createVertexArrayObjects( const tinygltf::Model &amp;model, const std::vector&lt;GLuint&gt; &amp;bufferObjects, std::vector&lt;VaoRange&gt; &amp; meshIndexToVaoRange);</code></p>
 <p>This method is supposed to take the model and the buffer objects we previously created, create an array of vertex array objects and return it. It should also fill the input vector <code>meshIndexToVaoRange</code> with the range of VAOs for each mesh (see below). This vector will be used later during drawing of the scene.</p>
@@ -305,6 +327,12 @@ meshIndexToVaoRange.push_back(VaoRange{vaoOffset, model.meshes[meshIdx].primitiv
 <p><span class="todo badge"></span> Set the index buffer of the VAO if it exists.</p>
 <p>To finish the function, after the outer loop:</p>
 <p><span class="todo badge"></span> Unbind the VAO, returns <code>vertexArrayObjects</code>. Add a call to your function in <code>run()</code>.</p>
+<p><span class="todo badge"></span> Check compilation, run, commit and push your code.</p>
+<hr>
+<p>Solution (warning: also the solution of the previous exercice, I messed up my commits)</p>
+<ul>
+<li><a href="https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/3bdd469d474d037900acf8fcaac5d429bbc037f2">https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/3bdd469d474d037900acf8fcaac5d429bbc037f2</a></li>
+</ul>
 <h2><a class="anchor" aria-hidden="true" id="more-details-about-vertex-array-objects-and-the-global-gl-state"></a><a href="#more-details-about-vertex-array-objects-and-the-global-gl-state" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>More details about Vertex Array Objects and the global GL state</h2>
 <p>People generally struggle with Vertex Array Objects when they start OpenGL. <code>glVertexAttribPointer</code> is indeed not really intuitive for a human, since it describes how to convert raw bytes into readable arrays. This is something done by compilers in general, that why we have things like <code>std::vector</code> and not just <code>void*</code>. But in the GPU world we are a bit more low level. This is required to be able to layout our data the way we want, to optimize as much as we want.</p>
 <p>Another thing to always keep in mind is the notion of state with OpenGL. We when call <code>glBindVertexArray(vertexArrayObject);</code> we are modifing the OpenGL state, which acts like a big global variable. It's a bit like <code>glBindVertexArray</code> was implemented like this:</p>

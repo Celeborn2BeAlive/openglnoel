@@ -72,7 +72,7 @@
 <p>Each node can have children, that must be processed the same way. This recursive structure for the data naturally leads to a recursive function to implement. We will put it in a std::function that is already declared in the drawing function.</p>
 <p>Right now your drawing function should look like this:</p>
 <pre><code class="hljs css language-cpp"><span class="hljs-comment">// A lambda function (C++11)</span>
-<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> drawScene = [&amp;]() {
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> drawScene = [&amp;](<span class="hljs-keyword">const</span> Camera &amp;camera) {
   glViewport(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, m_nWindowWidth, m_nWindowHeight);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -82,18 +82,19 @@
   <span class="hljs-comment">// We use a std::function because a simple lambda cannot be recursive</span>
   <span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::function&lt;<span class="hljs-keyword">void</span>(<span class="hljs-keyword">int</span>, <span class="hljs-keyword">const</span> glm::mat4 &amp;)&gt; drawNode =
     [&amp;](<span class="hljs-keyword">int</span> nodeIdx, <span class="hljs-keyword">const</span> glm::mat4 &amp;parentMatrix) {
-      <span class="hljs-comment">// TODO Implement this</span>
+      <span class="hljs-comment">// TODO The drawNode function</span>
     }
   };
 
   <span class="hljs-comment">// Draw the scene referenced by gltf file</span>
   <span class="hljs-keyword">if</span> (model.defaultScene &gt;= <span class="hljs-number">0</span>) {
-    <span class="hljs-comment">// TODO Implement this</span>
+    <span class="hljs-comment">// TODO Draw all nodes</span>
   }
 };
 </code></pre>
-<p>We will first implement the second <code>// TODO Implement this</code> because it is easier.</p>
-<p><span class="todo badge"></span> For the second <code>// TODO Implement this</code>, implement a loop over the nodes of the scene (<code>model.scenes[model.defaultScene].nodes</code>) and call drawNode on each one. The parentMatrix for them should be the identify matrix <code>glm::mat4(1)</code>.</p>
+<p>We will first implement the second <code>// TODO ...</code> because it is easier.</p>
+<p><span class="todo badge"></span> Replace <code>// TODO Draw all nodes</code>: implement a loop over the nodes of the scene (<code>model.scenes[model.defaultScene].nodes</code>) and call drawNode on each one. The parentMatrix for them should be the identify matrix <code>glm::mat4(1)</code>.</p>
+<p><span class="todo badge"></span> Check compilation, run, commit and push your code.</p>
 <h2><a class="anchor" aria-hidden="true" id="matrix-reloaded"></a><a href="#matrix-reloaded" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Matrix reloaded</h2>
 <p>Before implementing the <code>drawNode</code> function, a reminder about matrices for 3D can be useful.</p>
 <p>Most 3D objects are created by artists in a local space: the center of the scene is at the center of the object and axis are oriented in a coherent way relative to the object.</p>
@@ -113,6 +114,9 @@
 </ul>
 <p>These 3 matrices will need to be send to the GPU with <code>glUniformMatrix4fv</code> later.</p>
 <h2><a class="anchor" aria-hidden="true" id="the-drawnode-function"></a><a href="#the-drawnode-function" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The drawNode function</h2>
+<blockquote>
+<p>The part to replace in this section is // TODO The drawNode function</p>
+</blockquote>
 <p>Now we can attack the <code>drawNode</code> function. The first step is to get the node (as a <code>tinygltf::Node</code>) and to compute its model matrix from the parent matrix. Fortunately for you, I included a helper function <code>getLocalToWorldMatrix(node, parentMatrix)</code>. If you are interested you can take a look at the code, its mostly calls to glm function to perform the right maths.</p>
 <p><span class="todo badge"></span> In the drawNode function, get the node associated with the nodeIdx received as parameter. Create a <code>glm::mat4 modelMatrix</code> and initialize it with <code>getLocalToWorldMatrix(node, parentMatrix)</code>.</p>
 <p>Then we need to ensure that the node has a mesh:</p>
@@ -135,6 +139,12 @@
 <p>Then call <code>glDrawArrays</code>, passing it the mode of the primitive, 0 as second argument, and <code>accessor.count</code> as last argument.</p>
 <p>We then have one last thing to implement, after the <code>if (node.mesh &gt;= 0)</code> body: we need to draw children recursively.</p>
 <p><span class="todo badge"></span> After the <code>if</code> body, add a loop over <code>node.children</code> and call <code>drawNode</code> on each children. The matrix passed as second argument should be the modelMatrix that has been computed earlier in the function.</p>
+<p><span class="todo badge"></span> Check compilation, run, commit and push your code.</p>
+<hr>
+<p>Solution:</p>
+<ul>
+<li><a href="https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/b67c48f2c8f0d336a893c4ce982c097933817add">https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/b67c48f2c8f0d336a893c4ce982c097933817add</a></li>
+</ul>
 <h2><a class="anchor" aria-hidden="true" id="conclusion"></a><a href="#conclusion" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Conclusion</h2>
 <p>Now, if everything is OK in your code you should be able to see something by running your program on a scene. My advice is to use the Sponza scene (stored in <a href="https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Sponza">https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Sponza</a>). If you don't have enough disk space to download the whole repository, you can pick it here: <a href="/openglnoel/files/Sponza.zip">Sponza</a>.</p>
 <p>To run the program in viewer mode, you need to run in your terminal:</p>
@@ -142,5 +152,7 @@
 <span class="hljs-comment"># Adapt the path to the file to your case:</span>
 ./bin/gltf-viewer viewer ../glTF-Sample-Models/2.0/Sponza/glTF/Sponza.gltf --lookat <span class="hljs-string">"-5.26056,6.59932,0.85661,-4.40144,6.23486,0.497347,0.342113,0.931131,-0.126476"</span>
 </code></pre>
-<p>It should run the program and set a camera such that you see:</p>
+<p>It should run the program and set a camera such that you see the following picture:</p>
+<p><img src="/openglnoel/img/gltf/result_sponza.png" alt="result_sponza"></p>
+<p>This is Sponza with normals displayed as colors !</p>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/gltf-viewer-02-gltf-02-initialization"><span class="arrow-prev">← </span><span>Data initialization</span></a><a class="docs-next button" href="/openglnoel/docs/gltf-viewer-03-camera-control"><span>WIP - Camera Control</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#the-drawing-function">The drawing function</a></li><li><a href="#matrix-reloaded">Matrix reloaded</a></li><li><a href="#the-drawnode-function">The drawNode function</a></li><li><a href="#conclusion">Conclusion</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2020 Laurent NOEL</section></footer></div></body></html>
