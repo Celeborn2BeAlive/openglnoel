@@ -71,6 +71,8 @@ glBufferStorage(GL_ARRAY_BUFFER, data.size(), data.data(), 0); // Assuming data 
 glBindBuffer(GL_ARRAY_BUFFER, 0); // Generally a good idea to cleanup the binding point after
 ```
 
+> Here we use glBufferStorage instead of glBufferData, which could also be used. The difference is that once a buffer has been allocated with glBufferStorage, you cannot change its size anymore. Knowing the buffer will remain the same size might give to the driver the opportunity to do some optimizations.
+
 Similarly we can create multiple buffer objects and fill them with a loop:
 ```cpp
 std::vector<GLint> bufferObjects(buffers.size(), 0); // Assuming buffers is a std::vector of Buffer
