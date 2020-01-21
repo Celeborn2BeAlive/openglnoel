@@ -44,3 +44,11 @@ cd PATH/TO/PROJECT_ROOT/build-gltf-viewer-tutorial # We have to be in the build 
 ```
 
 Don't expect to see anything but black before the end of the part "Loading and drawing".
+
+## What if you are "locked" ?
+
+It at some point you are locked and don't find the solution to go on, then use can use the "cheat" branch of the repository.
+
+At this URL: https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commits/cheat you can see the history of the branch. If you click on a commit you can see all additions to the previous commit.
+
+The first commit with solution is "Add loadGltfFile".

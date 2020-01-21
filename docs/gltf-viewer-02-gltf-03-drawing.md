@@ -119,6 +119,11 @@ We then have one last thing to implement, after the `if (node.mesh >= 0)` body: 
 
 <span class="todo badge"></span> Check compilation, run, commit and push your code.
 
+---
+
+Solution:
+- https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/b67c48f2c8f0d336a893c4ce982c097933817add
+
 ## Conclusion
 
 Now, if everything is OK in your code you should be able to see something by running your program on a scene. My advice is to use the Sponza scene (stored in https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Sponza). If you don't have enough disk space to download the whole repository, you can pick it here: [Sponza](/openglnoel/files/Sponza.zip).

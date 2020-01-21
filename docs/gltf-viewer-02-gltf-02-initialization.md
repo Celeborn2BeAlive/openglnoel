@@ -30,6 +30,12 @@ Another place to look at for tinygltf documentation is simply the file "tiny_glt
 
 <span class="todo badge"></span> Check compilation, run, commit and push your code.
 
+---
+
+Solution (two commits):
+- https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/4e703149aa559e2df1857e66a06784c1ce2fa310
+- https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/499663004ccb2a7b0acb8aeab67749558b7c1141
+
 ## Understanding glTF data
 
 The glTF format is precisely defined on its dedicated repository: https://github.com/KhronosGroup/glTF
@@ -266,6 +272,11 @@ This code will look like the Buffer Object example code from before.
 
 <span class="todo badge"></span> Check compilation, run, commit and push your code.
 
+---
+
+Solution (warning: also the solution of the next exercice, I messed up my commits)
+- https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/3bdd469d474d037900acf8fcaac5d429bbc037f2
+
 ## Creation of Vertex Array Objects
 
 > The part to replace in this section is `// TODO Creation of Vertex Array Objects` with a call to the method that you must implement.
@@ -340,6 +351,11 @@ To finish the function, after the outer loop:
 <span class="todo badge"></span> Unbind the VAO, returns `vertexArrayObjects`. Add a call to your function in `run()`.
 
 <span class="todo badge"></span> Check compilation, run, commit and push your code.
+
+---
+
+Solution (warning: also the solution of the previous exercice, I messed up my commits)
+- https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/3bdd469d474d037900acf8fcaac5d429bbc037f2
 
 ## More details about Vertex Array Objects and the global GL state
 
