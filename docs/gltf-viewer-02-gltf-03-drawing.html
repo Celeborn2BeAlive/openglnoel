@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Drawing the scene · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Now to we need to implement the drawing function that is called in the render loop. The render loop is already implemented with some basic code. Again we&#x27;ll come back later to the code already here, for now we will focus on the drawing function."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Drawing the scene · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/"/><meta property="og:description" content="Now to we need to implement the drawing function that is called in the render loop. The render loop is already implemented with some basic code. Again we&#x27;ll come back later to the code already here, for now we will focus on the drawing function."/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/openglnoel/js/scrollSpy.js"></script><link rel="stylesheet" href="/openglnoel/css/main.css"/><script src="/openglnoel/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/openglnoel/"><img class="logo" src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]"/><h2 class="headerTitleWithLogo">OpenGL[&quot;noël&quot;]</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/openglnoel/docs/gltf-viewer-01-intro-01-intro" target="_self">glTF Viewer Tutorial</a></li><li class=""><a href="/openglnoel/docs/intro-sdk-01-philogl-01-introduction" target="_self">Intro et SDK</a></li><li class=""><a href="/openglnoel/docs/bronze-02-hello-triangle-01-code-de-base" target="_self">Bronze</a></li><li class=""><a href="/openglnoel/docs/silver-01-3d-theorie-01-introduction" target="_self">Silver</a></li><li class=""><a href="/openglnoel/docs/gold-01-intro-sdk-01-introduction" target="_self">Gold</a></li><li class=""><a href="/openglnoel/blog/" target="_self">Blog</a></li><li class=""><a href="http://docs.gl" target="_self">OpenGL Documentation</a></li><li class=""><a href="https://www.khronos.org/opengl/wiki/" target="_self">OpenGL Wiki</a></li><li class=""><a href="https://github.com/celeborn2bealive/openglnoel" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Loading and drawing</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction and SDK</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-01-intro-01-intro">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-01-intro-02-sdk">Software Development Kit</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Loading and drawing</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-02-gltf-01-roadmap">Introduction and roadmap</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-02-gltf-02-initialization">Data initialization</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/openglnoel/docs/gltf-viewer-02-gltf-03-drawing">Drawing the scene</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Controlling the Camera</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-03-camera-control">WIP - Camera Control</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Directional Lighting</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-04-directional-lighting">WIP - Directional Lighting</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Physically Based Materials</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-05-physically-based-materials">WIP - Physically based materials</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Shadow Mapping</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-06-shadow-mapping">WIP - Shadow mapping</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Deferred Rendering</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-07-deferred-rendering">WIP - Deferred rendering</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Post Processing</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-08-post-processing">WIP - Post processing</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Drawing the scene</h1></header><article><div><span><p>Now to we need to implement the drawing function that is called in the render loop. The render loop is already implemented with some basic code. Again we'll come back later to the code already here, for now we will focus on the drawing function.</p>
+<h2><a class="anchor" aria-hidden="true" id="the-drawing-function"></a><a href="#the-drawing-function" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The drawing function</h2>
+<p>The drawing function is implemented in a lambda function in order to be used from multiple places:</p>
+<ul>
+<li>the render loop</li>
+<li>the render output image mode (for tests)</li>
+</ul>
+<p>Similarly to VAO initialization, the drawing function will require many indirections. Our goal is to traverse the scene graph, which is composed of nodes.</p>
+<p>The nodes can refer to a mesh or a camera. For now we are only interested in nodes that refer to meshes. We need to use the matrix of the node and its mesh to draw it on screen.</p>
+<p>Each node can have children, that must be processed the same way. This recursive structure for the data naturally leads to a recursive function to implement. We will put it in a std::function that is already declared in the drawing function.</p>
+<p>Right now your drawing function should look like this:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-comment">// A lambda function (C++11)</span>
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> drawScene = [&amp;]() {
+  glViewport(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, m_nWindowWidth, m_nWindowHeight);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  <span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> viewMatrix = camera.getViewMatrix();
+
+  <span class="hljs-comment">// The recursive function that should draw a node</span>
+  <span class="hljs-comment">// We use a std::function because a simple lambda cannot be recursive</span>
+  <span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::function&lt;<span class="hljs-keyword">void</span>(<span class="hljs-keyword">int</span>, <span class="hljs-keyword">const</span> glm::mat4 &amp;)&gt; drawNode =
+    [&amp;](<span class="hljs-keyword">int</span> nodeIdx, <span class="hljs-keyword">const</span> glm::mat4 &amp;parentMatrix) {
+      <span class="hljs-comment">// TODO Implement this</span>
+    }
+  };
+
+  <span class="hljs-comment">// Draw the scene referenced by gltf file</span>
+  <span class="hljs-keyword">if</span> (model.defaultScene &gt;= <span class="hljs-number">0</span>) {
+    <span class="hljs-comment">// TODO Implement this</span>
+  }
+};
+</code></pre>
+<p>We will first implement the second <code>// TODO Implement this</code> because it is easier.</p>
+<p><span class="todo badge"></span> For the second <code>// TODO Implement this</code>, implement a loop over the nodes of the scene (<code>model.scenes[model.defaultScene].nodes</code>) and call drawNode on each one. The parentMatrix for them should be the identify matrix <code>glm::mat4(1)</code>.</p>
+<h2><a class="anchor" aria-hidden="true" id="matrix-reloaded"></a><a href="#matrix-reloaded" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Matrix reloaded</h2>
+<p>Before implementing the <code>drawNode</code> function, a reminder about matrices for 3D can be useful.</p>
+<p>Most 3D objects are created by artists in a local space: the center of the scene is at the center of the object and axis are oriented in a coherent way relative to the object.</p>
+<p>To put an object defined locally in a global 3D scene, at an arbitrary position, orientation and scale, we must apply a matrix to the coordinates of its vertices. This matrix is called the <strong>Model matrix</strong> of the object (also called <strong>localToWorld matrix</strong>, which is a better name in my opinion).</p>
+<p>Each object of the global scene has its own Model matrix. If M denotes a model matrix and p_l a point in the local space, then p_w = M * p_l is the position of p in world space.</p>
+<p>What is really of interest for us, however, is the view space, the space of the camera. To convert our points from world space to view space, we use the <strong>View matrix</strong> (also called <strong>worldToView matrix</strong>), which is computed from the parameters defining the camera (often with lookAt(eye, center, up) function).</p>
+<p>Similarly, if V denotes the view matrix and p_w a point in world space, then p_v = V * p_w is the position of p in view space.</p>
+<p>Finally, we have the <strong>Projection matrix</strong> than is used to project points on the screen (a few more operations are performed by the GPU before having real pixel coordinates).</p>
+<p>We can combine all these matrices to define new ones that are directly used by our vertex shaders:</p>
+<ul>
+<li>modelViewMatrix = view * model</li>
+<li>modelViewProjectionMatrix = projection * modelViewMatrix</li>
+</ul>
+<p>Another matrix must be computed to transform normals. I will not go into details, but normals need a special treatment in order to maintain the orthogonality with tangent vectors. The normalMatrix is defined by:</p>
+<ul>
+<li>normalMatrix = transpose(inverse(mvMatrix));</li>
+</ul>
+<p>These 3 matrices will need to be send to the GPU with <code>glUniformMatrix4fv</code> later.</p>
+<h2><a class="anchor" aria-hidden="true" id="the-drawnode-function"></a><a href="#the-drawnode-function" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The drawNode function</h2>
+<p>Now we can attack the <code>drawNode</code> function. The first step is to get the node (as a <code>tinygltf::Node</code>) and to compute its model matrix from the parent matrix. Fortunately for you, I included a helper function <code>getLocalToWorldMatrix(node, parentMatrix)</code>. If you are interested you can take a look at the code, its mostly calls to glm function to perform the right maths.</p>
+<p><span class="todo badge"></span> In the drawNode function, get the node associated with the nodeIdx received as parameter. Create a <code>glm::mat4 modelMatrix</code> and initialize it with <code>getLocalToWorldMatrix(node, parentMatrix)</code>.</p>
+<p>Then we need to ensure that the node has a mesh:</p>
+<p><span class="todo badge"></span> Add an <code>if</code> statement to test if the node has a mesh (<code>node.mesh &gt;= 0</code>).</p>
+<p>Now in the body of the <code>if</code> statement:</p>
+<p><span class="todo badge"></span> Compute modelViewMatrix, modelViewProjectionMatrix, normalMatrix and send all of these to the shaders with glUniformMatrix4fv.</p>
+<p>Next step is to get the mesh of the node and iterate over its primitives to draw them. To draw a primitive we need the VAO that we filled for it.</p>
+<p>Remember that we computed a vector <code>meshIndexToVaoRange</code> with the range of vertex array objects for each mesh (this range being an offset and an number of elements in the <code>vertexArrayObjects</code> vector). Each primitive of index <code>primIdx</code> of the mesh should has its corresponding VAO at <code>vertexArrayObjects[vaoRange.begin + primIdx]</code> if <code>vaoRange</code> is the range of the mesh.</p>
+<p><span class="todo badge"></span> Get the mesh and the vertex array objects range of the current mesh.</p>
+<p><span class="todo badge"></span> Loop over the primitives of the mesh</p>
+<p>Inside the loop body:</p>
+<p><span class="todo badge"></span> Get the VAO of the primitive (using <code>vertexArrayObjects</code>, the vaoRange and the primitive index) and bind it.</p>
+<p><span class="todo badge"></span> Get the current primitive.</p>
+<p>Now we need to check if the primitive has indices by testing <code>if (primitive.indices &gt;= 0)</code>. If its the case we should use <code>glDrawElements</code> for the drawing, if not we should use <code>glDrawArrays</code>.</p>
+<p><span class="todo badge"></span> Implement the first case, where the primitive has indices. You need to get the accessor of the indices (<code>model.accessors[primitive.indices]</code>) and the bufferView to compute the total byte offset to use for indices. You should then call <code>glDrawElements</code> with the mode of the primitive, the number of indices (<code>accessor.count</code>), the component type of indices (<code>accessor.componentType</code>) and the byte offset as last argument (with a cast to <code>const GLvoid*</code>).</p>
+<p><span class="todo badge"></span> Implement the second case, where the primitive does not have indices. For this you need the number of vertex to render. The specification of glTF tells us that we can use the accessor of an arbritrary attribute of the primitive. We can use the first accesor we have with:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> accessorIdx = (*begin(primitive.attributes)).second;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">auto</span> &amp;accessor = model.accessors[accessorIdx];
+</code></pre>
+<p>Then call <code>glDrawArrays</code>, passing it the mode of the primitive, 0 as second argument, and <code>accessor.count</code> as last argument.</p>
+<p>We then have one last thing to implement, after the <code>if (node.mesh &gt;= 0)</code> body: we need to draw children recursively.</p>
+<p><span class="todo badge"></span> After the <code>if</code> body, add a loop over <code>node.children</code> and call <code>drawNode</code> on each children. The matrix passed as second argument should be the modelMatrix that has been computed earlier in the function.</p>
+<h2><a class="anchor" aria-hidden="true" id="conclusion"></a><a href="#conclusion" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Conclusion</h2>
+<p>Now, if everything is OK in your code you should be able to see something by running your program on a scene. My advice is to use the Sponza scene (stored in <a href="https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Sponza">https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Sponza</a>). If you don't have enough disk space to download the whole repository, you can pick it here: <a href="/openglnoel/files/Sponza.zip">Sponza</a>.</p>
+<p>To run the program in viewer mode, you need to run in your terminal:</p>
+<pre><code class="hljs css language-bash"><span class="hljs-built_in">cd</span> PATH/TO/PROJECT_ROOT/build-gltf-viewer-tutorial <span class="hljs-comment"># We have to be in the build folder</span>
+<span class="hljs-comment"># Adapt the path to the file to your case:</span>
+./bin/gltf-viewer viewer ../glTF-Sample-Models/2.0/Sponza/glTF/Sponza.gltf --lookat <span class="hljs-string">"-5.26056,6.59932,0.85661,-4.40144,6.23486,0.497347,0.342113,0.931131,-0.126476"</span>
+</code></pre>
+<p>It should run the program and set a camera such that you see:</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/gltf-viewer-02-gltf-02-initialization"><span class="arrow-prev">← </span><span>Data initialization</span></a><a class="docs-next button" href="/openglnoel/docs/gltf-viewer-03-camera-control"><span>WIP - Camera Control</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#the-drawing-function">The drawing function</a></li><li><a href="#matrix-reloaded">Matrix reloaded</a></li><li><a href="#the-drawnode-function">The drawNode function</a></li><li><a href="#conclusion">Conclusion</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2020 Laurent NOEL</section></footer></div></body></html>
