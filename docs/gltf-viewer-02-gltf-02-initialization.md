@@ -62,7 +62,7 @@ To be rendered on the GPU, geometry data is stored in buffer objects. Buffers ob
 
 A buffer object can be created with the following code:
 ```cpp
-GLint bufferObject = 0; // 0 represents a "null" buffer object, it does not exist yet
+GLuint bufferObject = 0; // 0 represents a "null" buffer object, it does not exist yet
 glGenBuffers(1, &bufferObject); // Ask opengl to reserve an identifier for our buffer object and store it in bufferObject.
 // At this point we should have bufferObject > 0. 
 // We generally don't test for that, if it happens our program is likely to fail anyway.
@@ -75,7 +75,8 @@ glBindBuffer(GL_ARRAY_BUFFER, 0); // Generally a good idea to cleanup the bindin
 
 Similarly we can create multiple buffer objects and fill them with a loop:
 ```cpp
-std::vector<GLint> bufferObjects(buffers.size(), 0); // Assuming buffers is a std::vector of Buffer
+std::vector<GLuint> bufferObjects(buffers.size(), 0); // Assuming buffers is a std::vector of Buffer
+glGenBuffers(buffers.size(), bufferObjects.data());
 for (size_t i = 0; i < buffers.size(); ++i) {
   glBindBuffer(GL_ARRAY_BUFFER, bufferObjects[i]);
   glBufferStorage(GL_ARRAY_BUFFER, buffers[i].data.size(), // Assume a Buffer has a data member variable of type std::vector
