@@ -21,7 +21,7 @@ Right now your drawing function should look like this:
 
 ```cpp
 // A lambda function (C++11)
-const auto drawScene = [&]() {
+const auto drawScene = [&](const Camera &camera) {
   glViewport(0, 0, m_nWindowWidth, m_nWindowHeight);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -31,20 +31,21 @@ const auto drawScene = [&]() {
   // We use a std::function because a simple lambda cannot be recursive
   const std::function<void(int, const glm::mat4 &)> drawNode =
     [&](int nodeIdx, const glm::mat4 &parentMatrix) {
-      // TODO Implement this
+      // TODO The drawNode function
     }
   };
 
   // Draw the scene referenced by gltf file
   if (model.defaultScene >= 0) {
-    // TODO Implement this
+    // TODO Draw all nodes
   }
 };
 ```
+We will first implement the second `// TODO ...` because it is easier.
 
-We will first implement the second `// TODO Implement this` because it is easier.
+<span class="todo badge"></span> Replace `// TODO Draw all nodes`: implement a loop over the nodes of the scene (`model.scenes[model.defaultScene].nodes`) and call drawNode on each one. The parentMatrix for them should be the identify matrix `glm::mat4(1)`.
 
-<span class="todo badge"></span> For the second `// TODO Implement this`, implement a loop over the nodes of the scene (`model.scenes[model.defaultScene].nodes`) and call drawNode on each one. The parentMatrix for them should be the identify matrix `glm::mat4(1)`.
+<span class="todo badge"></span> Check compilation, run, commit and push your code.
 
 ## Matrix reloaded
 
@@ -72,6 +73,8 @@ Another matrix must be computed to transform normals. I will not go into details
 These 3 matrices will need to be send to the GPU with `glUniformMatrix4fv` later.
 
 ## The drawNode function
+
+> The part to replace in this section is // TODO The drawNode function
 
 Now we can attack the `drawNode` function. The first step is to get the node (as a `tinygltf::Node`) and to compute its model matrix from the parent matrix. Fortunately for you, I included a helper function `getLocalToWorldMatrix(node, parentMatrix)`. If you are interested you can take a look at the code, its mostly calls to glm function to perform the right maths.
 
@@ -114,6 +117,8 @@ We then have one last thing to implement, after the `if (node.mesh >= 0)` body: 
 
 <span class="todo badge"></span> After the `if` body, add a loop over `node.children` and call `drawNode` on each children. The matrix passed as second argument should be the modelMatrix that has been computed earlier in the function.
 
+<span class="todo badge"></span> Check compilation, run, commit and push your code.
+
 ## Conclusion
 
 Now, if everything is OK in your code you should be able to see something by running your program on a scene. My advice is to use the Sponza scene (stored in https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Sponza). If you don't have enough disk space to download the whole repository, you can pick it here: [Sponza](/openglnoel/files/Sponza.zip).
@@ -125,4 +130,8 @@ cd PATH/TO/PROJECT_ROOT/build-gltf-viewer-tutorial # We have to be in the build 
 ./bin/gltf-viewer viewer ../glTF-Sample-Models/2.0/Sponza/glTF/Sponza.gltf --lookat "-5.26056,6.59932,0.85661,-4.40144,6.23486,0.497347,0.342113,0.931131,-0.126476"
 ```
 
-It should run the program and set a camera such that you see:
+It should run the program and set a camera such that you see the following picture:
+
+![result_sponza](/openglnoel/img/gltf/result_sponza.png)
+
+This is Sponza with normals displayed as colors !

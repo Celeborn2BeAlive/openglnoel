@@ -12,6 +12,8 @@ Our goal for this part of the tutorial is to implement things related to glTF da
 
 ## Loading the glTF file
 
+> The part to replace in this section is `// TODO Loading the glTF file` with a call to the method that you must implement.
+
 The path to the glTF file is stored in the member variable `m_gltfFilePath`.
 
 A glTF file is just a json file with references to binary files to store geometry data and images to store textures.
@@ -25,6 +27,8 @@ For that, use the readme of the tinygltf repository https://github.com/syoyo/tin
 <span class="todo badge"></span> In the run() method, define a `tinygltf::Model` instance and call your method on it.
 
 Another place to look at for tinygltf documentation is simply the file "tiny_gltf.h" stored in third-party/tinygltf/.
+
+<span class="todo badge"></span> Check compilation, run, commit and push your code.
 
 ## Understanding glTF data
 
@@ -248,17 +252,23 @@ This tells us how to build our OpenGL Data from the glTF Data. It can be a bit c
 
 ## Creation of Buffer Objects
 
+> The part to replace in this section is `// TODO Loading the glTF file` with a call to the method that you must implement.
+
 We start with the easy one: converting glTF buffers to OpenGL buffer objects. This is easy because we have a direct mapping glTF Buffer <-> OpenGL Buffer Object. What we need to do:
 - Create a vector of GLuint with the correct size (`model.buffers.size()`) and use `glGenBuffers` to create buffer objects.
 - In a loop, fill each buffer object with the data using `glBindBuffer` and `glBufferStorage`. The data should be obtained from `model.buffers[bufferIdx].data`.
 - Don't forget to unbind the buffer object from GL_ARRAY_BUFFER after the loop
 
-This code will look like the Buffer Object example code I gave.
+This code will look like the Buffer Object example code from before.
 
 <span class="todo badge"></span> Implement a method `std::vector<GLuint> ViewerApplication::createBufferObjects(
     const tinygltf::Model &model)` that compute the vector of buffer objects from a model and returns it. Call this functions in `run()` after loading the glTF.
 
+<span class="todo badge"></span> Check compilation, run, commit and push your code.
+
 ## Creation of Vertex Array Objects
+
+> The part to replace in this section is `// TODO Creation of Vertex Array Objects` with a call to the method that you must implement.
 
 Now the hard part. Honestly, once you succeed to implement this part and understand it, you should understand glTF (and more generally: indirections).
 
@@ -328,6 +338,8 @@ The last thing we need in our inner loop is to set the index buffer of the verte
 To finish the function, after the outer loop:
 
 <span class="todo badge"></span> Unbind the VAO, returns `vertexArrayObjects`. Add a call to your function in `run()`.
+
+<span class="todo badge"></span> Check compilation, run, commit and push your code.
 
 ## More details about Vertex Array Objects and the global GL state
 

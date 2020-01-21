@@ -19,7 +19,7 @@ If you don't have one already, create a Github account on the website https://gi
 
 ## Forking the repository
 
-Fork the following repository: URL. It can be done with the "Fork" button, top-right on the page.
+Fork the following repository: https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial. It can be done with the "Fork" button, top-right on the page.
 
 Forking means that you create a copy of the repository on your own account. Github keeps track of fork relationships between repository. 
 
@@ -88,6 +88,16 @@ If you don't have enough disk space for the whole repository, you can still get 
 - [Sponza](/openglnoel/files/Sponza.zip) (50 MB once unzipped)
 - [DamagedHelmet](/openglnoel/files/DamagedHelmet.zip) (12 MB once unzipped)
 
+## How to commit and push your code
+
+In the tutorial I will ask you to commit and push your code to Github. The commands to use for that are:
+```bash
+cd PATH/TO/PROJECT_ROOT/gltf-viewer-tutorial-git # We need to be in the source folder
+git push # Optional, to be sure you are up to date if you have other contributors
+git add . # Add all modification
+git commit -m "A message describing your changes"
+```
+
 ## Building the project
 
 At this point we should be able to build the project with CMake. CMake is a tool that is used to generate build files. This is useful for multi-platform projects to avoid dealing with different build system (Makefile, Visual Studio solutions, etc.).
@@ -152,9 +162,16 @@ cmake --build . --target install # Only build the 'install' target. It is a spec
 
 For now you don't need to bother with all these commands, only use `cmake --build . -j` and things should work correctly. See below if you want to know more about CMake.
 
+#### When to re-run CMake and how ?
 
+It is somethimes necessary to re-run CMake, for example when you add new source files to your project.
 
+In that case, run the following command in the build directory:
+```bash
+cmake .
+```
 
+You don't need to re-specify the path to the source folder since it is stored in the cache of the build folder.
 
 ## Run the executable
 
@@ -171,6 +188,16 @@ On windows you might need to add Debug folder in the path (or Release if you bui
 ```bash
 ./bin/Debug/gltf-viewer info
 ```
+
+## Base code
+
+On order for you to quickly start, I have made a code template that must be completed during this tutorial.
+
+The code is in PATH/TO/PROJECT_ROOT/apps/gltf-viewer. The main file is already complete and just parse the arguments on the command line to forward them to the ViewerApplication class.
+
+The ViewerApplication class has a constructor and a run() method. Most of the code should be implemented in the run() method, where I put comments of the form `// TODO ...`.
+
+Just follow the tutorial and you will know when to replace what.
 
 ## Going further
 
