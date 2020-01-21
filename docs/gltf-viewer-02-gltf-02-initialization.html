@@ -325,7 +325,7 @@ meshIndexToVaoRange.push_back(VaoRange{vaoOffset, model.meshes[meshIdx].primitiv
   }
 }
 </code></pre>
-<p><span class="todo badge"></span> Copy the previous code after the bind of the vertex array object and complete it. You should define the variable <code>VERTEX_ATTRIB_POSITION_IDX</code> of type <code>GLuint</code> with value 0 (the value should be set according to the vertex shader that we use, ie. <code>shaders/forward.vs.glsl</code>, using the corresponding <code>layout(location = ...)</code>)</p>
+<p><span class="todo badge"></span> Copy the previous code after the bind of the vertex array object and complete it. You should also define the variable <code>VERTEX_ATTRIB_POSITION_IDX</code> of type <code>GLuint</code> with value 0 (the value should be set according to the vertex shader that we use, ie. <code>shaders/forward.vs.glsl</code>, using the corresponding <code>layout(location = ...)</code>)</p>
 <p>Now that you got it filled, you can duplicate it two times and replace &quot;POSITION&quot; with &quot;NORMAL&quot; and &quot;TEXCOORD_0&quot;; and VERTEX_ATTRIB_POSITION_IDX with VERTEX_ATTRIB_NORMAL_IDX and VERTEX_ATTRIB_TEXCOORD0_IDX (or you can factorized with a loop).</p>
 <p>The last thing we need in our inner loop is to set the index buffer of the vertex array object, if one exists. For that you need to check if <code>primitive.indices &gt;= 0</code>. If that's the case then you need to get the accessor of index <code>primitive.indices</code>, its buffer view, and call <code>glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, /* TODO fill with the correct buffer object */)</code></p>
 <p><span class="todo badge"></span> Set the index buffer of the VAO if it exists.</p>
