@@ -331,7 +331,7 @@ So for this one I will give you the uncompleted code and you need to replace com
 
     const auto bufferObject = // TODO get the correct buffer object from the buffer index
 
-    // TODO Enable the vertex attrib array corresponding to POSITION with glEnableVertexAttribArray (you need to use VERTEX_ATTRIB_POSITION_IDX which is defined at the top of the file)
+    // TODO Enable the vertex attrib array corresponding to POSITION with glEnableVertexAttribArray (you need to use VERTEX_ATTRIB_POSITION_IDX which has to be defined at the top of the cpp file)
     // TODO Bind the buffer object to GL_ARRAY_BUFFER
 
     const auto byteOffset = // TODO Compute the total byte offset using the accessor and the buffer view
@@ -341,7 +341,7 @@ So for this one I will give you the uncompleted code and you need to replace com
   }
 }
 ```
-<span class="todo badge"></span> Copy the previous code after the bind of the vertex array object and complete it.
+<span class="todo badge"></span> Copy the previous code after the bind of the vertex array object and complete it. You should define the variable `VERTEX_ATTRIB_POSITION_IDX` of type `GLuint` with value 0 (the value should be set according to the vertex shader that we use, ie. `shaders/forward.vs.glsl`, using the corresponding `layout(location = ...)`)
 
 Now that you got it filled, you can duplicate it two times and replace "POSITION" with "NORMAL" and "TEXCOORD_0"; and VERTEX_ATTRIB_POSITION_IDX with VERTEX_ATTRIB_NORMAL_IDX and VERTEX_ATTRIB_TEXCOORD0_IDX (or you can factorized with a loop).
 
