@@ -126,7 +126,7 @@ Solution:
 
 ## Interactive viewer
 
-Now, if everything is OK in your code you should be able to see something by running your program on a scene. My advice is to use the Sponza scene (stored in https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Sponza). If you don't have enough disk space to download the whole repository, you can pick it here: [Sponza](/openglnoel/files/Sponza.zip).
+Now, if everything is OK in your code, you should be able to see something by running your program on a scene. My advice is to use the Sponza scene (stored in https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/Sponza). If you don't have enough disk space to download the whole repository, you can pick it here: [Sponza](/openglnoel/files/Sponza.zip).
 
 To run the program in viewer mode, you need to run in your terminal:
 ```bash
@@ -139,7 +139,9 @@ It should run the program and set a camera such that you see the following pictu
 
 ![result_sponza](/openglnoel/img/gltf/result_sponza.png)
 
-This is Sponza with normals displayed as colors !
+This is Sponza with normals displayed as colors ! A simple shader, but enough to see the 3D.
+
+You can control the camera using classic First Perso control: ZQSD to move, the mouse to rotate, but also UP/DOWN arrows to go up or down and A/Z to turn your "head" left or right.
 
 ## Render to image
 
@@ -212,3 +214,7 @@ stbi_write_png(
 
 <span class="todo badge"></span> Finally at the end of the `if` statement, returns 0. So in that mode, our application just render an image in a file and leave.
 
+---
+
+Solution:
+- https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/74422f2a4eca6483c34eef35d72fcc3b0643ea08

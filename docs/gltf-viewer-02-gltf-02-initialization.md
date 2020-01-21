@@ -341,7 +341,7 @@ So for this one I will give you the uncompleted code and you need to replace com
   }
 }
 ```
-<span class="todo badge"></span> Copy the previous code after the bind of the vertex array object and complete it. You should define the variable `VERTEX_ATTRIB_POSITION_IDX` of type `GLuint` with value 0 (the value should be set according to the vertex shader that we use, ie. `shaders/forward.vs.glsl`, using the corresponding `layout(location = ...)`)
+<span class="todo badge"></span> Copy the previous code after the bind of the vertex array object and complete it. You should also define the variable `VERTEX_ATTRIB_POSITION_IDX` of type `GLuint` with value 0 (the value should be set according to the vertex shader that we use, ie. `shaders/forward.vs.glsl`, using the corresponding `layout(location = ...)`)
 
 Now that you got it filled, you can duplicate it two times and replace "POSITION" with "NORMAL" and "TEXCOORD_0"; and VERTEX_ATTRIB_POSITION_IDX with VERTEX_ATTRIB_NORMAL_IDX and VERTEX_ATTRIB_TEXCOORD0_IDX (or you can factorized with a loop).
 
