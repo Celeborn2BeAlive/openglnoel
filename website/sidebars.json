@@ -121,7 +121,8 @@
     "glTF Viewer Tutorial": {
         "Introduction and SDK": [
             "gltf-viewer-01-intro-01-intro",
-            "gltf-viewer-01-intro-02-sdk"
+            "gltf-viewer-01-intro-02-sdk",
+            "gltf-viewer-01-intro-03-devenv"
         ],
         "Loading and drawing": [
             "gltf-viewer-02-gltf-01-roadmap",

@@ -216,7 +216,7 @@ On windows you might need to add Debug folder in the path (or Release if you bui
 
 On order for you to quickly start, I have made a code template that must be completed during this tutorial.
 
-The code is in PATH/TO/PROJECT_ROOT/apps/gltf-viewer. The main file is already complete and just parse the arguments on the command line to forward them to the ViewerApplication class.
+The code is in PATH/TO/PROJECT_ROOT/gltf-viewer-tutorial-git/apps/gltf-viewer. The main file is already complete and just parse the arguments on the command line to forward them to the ViewerApplication class.
 
 The ViewerApplication class has a constructor and a run() method. Most of the code should be implemented in the run() method, where I put comments of the form `// TODO ...`.
 
