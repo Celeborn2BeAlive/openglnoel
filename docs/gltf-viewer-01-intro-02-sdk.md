@@ -39,22 +39,24 @@ On Windows, you can install Git for Windows at this URL: https://git-scm.com/dow
 
 The folder hierarchy for the project at the end will be:
 - PROJECT_ROOT
-  - gltf-viewer-git
-  - build-gltf-viewer
+  - gltf-viewer-tutorial-git
+  - build-gltf-viewer-tutorial
   - glTF-Sample-Models (optional, see below)
-  - gltf-viewer-test-scenes
-  - gltf-viewer-test-references
-  - gltf-viewer-test-results
+  - test-scenes (WIP)
+  - test-references (WIP)
+  - test-results (WIP)
   
 You can replace PROJECT_ROOT with the name of your choice (gltf-viewer would be a good name I think, but sometimes you have to make your own choices).
 
 The children folders will be:
-- *gltf-viewer-git* The code repository, which is a local clone of the fork you made on Github
-- *build-gltf-viewer* The build folder, it will contain the binaries compiled from the source code
-- *glTF-Sample-Models* This one is optional. It should be a clone of the repository https://github.com/KhronosGroup/glTF-Sample-Models but only if you have enough disk space on your computer.
-- *gltf-viewer-test-scenes* This folder should be a clone of the repository URL. It contains a subset of the scenes from glTF-Samples-Models, only to perform NRU tests.
-- *gltf-viewer-test-references* This folder should be a clone of the repository URL. It contains reference images and logs for the scenes stored in gltf-viewer-test-scenes and glTF-Sample-Models, at each checkpoint of this tutorial.
-- *gltf-viewer-test-results* This folder will contain results from tests. You don't need to create this one manually, the test scripts will do.
+- *gltf-viewer-tutorial-git* The code repository, which is a local clone of the fork you made on Github
+- *build-gltf-viewer-tutorial* The build folder, it will contain the binaries compiled from the source code
+- *glTF-Sample-Models* This one is optional. It should be a clone of the repository https://github.com/KhronosGroup/glTF-Sample-Models but only if you have enough disk space on your computer (2.5 GB approximately)
+
+The following folders are Work in Progress, don't try to create them for now:
+- *test-scenes* This folder will contains a subset of the scenes from glTF-Samples-Models, only to perform NRU tests.
+- *test-references* This folder will contains reference images and logs for the scenes stored in test-scenes and glTF-Sample-Models, at each checkpoint of this tutorial.
+- *test-results* This folder will contain results from tests. You don't need to create this one manually, the test scripts will do.
 
 These folder names are quite important here because the test scripts I wrote depend on it. If you were creating this project from scratch all by yourself, you could use the names you want.
 
@@ -70,9 +72,10 @@ cd PATH/TO/PROJECT_ROOT
 We use the `git clone URL LOCATION` command to clone a repository. The URL can be a http link to a web repository or the path to a folder that is already a git repository. LOCATION is optional, if specified the repository is cloned in the corresponding folder. Otherwise it's cloned in a folder with the same name as the repositoru.
 
 ```bash
-git clone URL_TO_YOUR_FORK gltf-viewer-git
-git clone URL_TO_TEST_SCENES gltf-viewer-test-scenes
-git clone URL_TO_REF_IMAGES gltf-viewer-test-references
+git clone URL_TO_YOUR_FORK gltf-viewer-tutorial-git
+# Don't do these now, but come back later once its ready:
+# git clone URL_TO_TEST_SCENES test-scenes
+# git clone URL_TO_REF_IMAGES test-references
 ```
 
 And if you have enough disk space:
@@ -80,6 +83,10 @@ And if you have enough disk space:
 ```bash
 git clone https://github.com/KhronosGroup/glTF-Sample-Models
 ```
+
+If you don't have enough disk space for the whole repository, you can still get interesting models for your early tests here:
+- [Sponza](/openglnoel/files/Sponza.zip) (50 MB once unzipped)
+- [DamagedHelmet](/openglnoel/files/DamagedHelmet.zip) (12 MB once unzipped)
 
 ## Building the project
 
@@ -107,10 +114,13 @@ Lets do that:
 
 #### Configure the project
 
+<span class="warning badge"></span> At university, if the build does not work, replace the last line by `cmake -DGLMLV_USE_BOOST_FILESYSTEM=ON ../gltf-viewer-git`. Your gcc might be a bit too old.
+
 ```bash
 cd PATH/TO/PROJECT_ROOT # Ensure that we are at the project root
 mkdir build-gltf-viewer # Create the build folder
 cd build-gltf-viewer # We need to be in the build folder before running CMake
+
 cmake ../gltf-viewer-git # We call cmake with the source folder as argument
 ```
 

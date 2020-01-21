@@ -5,6 +5,8 @@ title: Introduction
 
 Welcome to this tutorial ! Our goal is to learn OpenGL by building a complete project: a glTF Viewer.
 
+> The writing of this tutorial is still in progress but should be finished soon. For now only the "Introduction" and "Loading and drawing" are written. The code SDK also lack some testing features that should be added soon. In the meantine you can still start since "Loading and drawing" is probably the longer part of the whole tutorial.
+
 ## Why a viewer ?
 
 Coding a 3D viewer to learn OpenGL has several advantages:
@@ -63,6 +65,8 @@ This tutorial covers many aspects of OpenGL and C++ development, but also code v
 - Use a test driven development architecture to test our project at each iteration
 
 ## Test driven development (TDD)
+
+> WIP: The TDD is still in Work in Progress, it is not yet completely implemented in the SDK but will be soon.
 
 One special feature I wanted for this tutorial is test driven development. More specifically, we will use **Non Regression Unit tests** (NRU tests) to ensure our application compute correct images at each step of the development process.
 

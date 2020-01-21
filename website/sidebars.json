@@ -123,29 +123,28 @@
             "gltf-viewer-01-intro-01-intro",
             "gltf-viewer-01-intro-02-sdk"
         ],
-        "Loading a glTF Model": [
-            "gltf-viewer-02-gltf-01-roadmap"
-        ],
-        "Displaying the Geometry": [
-            "gltf-viewer-03-geometry-01-initialization"
+        "Loading and drawing": [
+            "gltf-viewer-02-gltf-01-roadmap",
+            "gltf-viewer-02-gltf-02-initialization",
+            "gltf-viewer-02-gltf-03-drawing"
         ],
         "Controlling the Camera": [
-            "gltf-viewer-WIP"
+            "gltf-viewer-03-camera-control"
         ],
         "Directional Lighting": [
-            "gltf-viewer-WIP"
+            "gltf-viewer-04-directional-lighting"
         ],
         "Physically Based Materials": [
-            "gltf-viewer-WIP"
+            "gltf-viewer-05-physically-based-materials"
         ],
         "Shadow Mapping": [
-            "gltf-viewer-WIP"
+            "gltf-viewer-06-shadow-mapping"
         ],
         "Deferred Rendering": [
-            "gltf-viewer-WIP"
+            "gltf-viewer-07-deferred-rendering"
         ],
         "Post Processing": [
-            "gltf-viewer-WIP"
+            "gltf-viewer-08-post-processing"
         ]
     }
 }

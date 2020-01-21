@@ -38,11 +38,11 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
+    { doc: 'gltf-viewer-01-intro-01-intro', label: 'glTF Viewer Tutorial' },
     { doc: 'intro-sdk-01-philogl-01-introduction', label: 'Intro et SDK' },
     { doc: 'bronze-02-hello-triangle-01-code-de-base', label: 'Bronze' },
     { doc: 'silver-01-3d-theorie-01-introduction', label: 'Silver' },
     { doc: 'gold-01-intro-sdk-01-introduction', label: 'Gold' },
-    { doc: 'gltf-viewer-01-intro-01-intro', label: 'glTF Viewer Tutorial' },
     { blog: true, label: 'Blog' },
     { href: 'http://docs.gl', label: 'OpenGL Documentation' },
     { href: 'https://www.khronos.org/opengl/wiki/', label: 'OpenGL Wiki' },
