@@ -85,4 +85,18 @@ Solution:
 
 ## Trackball camera controller
 
-Now our goal is to implement a new camera controller. The trackall model should offer
+Now our goal is to implement a new camera controller. The trackall controller should offer the following functionalities:
+
+- Rotate around center with middle mouse pressed
+- Move on plane orthogonal to the view axis with shift+middle mouse pressed
+- Dolly in/out with ctrl+middle mouse pressed
+
+It you have Blender 2.8 installed, this are the control offered by the camera.
+
+<span class="todo badge"></span> Implement the TrackballCameraController class with an interface similar to the FirstPersonCameraController. Implement the update method to perform the required control.
+
+Here I'm giving less information, you should take inspiration from the FirstPersonCameraController class, use the GLFW documentation to handle inputs, and implement the functionality.
+
+<span class="todo badge"></span> In the run() method, use your new controller instead of the old one.
+
+<span class="todo badge"></span> In the GUI, propose a radio button or a dropdown to select either the First Person Camera or the Trackball Camera
