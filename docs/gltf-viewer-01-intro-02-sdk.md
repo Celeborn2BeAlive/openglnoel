@@ -139,11 +139,13 @@ You should see the CMake output telling you what it is doing.
 
 #### Compile the project
 
-Once configuration is done we need to compile the project:
+Once configuration is done we need to compile the project.
 
 ```bash
 cmake --build . -j # We use "." to point the current working directory, which is the build directory. -j is to build with all cores.
 ```
+
+The -j option is only supported on recent version of CMake.
 
 If you read CMake tutorials online, they may ask you to use make instead:
 ```bash
@@ -153,7 +155,8 @@ make -j
 This also work, but only on Linux (or Windows with some compilers, but not Visual Studio). Using `cmake --build` instead has several advantages:
 - Works on all platform, with any build solution (gcc, clang, visual studio, etc.)
 - Re-configure the build solution (first step) if CMakeLists.txt files have changed.
-- Can be used to build a different build configuration or target. Here are a few examples:
+- Can be used to build a different build configuration for multi-configuration compilers (like Visual Studio)
+- Can be used to build a different target (just an executable, or a library)
   
 ```bash
 cmake --build . --target gltf-viewer --config Release -j # Only build target gltf-viewer in Release mode (more efficient)
@@ -162,6 +165,25 @@ cmake --build . --target install # Only build the 'install' target. It is a spec
 ```
 
 For now you don't need to bother with all these commands, only use `cmake --build . -j` and things should work correctly. See below if you want to know more about CMake.
+
+#### Changing the build configuration
+
+Depending on your needs, you might want to build your project in Debug or Release mode. The Debug mode add information for debuggers such as gdb or Visual Studio debugguer, but it is slower. The Release mode is faster but hard to debug because some parts of the code may have been optimized. There is also the RelWithDebInfo mode, which is optimized but contains debugging information such as symbol names.
+
+If your compiler supports multiple configurations, like Visual Studio, you don't need to re-run CMake, just run the build command by specifying the correct configuration. Example:
+
+```bash
+cmake --build . --target gltf-viewer --config Release -j
+```
+
+If your tool does not support multiple configuration out of the box, like Makefiles, you need to re-run CMake and specify a new configuration with this command line:
+
+```bash
+cmake -DCMAKE_BUILD_TYPE=Release . # In the build folder
+cmake --build . -j # Then rebuild
+```
+
+Another alternative is to maintain multiple build directories, one for each configuration, when you often switch.
 
 #### When to re-run CMake and how ?
 
