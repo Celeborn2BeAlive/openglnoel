@@ -93,9 +93,10 @@ If you don't have enough disk space for the whole repository, you can still get 
 In the tutorial I will ask you to commit and push your code to Github. The commands to use for that are:
 ```bash
 cd PATH/TO/PROJECT_ROOT/gltf-viewer-tutorial-git # We need to be in the source folder
-git push # Optional, to be sure you are up to date if you have other contributors
+git pull # Optional, to be sure you are up to date if you have other contributors
 git add . # Add all modification
-git commit -m "A message describing your changes"
+git commit -m "A message describing your changes" # Commit locally your modifications
+git push # Push to the remote repository
 ```
 
 ## Building the project
@@ -124,14 +125,14 @@ Lets do that:
 
 #### Configure the project
 
-<span class="warning badge"></span> At university, if the build does not work, replace the last line by `cmake -DGLMLV_USE_BOOST_FILESYSTEM=ON ../gltf-viewer-git`. Your gcc might be a bit too old.
+<span class="warning badge"></span> At university, if the build does not work, replace the last line by `cmake -DGLMLV_USE_BOOST_FILESYSTEM=ON ../gltf-viewer-tutorial-git`. Your gcc might be a bit too old.
 
 ```bash
 cd PATH/TO/PROJECT_ROOT # Ensure that we are at the project root
 mkdir build-gltf-viewer # Create the build folder
 cd build-gltf-viewer # We need to be in the build folder before running CMake
 
-cmake ../gltf-viewer-git # We call cmake with the source folder as argument
+cmake ../gltf-viewer-tutorial-git # We call cmake with the source folder as argument
 ```
 
 You should see the CMake output telling you what it is doing. 
