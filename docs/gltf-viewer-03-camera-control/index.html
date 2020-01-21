@@ -63,5 +63,57 @@
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">WIP - Camera Control</h1></header><article><div><span><blockquote>
 <p>Work in Progress.</p>
 </blockquote>
-<p>Our viewer is now able to render 3d models with a basic normal shader. You can also control the camera with a First Person Camera.</p>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/gltf-viewer-02-gltf-03-drawing"><span class="arrow-prev">← </span><span>Drawing the scene</span></a><a class="docs-next button" href="/openglnoel/docs/gltf-viewer-04-directional-lighting"><span>WIP - Directional Lighting</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2020 Laurent NOEL</section></footer></div></body></html>
+<p>Our viewer is now able to render 3d models with a basic normal shader. You can also control the camera with a &quot;First Person Camera Controller&quot;. While this kind of controller can be good for video game, we generally don't use that for production or viewer applications.</p>
+<p>A more common camera controller is the TrackballCamera. We will implement that in the second part of this section. We will first try to compute a better default camera when no camera is specified on the command line.</p>
+<h2><a class="anchor" aria-hidden="true" id="the-camera-model"></a><a href="#the-camera-model" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>The Camera model</h2>
+<p>A camera is generally represented by three points:</p>
+<ul>
+<li>an eye: the position of the camera</li>
+<li>a center: where the camera is looking at</li>
+<li>an up vector: which direction is up relative to the axis [eye, center]</li>
+</ul>
+<p>These three points are enough to compute a view matrix with the <code>glm::lookAt</code> function.</p>
+<p>It's important to understand that the Camera model is more powerful than the concept of matrices: you can compute a single view matrix from a camera, but for a single view matrix, there is an infinite number of camera (all cameras with the same position, orientation, but with a different center along the camera z axis).</p>
+<p>That's why we choose to manipulate a Camera from the inputs rather than a view matrix.</p>
+<p>In terms of code, the Camera class is defined in cameras.hpp. I've implemented a bunch of operations for reference but it's likely we won't use them. Each operation correspond to the terminology of real cameras, and you can find more information atthe following link and in the figure below.</p>
+<ul>
+<li><a href="http://learnwebgl.brown37.net/07_cameras/camera_movement.html">http://learnwebgl.brown37.net/07_cameras/camera_movement.html</a></li>
+</ul>
+<p><img src="/openglnoel/img/gltf/camera.png" alt="camera_movements"></p>
+<h2><a class="anchor" aria-hidden="true" id="implementing-a-better-default-camera"></a><a href="#implementing-a-better-default-camera" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Implementing a better default camera</h2>
+<p>Right now our default camera is simple:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-comment">// Somewhere in the run() function</span>
+cameraController.setCamera(
+        Camera{glm::vec3(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>), glm::vec3(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>), glm::vec3(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)});
+</code></pre>
+<p>This correspond to the default view of OpenGL. It gives an identity view matrix (by default we look at the negative z axis with OpenGL).</p>
+<p>Our goal is to implement a default camera that is better for our scene. It will not be amazing for some scenes, but most standard objects will be well presented.</p>
+<p>The idea is to use the bounding box of the scene and compute our parameters from it. A bounding box is defined by a lower point bboxMin and higher point bboxMax. We want to have our center point at the center of the bounding box of the scene, and to look at it from the diagonal, far enough to see most of the scene.</p>
+<p><span class="todo badge"></span> What is the formula for the center point of the bounding box defined by bboxMin and bboxMax ?</p>
+<p><span class="todo badge"></span> What is the formula for the diagonal vector going from bboxMin to bboxMax ?</p>
+<p>To compute the bounds of the scene, I've implemented a function in <code>utils/gltf.hpp</code>:</p>
+<pre><code class="hljs css language-cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">computeSceneBounds</span><span class="hljs-params">(
+    <span class="hljs-keyword">const</span> tinygltf::Model &amp;model, glm::vec3 &amp;bboxMin, glm::vec3 &amp;bboxMax)</span></span>;
+</code></pre>
+<p>(the function is not too complicated, but it is quite similar to what we already did to build VAOs and draw the scene, you can take a look if you want or even try to reimplement it without looking).</p>
+<p><span class="todo badge"></span> After loading the scene, use this function to compute the bounding box of the scene.</p>
+<blockquote>
+<p>For the next todos you might need to reorder a bit the run() function: load the scene before computing matrices.</p>
+</blockquote>
+<p><span class="todo badge"></span> Replace the default camera with a camera such that center is the center of the bounding box, eye is computed as center + diagonal vector, and up is (0, 1, 0). (ideally the up vector should be specified with the file, on the command line for example, because some 3d modelers use the convention up = (0, 0, 1)).</p>
+<p><span class="todo badge"></span> Test your code on Sponza and DamagedHelmet.</p>
+<p>A special case we need to handle is flat scenes (like a single triangle). In that case, we need to use align our view with a vector orthogonal to the scene. We will only handle flat scenes on the z axis.</p>
+<p><span class="todo badge"></span> What is a condition to test if the scene is flat on the z axis ?</p>
+<p><span class="todo badge"></span> It the scene is flat on the z axis, use this eye point instead: center + 2.f * glm::cross(diag, up);</p>
+<p>To finish improving our camera, we will also improve the projection matrix and the controller speed.</p>
+<p><span class="todo badge"></span> Use the diagonal vector to compute a maximum distance between two points of the scene. If it is zero, set it to 100. instead.</p>
+<p><span class="todo badge"></span> Use near = 0.001f * maxDistance and far = 1.5f * maxDistance to compute the project matrix (the call to <code>glm::perspective</code>).</p>
+<p><span class="todo badge"></span> Set the camera controller speed (second argument of the controller) to a percentage of the maxDistance. Try different values and choose one that suits you.</p>
+<hr>
+<p>Solution:</p>
+<ul>
+<li><a href="https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/8a5fb770286ae51e61471c46345c8abb8d2da2ad">https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/8a5fb770286ae51e61471c46345c8abb8d2da2ad</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="trackball-camera-controller"></a><a href="#trackball-camera-controller" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Trackball camera controller</h2>
+<p>Now our goal is to implement a new camera controller. The trackall model should offer</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/gltf-viewer-02-gltf-03-drawing"><span class="arrow-prev">← </span><span>Drawing the scene</span></a><a class="docs-next button" href="/openglnoel/docs/gltf-viewer-04-directional-lighting"><span>WIP - Directional Lighting</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#the-camera-model">The Camera model</a></li><li><a href="#implementing-a-better-default-camera">Implementing a better default camera</a></li><li><a href="#trackball-camera-controller">Trackball camera controller</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2020 Laurent NOEL</section></footer></div></body></html>
