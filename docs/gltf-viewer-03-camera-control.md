@@ -85,6 +85,8 @@ Solution:
 
 > For this exercise, you may need some modifications I made on the master branch. If your fork of my repository has been done before 2020-02-05, then please do a pull request of my master branch to your master branch. What you need is this commit https://github.com/Celeborn2BeAlive/gltf-viewer-tutorial/commit/2f9f96926c443b9dd2eca2f5f28f4c8359eef7ab that cleans up a bit some useless parts of the template code. To perform the merge request, follow [this part of the tutorial](gltf-viewer-02-gltf-03-drawing#optional-merge-master-branch-from-the-base-repository).
 
+> Sponza is not the best to test the trackball camera controller. Personally I am testing mine on DamagedHelmet that you can get in the glTF samples repository or here: [DamagedHelmet](/openglnoel/files/DamagedHelmet.zip)
+
 Now our goal is to implement a new camera controller. The trackall controller should offer the following functionalities:
 
 - Rotate around center with middle mouse pressed
