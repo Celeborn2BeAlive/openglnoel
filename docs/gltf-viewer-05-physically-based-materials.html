@@ -61,4 +61,37 @@
               }
             });
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">WIP - Physically based materials</h1></header><article><div><span><p>Work in Progress.</p>
+<p>If you arrive to this point but I still have not written this tutorial, here is the roadmap, you should be able to do it by yourself.</p>
+<p>Documentation:</p>
+<ul>
+<li>Carefully read the parts &quot;textures, images, samplers&quot; and &quot;materials&quot; of the quick reference image <a href="https://raw.githubusercontent.com/KhronosGroup/glTF/master/specification/2.0/figures/gltfOverview-2.0.0b.png">https://raw.githubusercontent.com/KhronosGroup/glTF/master/specification/2.0/figures/gltfOverview-2.0.0b.png</a>. Note that <code>tinygltf</code> loads for you the images, so you don't need to read image files yourself.</li>
+<li>Read the parts <a href="https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#texture-data">https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#texture-data</a> and <a href="https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#materials">https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#materials</a> of the specification.</li>
+<li>Read appendix B <a href="https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#appendix-b-brdf-implementation">https://github.com/KhronosGroup/glTF/tree/master/specification/2.0#appendix-b-brdf-implementation</a> for more details about the BRDF.</li>
+</ul>
+<p>Proposed steps for implementation:</p>
+<ol>
+<li>Start by trying to adapt our white diffuse model to the material base color. The goal is to replace our constant (\frac{1}{\pi}, \frac{1}{\pi}, \frac{1}{\pi}) with the base color of the material of the object
+<ol>
+<li>You need to add a uBaseColorFactor in your fragment shading and use it for the lighting calculation</li>
+<li>At the moment you draw a mesh in your drawing function, you need to get the material of this mesh</li>
+<li>Then set the base color factor uniform from what is stored in the material</li>
+</ol></li>
+<li>Then use textures
+<ol>
+<li>You need to create openGL textures for each texture of the glTF</li>
+<li>You need to add a sampler2D uBaseColor uniform in your shader and use it for the lighting calculation (multiply what you read from it with the base color factor)</li>
+<li>And again in the drawing function, you need to bind the texture from what is stored in the material</li>
+</ol></li>
+<li>At this point, you should already have correct colors and textures with just diffuse shading. Now you need to implement the full shading model by following the documentation (specification + appendix). If you do it properly, you should have nice metallic or plastic materials.</li>
+</ol>
+<p>And if you want to finish it, you need to implement (these are bonus / possibilities for the project):</p>
+<ul>
+<li>Normal mapping with the normal texture</li>
+<li>Alpha blending to handle transparency (see &quot;alpha coverage&quot; of the specification). This requires depth sorting for correct rendering</li>
+</ul>
+<p>If you really want nice and realistic rendering with this kind of material, you would like to implement environment lighting for diffuse and glossy. You can find tutorials here (again, these are bonus / possibilities for the project):</p>
+<ul>
+<li><a href="https://learnopengl.com/PBR/IBL/Diffuse-irradiance">https://learnopengl.com/PBR/IBL/Diffuse-irradiance</a></li>
+<li><a href="https://learnopengl.com/PBR/IBL/Specular-IBL">https://learnopengl.com/PBR/IBL/Specular-IBL</a></li>
+</ul>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/gltf-viewer-04-directional-lighting"><span class="arrow-prev">← </span><span>Directional Lighting</span></a><a class="docs-next button" href="/openglnoel/docs/gltf-viewer-06-shadow-mapping"><span>WIP - Shadow mapping</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2020 Laurent NOEL</section></footer></div></body></html>
