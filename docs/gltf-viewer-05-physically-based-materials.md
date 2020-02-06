@@ -15,7 +15,7 @@ Documentation:
 
 Proposed steps for implementation:
 
-1. Start by trying to adapt our white diffuse model to the material base color. The goal is to replace our constant (\frac{1}{\pi}, \frac{1}{\pi}, \frac{1}{\pi}) with the base color of the material of the object
+1. Start by trying to adapt our white diffuse model to the material base color. The goal is to replace our constant \\( (\frac{1}{\pi}, \frac{1}{\pi}, \frac{1}{\pi}) \\) with the base color of the material of the object
    1.  You need to add a uBaseColorFactor in your fragment shading and use it for the lighting calculation
    2.  At the moment you draw a mesh in your drawing function, you need to get the material of this mesh
    3.  Then set the base color factor uniform from what is stored in the material
