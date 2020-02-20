@@ -264,9 +264,9 @@ defaultSampler.wrapR = GL_REPEAT;
 
   <span class="hljs-type">vec4</span> baseColorFromTexture = SRGBtoLINEAR(<span class="hljs-built_in">texture</span>(uBaseColorTexture, vTexCoords));
   <span class="hljs-type">float</span> NdotL = <span class="hljs-built_in">clamp</span>(<span class="hljs-built_in">dot</span>(N, L), <span class="hljs-number">0</span>, <span class="hljs-number">1</span>);
-  <span class="hljs-type">vec3</span> diffuse = baseColorFromTexture.rgb * M_1_PI * NdotL;
+  <span class="hljs-type">vec3</span> diffuse = baseColorFromTexture.rgb * M_1_PI;
 
-  fColor = LINEARtoSRGB(diffuse);
+  fColor = LINEARtoSRGB(diffuse * uLightIntensity * NdotL);
 }
 </code></pre>
 <p>You should see some similarities with the &quot;white diffuse&quot; shader of the previous section. The main differences are:</p>
