@@ -247,9 +247,9 @@ void main()
 
   vec4 baseColorFromTexture = SRGBtoLINEAR(texture(uBaseColorTexture, vTexCoords));
   float NdotL = clamp(dot(N, L), 0, 1);
-  vec3 diffuse = baseColorFromTexture.rgb * M_1_PI * NdotL;
+  vec3 diffuse = baseColorFromTexture.rgb * M_1_PI;
 
-  fColor = LINEARtoSRGB(diffuse);
+  fColor = LINEARtoSRGB(diffuse * uLightIntensity * NdotL);
 }
 ```
 You should see some similarities with the "white diffuse" shader of the previous section. The main differences are:
