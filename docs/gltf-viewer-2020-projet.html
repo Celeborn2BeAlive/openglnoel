@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Projet · OpenGL[&quot;noël&quot;]</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&gt; Cette partie est en français car elle concerne les étudiants de l&#x27;école d&#x27;ingénieur Imac et les Master 2 Images de l&#x27;université Paris Est."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Projet · OpenGL[&quot;noël&quot;]"/><meta property="og:type" content="website"/><meta property="og:url" content="https://celeborn2bealive.github.io/openglnoel/"/><meta property="og:description" content="&gt; Cette partie est en français car elle concerne les étudiants de l&#x27;école d&#x27;ingénieur Imac et les Master 2 Images de l&#x27;université Paris Est."/><meta property="og:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://celeborn2bealive.github.io/openglnoel/img/logo.png"/><link rel="shortcut icon" href="/openglnoel/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><link rel="alternate" type="application/atom+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/atom.xml" title="OpenGL[&quot;noël&quot;] Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://celeborn2bealive.github.io/openglnoel/blog/feed.xml" title="OpenGL[&quot;noël&quot;] Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/openglnoel/js/code-block-buttons.js"></script><script type="text/javascript" src="/openglnoel/js/disqus.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/openglnoel/js/scrollSpy.js"></script><link rel="stylesheet" href="/openglnoel/css/main.css"/><script src="/openglnoel/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/openglnoel/"><img class="logo" src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]"/><h2 class="headerTitleWithLogo">OpenGL[&quot;noël&quot;]</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/openglnoel/docs/gltf-viewer-01-intro-01-intro" target="_self">glTF Viewer Tutorial</a></li><li class=""><a href="/openglnoel/docs/intro-sdk-01-philogl-01-introduction" target="_self">Intro et SDK</a></li><li class=""><a href="/openglnoel/docs/bronze-02-hello-triangle-01-code-de-base" target="_self">Bronze</a></li><li class=""><a href="/openglnoel/docs/silver-01-3d-theorie-01-introduction" target="_self">Silver</a></li><li class=""><a href="/openglnoel/docs/gold-01-intro-sdk-01-introduction" target="_self">Gold</a></li><li class=""><a href="/openglnoel/blog/" target="_self">Blog</a></li><li class=""><a href="http://docs.gl" target="_self">OpenGL Documentation</a></li><li class=""><a href="https://www.khronos.org/opengl/wiki/" target="_self">OpenGL Wiki</a></li><li class=""><a href="https://github.com/celeborn2bealive/openglnoel" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Projet 2020 (Fr, Imac et Master 2 Image)</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction and SDK</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-01-intro-01-intro">Introduction</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-01-intro-02-sdk">Software Development Kit</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-01-intro-03-devenv">Development Environment</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Loading and drawing</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-02-gltf-01-roadmap">Introduction and roadmap</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-02-gltf-02-initialization">Data initialization</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-02-gltf-03-drawing">Drawing the scene</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Controlling the Camera</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-03-camera-control">Camera Control</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Directional Lighting</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-04-directional-lighting">Directional Lighting</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Physically Based Materials</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-05-physically-based-materials">Physically based materials</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Projet 2020 (Fr, Imac et Master 2 Image)</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/openglnoel/docs/gltf-viewer-2020-projet">Projet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Work in Progress</h3><ul class=""><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-06-shadow-mapping">WIP - Shadow mapping</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-07-deferred-rendering">WIP - Deferred rendering</a></li><li class="navListItem"><a class="navItem" href="/openglnoel/docs/gltf-viewer-08-post-processing">WIP - Post processing</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Projet</h1></header><article><div><span><blockquote>
+<p>Cette partie est en français car elle concerne les étudiants de l'école d'ingénieur Imac et les Master 2 Images de l'université Paris Est.</p>
+</blockquote>
+<ul>
+<li>Date de rendu: Mercredi 29 Avril 23h59</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="sujet"></a><a href="#sujet" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sujet</h2>
+<p>Le sujet de ce projet est assez simple: il consiste à améliorer en autonomie votre gltf viewer. Pour cela, voici une liste de possibilités (détaillées plus bas avec des liens vers des tutoriaux en ligne) avec la difficulté associée (en nombre d'étoiles sur 3):</p>
+<ul>
+<li>Normal mapping *</li>
+<li>Many lights *</li>
+<li>Shadow Mapping **</li>
+<li>Deferred Rendering et Post Process (SSAO, DOF) ***</li>
+<li>PBR Lighting ***</li>
+</ul>
+<p>Il faut  choisir un de ces sujets et et l'implémenter entierement et correctement:</p>
+<ul>
+<li>Sur le fork de votre repo</li>
+<li>Code propre, structuré et factorisé, mais pas d'over enginerring</li>
+<li>Si la méthode implémentée à des paramètres, ils doivent être controlable via la GUI</li>
+<li>Si la méthode implémentée utilise des données intermédiaires sous forme de textures (shadow mapping, deferred rendering), elles doivent être visualisable via une option dans la GUI.</li>
+</ul>
+<p>Un projet à difficulté plus élevée n'aura pas forcément une meilleure note mais sera notée de manière plus indulgente.</p>
+<p>Vous pouvez choisir plusieurs sujets mais il ne faut pas s'éparpiller: d'abord en finir un, puis passer à un deuxième s'il vous reste du temps et l'envie.</p>
+<p>Si aucun de ces sujets ne vous plait, vous pouvez m'envoyer un mail pour m'en proposer un autre (avant le 15 mars 2020).</p>
+<h2><a class="anchor" aria-hidden="true" id="modalités-de-rendu"></a><a href="#modalités-de-rendu" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Modalités de rendu</h2>
+<ul>
+<li>Date de rendu: Mercredi 29 Avril 23h59</li>
+<li>Mail</li>
+<li>Rapport d'une page en pdf</li>
+</ul>
+<p>Avant la deadline, vous devrez m'envoyer un mail dont le sujet aura pour forme: <code>OpenGL Projets 2020 - nom prénom</code>.
+Si vous êtes en binome vous mettrez <code>nom1 prénom1 nom2 prénom2</code>.</p>
+<p>Vous m'indiquerez dans le corps du mail</p>
+<ul>
+<li>l'URL de votre repo (un des deux si vous etes en binome)</li>
+<li>Le numéro de commit sur lequel votre projet est dans sa version finale.</li>
+</ul>
+<p>De mon coté je clonerais votre repo et je me mettrais sur ce commit pour vous noter.</p>
+<p>Vous fournirez également un court rapport (1 page en pdf) indiquant:</p>
+<ul>
+<li>Le ou les sujets choisis</li>
+<li>Comment utiliser la fonctionnalité dans votre viewer</li>
+<li>Les difficultés rencontrées</li>
+<li>Les connaissances acquises en implémentant les features</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="détails-et-resources-en-ligne"></a><a href="#détails-et-resources-en-ligne" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Détails et resources en ligne</h2>
+<h3><a class="anchor" aria-hidden="true" id="normal-mapping-"></a><a href="#normal-mapping-" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normal mapping *</h3>
+<p>Le normal mapping consiste à utiliser une texture de normale pour rajouter artificiellement des détails aux objets. Le format glTF spécifie une normal map dans son materiaux, il faudra donc bien lire la documentation avant de se lancer dans le code.</p>
+<p>Voici un bon tutorial en ligne pour implémenter cette fonctionnalité: <a href="https://learnopengl.com/Advanced-Lighting/Normal-Mapping">https://learnopengl.com/Advanced-Lighting/Normal-Mapping</a></p>
+<p>Le tuto détaille la méthode et donne également d'autres liens.</p>
+<h3><a class="anchor" aria-hidden="true" id="many-lights-"></a><a href="#many-lights-" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Many lights *</h3>
+<p>Ce sujet est composé de deux parties:</p>
+<ul>
+<li>la gestion de tous les types de light glTF (point, directional, spot)</li>
+<li>la gestion d'un nombre arbitraire de light</li>
+</ul>
+<p>Ce tuto détaille chaque type de light: <a href="https://learnopengl.com/Lighting/Light-casters">https://learnopengl.com/Lighting/Light-casters</a></p>
+<p>Ce tuto détaille une méthode pour en gérer plusieurs: <a href="https://learnopengl.com/Lighting/Multiple-lights">https://learnopengl.com/Lighting/Multiple-lights</a></p>
+<p>Néammoins, la méthode décrite ne permet pas un nombre arbitraire (les tableaux de light ont une taille max). Si vous voulez aller plus loin, vous pourrez utiliser un <strong>Shader Storage Buffer Object</strong> pour stocker vos lights (à chercher sur le net).</p>
+<h3><a class="anchor" aria-hidden="true" id="shadow-mapping-"></a><a href="#shadow-mapping-" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Shadow Mapping **</h3>
+<p>Le shadow mapping consiste à utiliser la depth map d'un rendu du point de vue de la lumière pour calculer des ombres portées.</p>
+<p>Le shadow mapping d'une lumière directionelle n'est pas très compliqué à implémenter et les deux tutos suivants peuvent être suivi:</p>
+<ul>
+<li><a href="https://celeborn2bealive.github.io/openglnoel/docs/gold-04-shadow-mapping-01-introduction">https://celeborn2bealive.github.io/openglnoel/docs/gold-04-shadow-mapping-01-introduction</a></li>
+<li><a href="https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping">https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping</a></li>
+</ul>
+<p>Si vous avez en plus choisi de faire le sujet &quot;many lights&quot;, vous pouvez implémenter le shadow mapping sur les points lights. Cela augmente la difficulté du sujet à 3 étoiles. Voici un tuto:</p>
+<ul>
+<li><a href="https://learnopengl.com/Advanced-Lighting/Shadows/Point-Shadows">https://learnopengl.com/Advanced-Lighting/Shadows/Point-Shadows</a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="deferred-rendering-et-post-processing-"></a><a href="#deferred-rendering-et-post-processing-" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Deferred Rendering et Post Processing ***</h3>
+<p>Le deferred rendering est une technique consistant à splitter le rendu en deux parties: une partie &quot;geometry&quot;, qui se contente de faire un rendu des propriétés de geometrie et materiaux et objets dans des textures intermédiaires (le GBuffer), et une partie &quot;lighting&quot; qui utilise le GBuffer pour faire le rendu final.</p>
+<p>Cette technique n'est en soit pas très compliquée à implémenter, c'est pourquoi ce sujet comporte aussi une partie Post Processing, qui exploite les textures intermédiaires calculées par le deferred rendering pour rajouter des effets à l'image.</p>
+<p>Le deferred rendering peut être implémenté en suivant les tuto:</p>
+<ul>
+<li><a href="https://celeborn2bealive.github.io/openglnoel/docs/gold-03-deferred-renderer-01-pipeline">https://celeborn2bealive.github.io/openglnoel/docs/gold-03-deferred-renderer-01-pipeline</a></li>
+<li><a href="https://learnopengl.com/Advanced-Lighting/Deferred-Shading">https://learnopengl.com/Advanced-Lighting/Deferred-Shading</a></li>
+</ul>
+<p>Je conseille également de permettre à l'utilisateur de switcher entre forward rendering (le rendu comme on l'a fait jusqu'a présent) et deferred rendering. Cela vous obligera à garder votre ancien code fonctionnel.</p>
+<p>Il faudra qu'il soit possible d'afficher les textures du GBuffer via une option de la GUI.</p>
+<p>Pour ce qui est du post processing, il faudra au moins implémenter le Screen Space Ambiant Occlusion (SSAO), en suivant ce tuto:</p>
+<ul>
+<li><a href="https://learnopengl.com/Advanced-Lighting/SSAO">https://learnopengl.com/Advanced-Lighting/SSAO</a></li>
+</ul>
+<p>Après ça vous etes libre d'implémenter d'autres effets post process comme:</p>
+<ul>
+<li>le Bloom <a href="https://learnopengl.com/Advanced-Lighting/Bloom">https://learnopengl.com/Advanced-Lighting/Bloom</a></li>
+<li>le Depth of field en screen space (je n'ai pas de tuto mais ça doit se trouver facilement)</li>
+<li>la detection et l'affichage de contours (pareil)</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="pbr-lighting-"></a><a href="#pbr-lighting-" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PBR Lighting ***</h3>
+<p>Le lighting PBR (physically based rendering) permet d'exploiter toute la puissance du modèle de materiaux glTF et ainsi obtenir un rendu vraiment réaliste.</p>
+<p>Les deux tutos suivant donnent plus de détails sur le modèle de matériau PBR que l'on a implémenté, je conseille de les lire avant de passer à l'applicatif:</p>
+<ul>
+<li><a href="https://learnopengl.com/PBR/Theory">https://learnopengl.com/PBR/Theory</a></li>
+<li><a href="https://learnopengl.com/PBR/Lighting">https://learnopengl.com/PBR/Lighting</a></li>
+</ul>
+<p>C'est globalement le même modèle de materiaux que celui de glTF, avec peut être quelques différences mais rien de majeur.</p>
+<p>La partie à implémenter est détaillée par les tutos suivants:</p>
+<ul>
+<li><a href="https://learnopengl.com/PBR/IBL/Diffuse-irradiance">https://learnopengl.com/PBR/IBL/Diffuse-irradiance</a></li>
+<li><a href="https://learnopengl.com/PBR/IBL/Specular-IBL">https://learnopengl.com/PBR/IBL/Specular-IBL</a></li>
+</ul>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/openglnoel/docs/gltf-viewer-05-physically-based-materials"><span class="arrow-prev">← </span><span>Physically based materials</span></a><a class="docs-next button" href="/openglnoel/docs/gltf-viewer-06-shadow-mapping"><span>WIP - Shadow mapping</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#sujet">Sujet</a></li><li><a href="#modalités-de-rendu">Modalités de rendu</a></li><li><a href="#détails-et-resources-en-ligne">Détails et resources en ligne</a><ul class="toc-headings"><li><a href="#normal-mapping-">Normal mapping *</a></li><li><a href="#many-lights-">Many lights *</a></li><li><a href="#shadow-mapping-">Shadow Mapping **</a></li><li><a href="#deferred-rendering-et-post-processing-">Deferred Rendering et Post Processing ***</a></li><li><a href="#pbr-lighting-">PBR Lighting ***</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/openglnoel/" class="nav-home"><img src="/openglnoel/img/logo.png" alt="OpenGL[&quot;noël&quot;]" width="66" height="58"/></a><div><h5>About Me</h5><a href="http://laurentnoel.fr">Personal website</a><a href="https://github.com/Celeborn2BeAlive/">Github</a></div><div><h5>About This Website</h5><a href="/openglnoel/blog">Blog</a><a class="github-button" href="https://github.com/celeborn2bealive/openglnoel" data-icon="octicon-star" data-count-href="/celeborn2bealive/openglnoel/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">openglnoel</a><a href="https://docusaurus.io/">Powered by Docusaurus</a></div><div><h5>About OpenGL</h5><a href="docs.gl">Documentation (docs.gl)</a><a href="https://www.khronos.org/opengl/wiki/">Wiki</a></div></section><section class="copyright">Copyright © 2020 Laurent NOEL</section></footer></div></body></html>
