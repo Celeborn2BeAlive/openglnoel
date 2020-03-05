@@ -30,6 +30,8 @@ Vous pouvez choisir plusieurs sujets mais il ne faut pas s'éparpiller: d'abord 
 
 Si aucun de ces sujets ne vous plait, vous pouvez m'envoyer un mail pour m'en proposer un autre (avant le 15 mars 2020).
 
+Pensez à bien tester votre code sur plusieurs modèles 3D des glTF Sample models et de sketchfab.
+
 ## Modalités de rendu 
 
 - Date de rendu: Mercredi 29 Avril 23h59
