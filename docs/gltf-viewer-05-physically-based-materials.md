@@ -387,13 +387,24 @@ The last thing to do is to set uniforms and bind the metallic rougness texture. 
 
 <span class="todo badge"></span> Finish the C++ side by doing what needs to be done, and test you application.
 
+## Emissive part
+
+The last part of the material model to implement is the emission component.
+
+Like other material properties, it is stored in a texture and factor, so nothing new.
+
+The emission component just need to be added to the fragment color.
+
+<span class="todo badge"></span> In the shader, add a texture uniform for the emissive texture and a vec3 uniform for the emissive factor. Use them to compute the emissive component and add it to the fragment color.
+
+<span class="todo badge"></span> In the C++ code, apply the modifications needed to make it work (get uniform locations, bind textures, set uniforms)
+
 ## What should be done next
 
 At this point we have what is called a "PBR material model", PBR standing for "physically based rendering". If you search information about this on internet, you should find a lot of resources.
 
 However, the material model of glTF is a bit more complex and allows to add more details to the appearance of an object:
 
-- An emissive factor/map: this one is quite easy to implement, it is basically an ambiant factor.
 - An occlusion map, which is just a factor to apply to the whole lighting equation, quite easy too
 - A normal map: this one is harder, but allows to get a really realistic look by simulating some kind of microgeometry (bonus / possibility for the project)
 - Alpha blending to handle transparency (see "alpha coverage" of the specification). This requires depth sorting for correct rendering (bonus / possibility for the project)
