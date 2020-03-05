@@ -125,3 +125,9 @@ C'est globalement le même modèle de materiaux que celui de glTF, avec peut êt
 La partie à implémenter est détaillée par les tutos suivants:
 - https://learnopengl.com/PBR/IBL/Diffuse-irradiance
 - https://learnopengl.com/PBR/IBL/Specular-IBL
+
+## Travail en binôme et Git
+
+Si vous bossez en binome vous allez probablement être amené à utiliser Git de manière plus avancé (branches, merge, etc).
+
+Voici un site en français pour vous aider: https://rogerdudler.github.io/git-guide/index.fr.html
