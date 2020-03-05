@@ -138,13 +138,12 @@
         "Physically Based Materials": [
             "gltf-viewer-05-physically-based-materials"
         ],
-        "Shadow Mapping": [
-            "gltf-viewer-06-shadow-mapping"
+        "Projet 2020 (Fr, Imac et Master 2 Image)": [
+            "gltf-viewer-2020-projet"
         ],
-        "Deferred Rendering": [
-            "gltf-viewer-07-deferred-rendering"
-        ],
-        "Post Processing": [
+        "Work in Progress": [
+            "gltf-viewer-06-shadow-mapping",
+            "gltf-viewer-07-deferred-rendering",
             "gltf-viewer-08-post-processing"
         ]
     }
