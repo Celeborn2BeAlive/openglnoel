@@ -35,7 +35,7 @@ Pensez à bien tester votre code sur plusieurs modèles 3D des glTF Sample model
 ## Modalités de rendu 
 
 - Date de rendu: Mercredi 29 Avril 23h59
-- Mail
+- Mail à laurent.noel.c2ba@gmail.com
 - Rapport d'une page en pdf
 
 Avant la deadline, vous devrez m'envoyer un mail dont le sujet aura pour forme: `OpenGL Projets 2020 - nom prénom`.
