@@ -63,6 +63,8 @@ Voici un bon tutorial en ligne pour implémenter cette fonctionnalité: https://
 
 Le tuto détaille la méthode et donne également d'autres liens.
 
+Une partie compliquée du processus est la récupération des données du glTF pour calculer les tangentes et bitangente. Heureusement vous pouvez prendre example sur la fonction `computeSceneBounds` de `utils/gltf.cpp` qui parcourt toutes les positions des meshs.
+
 ### Many lights *
 
 Ce sujet est composé de deux parties:
